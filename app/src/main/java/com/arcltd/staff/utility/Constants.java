@@ -1,0 +1,126 @@
+package com.arcltd.staff.utility;
+
+public class Constants {
+
+    public static final String MEMBER_ID = "MEMBER_ID";
+    public static final String TEMP_ID = "TEMP_ID";
+    public static final String ADDRESS_Text="ADDRESS_Text";
+    public static final String CUSTOMER_ID = "CUSTOMER_ID";
+    public static final String FIRSTNAME = "FIRSTNAME";
+    public static final String LASTNAME = "LASTNAME";
+    public static final String EMAIL_ID = "EMAIL_ID";
+    public static final String MOBILE_NO = "MOBILE_NO";
+    public static final String ADDRESS_CLICKABLE = "addressClickable";
+    public static final String CATEGORY_ID = "CATEGORY_ID";
+    public static final String DISTANCE = "DISTANCE";
+    public static final String INSURANCE_COST = "INSURANCE_COST";
+    public static final String ORDER_TYPE = "ORDER_TYPE";
+    public static final String NOTIFIACTION_COUNT = "NOTIFIACTION_COUNT";
+    public static final String COUPAN_CODE = "COUPAN_CODE";
+    public static final String COUPAN_AMOUNT = "COUPAN_AMOUNT";
+    public static final String RESCHEDULE_ORDERID = "RESCHEDULE_ORDERID";
+    public static final String FULLNAME = "FULLNAME";
+    public static final int GPS_REQUEST = 1500;
+    public static final String DROP_POINT_POSITION = "dropPointPosition";
+    public static final String COUPAN_ID = "COUPAN_ID";
+    public static final String DRIVER_IMAGE = "DRIVER_IMAGE";
+    public static final String LOGIN_TYPE = "LOGIN_TYPE";
+    public static final String REGION_ID ="REGION_ID" ;
+    public static final String DIVISION_ID ="DIVISION_ID" ;
+    public static final String DIVISION_NAME ="DIVISION_NAME" ;
+    public static final String BRANCH_CODE ="BRANCH_CODE" ;
+    public static final String EMP_CODE ="EMP_CODE" ;
+    public static final String DESIGN = "DESIGN";
+    public static final String STATUS = "STATUS";
+    public static final String NOOF_EMPLOYEE ="NOOF_EMPLOYEE" ;
+    public static final String REGION_NAME = "REGION_NAME";
+    public static final String DEVICE_TOKEN = "DEVICE_TOKEN";
+    public static final String FCMBADGE = "FCMBADGE";
+    public static final String VEARIFICATION_STATUS = "VEARIFICATION_STATUS";
+    public static final String PROFILE_PICTURE ="PROFILE_PICTURE" ;
+
+    public static final String DIVISION_BRANCHES_PERMISSION ="DIVISION_BRANCHES_PERMISSION" ;
+    public static final String DIVISION_MESS_PERMISSION ="DIVISION_MESS_PERMISSION" ;
+    public static final String SEND_PROFILE_PERMISSION ="SEND_PROFILE_PERMISSION" ;
+    public static final String EMP_DETAILS_PERMISSION ="EMP_DETAILS_PERMISSION" ;
+    public static final String EMP_BIRTHDAY_DETAILS_PERMISSION ="EMP_BIRTHDAY_DETAILS_PERMISSION" ;
+    public static final String RETIREMENT_DETAILS_PERMISSION ="RETIREMENT_DETAILS_PERMISSION" ;
+    public static final String MOTERCYCLE_LIST_PERMISSION ="MOTERCYCLE_LIST_PERMISSION" ;
+    public static final String INCIDENTAL_LIST_PERMISSION ="INCIDENTAL_LIST_PERMISSION" ;
+    public static final String WEIGHT_MC_LIST_PERMISSION ="WEIGHT_MC_LIST_PERMISSION" ;
+    public static final String EMP_CONVEYANCE_PERMISSION ="EMP_CONVEYANCE_PERMISSION" ;
+    public static final String LANDLORD_DETAILS_PERMISSION ="LANDLORD_DETAILS_PERMISSION" ;
+    public static final String ADMIN_EXPENCES_PERMISSION ="ADMIN_EXPENCES_PERMISSION" ;
+    public static final String SENDEMP_MESSAGE_PERMISSION ="SENDEMP_MESSAGE_PERMISSION" ;
+    public static final String ADD_MESS_PERMISSION ="ADD_MESS_PERMISSION" ;
+    public static final String ADD_EMP_PERMISSION ="ADD_EMP_PERMISSION" ;
+    public static final String ADD_CONVEYANCE_PERMISSION ="ADD_CONVEYANCE_PERMISSION" ;
+    public static final String ADD_SWEEPERPEON_PERMISSION ="ADD_SWEEPERPEON_PERMISSION" ;
+    public static final String TRANSFER_EMP_PERMISSION ="TRANSFER_EMP_PERMISSION" ;
+    public static final String ACTIVE_DEACTIVE_PERMISSION ="ACTIVE_DEACTIVE_PERMISSION";
+    public static final String PINCODE_CHECK = "PINCODE_CHECK";
+    public static final String BRANCH_CHECK ="BRANCH_CHECK";
+    public static final String CUSTOMER_LOGIN = "CUSTOMER_LOGIN";
+    public static final String BRANCH_NAME = "BRANCH_NAME";
+
+    public static class ResponseStatus {
+        public static final String SUCCESS = "SUCCESS";
+        public static final String FAILURE = "FAILURE";
+        public static final String ERROR = "ERROR";
+        public static final String EXCEPTION = "exception";
+        public static final String NO_DATA = "NO_DATA";
+    }
+
+    public static class ApiRequestCode {
+        public static final int USER_REGISTRATION = 1001;
+        public static final int USER_LOGIN = 1002;
+        public static final int REGION_LIST = 1003;
+        public static final int DIVISION_LIST = 1004;
+        public static final int FORGOT_PASSWORD = 1005;
+        public static final int MESS_LIST = 1006;
+        public static final int MESS_ADD = 1007;
+        public static final int OFFICEMESSGDN = 1008;
+        public static final int TARGET = 1009;
+        public static final int MOTER_CYCLE = 1010;
+        public static final int BRANCH_LIST = 1011;
+        public static final int EMPLOYEE = 1012;
+        public static final int ADMINI_EXP = 1013;
+        public static final int ADMINI_EXP_UPDATE = 1014;
+        public static final int ADMINISTRATIVEEXP_LIST = 1015;
+        public static final int DELETE = 1016;
+        public static final int LANDLORD_GODOWN = 1017;
+        public static final int UPDATELANDLORD = 1018;
+        public static final int WEIGHT_MACHINE = 1019;
+        public static final int MOTERCYCLELIST = 1020;
+        public static final int WEIGHTMACHINE_LIST = 1021;
+        public static final int CONYANCE = 1022;
+        public static final int SWEEPERPEON = 1023;
+        public static final int TRANSFER =1024;
+        public static final int ACTIV_STATUS = 1025;
+        public static final int ACTIV_INACTIVE = 1026;
+        public static final int TEE_ELE = 1027;
+        public static final int DAILY_BOOKING = 1028;
+        public static final int ADD_CUSTOMER = 1029;
+        public static final int ADD_FEEDBACK = 1030;
+        public static final int CUSTOMER_LIST = 1031;
+        public static final int FEEDBACK_LIST = 1032;
+        public static final int REMARK_LIST = 1033;
+        public static final int ADD_REMARK = 1034;
+        public static final int DELETE_EMP = 1035;
+        public static final int RESET_PASSWORD = 1036;
+        public static final int VEHICLE_FAILD = 1037;
+        public static final int INS_LIST = 1038;
+        public static final int INSAMT_LIST = 1039;
+        public static final int MOTERCYCLE_SOLD = 1040;
+        public static final int MESSAGE =1041 ;
+        public static final int TOKEN = 1042;
+        public static final int EMPLOYEE_OTP = 1043;
+        public static final int EMPLOYEE_OTP_SUBMIT = 1044;
+        public static final int EMPLOYEE_SIGNUP = 1045;
+        public static final int INCHARGE_LIST = 1046;
+        public static final int PERMISSION_LIST = 1047;
+        public static final int BRANCH_LIST_PINCODE = 1048;
+    }
+    public static final String CITY_NAME = "CITY_NAME";
+    public static final String CITY_ID = "CITY_ID";
+}

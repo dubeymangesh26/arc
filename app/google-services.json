@@ -1,0 +1,114 @@
+{
+  "project_info": {
+    "project_number": "226690019111",
+    "firebase_url": "https://arc-limited.firebaseio.com",
+    "project_id": "arc-limited",
+    "storage_bucket": "arc-limited.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226690019111:android:b6f6363de7ebbc79ebc302",
+        "android_client_info": {
+          "package_name": "com.arclimited"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226690019111-avut5aa512r4ttg5hlsldh214nchevjn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arclimited",
+            "certificate_hash": "b5a11914dba349feaed7705cf9fb9cea493f6c8c"
+          }
+        },
+        {
+          "client_id": "226690019111-jkarv6qe7s74fkisnrkp8fp46gnvr0fs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSew45CgtuvlhMv7cpX364_JzNWPyfCGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226690019111-jkarv6qe7s74fkisnrkp8fp46gnvr0fs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226690019111:android:e74af00a7acfbadfebc302",
+        "android_client_info": {
+          "package_name": "com.arcltd.staff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226690019111-4kmglvnoda8ld5elh7lk17r2dhnm5cka.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arcltd.staff",
+            "certificate_hash": "b5a11914dba349feaed7705cf9fb9cea493f6c8c"
+          }
+        },
+        {
+          "client_id": "226690019111-jkarv6qe7s74fkisnrkp8fp46gnvr0fs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSew45CgtuvlhMv7cpX364_JzNWPyfCGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226690019111-jkarv6qe7s74fkisnrkp8fp46gnvr0fs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226690019111:android:56b07437648b7af0ebc302",
+        "android_client_info": {
+          "package_name": "com.arcmessstaff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226690019111-jkarv6qe7s74fkisnrkp8fp46gnvr0fs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSew45CgtuvlhMv7cpX364_JzNWPyfCGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226690019111-jkarv6qe7s74fkisnrkp8fp46gnvr0fs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

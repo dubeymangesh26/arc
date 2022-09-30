@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.arcltd.staff">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:requestLegacyExternalStorage="true"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Arcltdstaff"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".activity.otherAndMain.CustomerOrEmployeeActivity"
+            android:exported="true"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.without_login.WithoutLoginActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.otherAndMain.PdfViewerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_pdf_viewer"
+            android:theme="@style/Theme.Arcltdstaff.NoActionBar" />
+        <activity
+            android:name=".activity.otherAndMain.SendWhatsappMessageActivity"
+            android:exported="false"
+            android:label="Send Message"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.UserPermissionListActivity"
+            android:exported="false"
+            android:label="App Permission"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.otherAndMain.UserAppPermissionActivity"
+            android:exported="false"
+            android:label="User List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.messDetails.MessEmployeeDeetailsActivity"
+            android:exported="false"
+            android:label="Mess Employee"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.BranchListPincodeWiseActivity"
+            android:exported="false"
+            android:label="Branch List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.messDetails.MessDetailsActivity"
+            android:exported="false"
+            android:label="Mess Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.messDetails.MessDivisionListActivity"
+            android:label="Division List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.otherAndMain.BirthdayWisheshActivity"
+            android:exported="false"
+            android:label="Wish"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.detailsData.ViewExcelActivity"
+            android:exported="false"
+            android:label="View Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.EmployeeStatusCheckActivity"
+            android:exported="false"
+            android:label="Status"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.OTPActivity"
+            android:exported="false"
+            android:label="OTP"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.otherAndMain.TargetActivity"
+            android:exported="false"
+            android:label="Business"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.ProfileDetailsActivity"
+            android:exported="false"
+            android:label="Profile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.employee.EmpMessageListActivity"
+            android:exported="false"
+            android:label="Message List"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".firebase.MyMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/arcround" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <receiver
+            android:name=".firebase.MessageReadReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.arcmessstaff.firebase.ACTION_MESSAGE_READ" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".firebase.MessageReplyReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.arcmessstaff.firebase.ACTION_MESSAGE_REPLY" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".activity.employee.EmployeeMessageActivity"
+            android:exported="false"
+            android:label="Message"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.otherAndMain.RetirementActivity"
+            android:exported="false"
+            android:label="Retirement"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.FingerprintPinLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.otherAndMain.InsCMPAmountActivity"
+            android:exported="false"
+            android:label="INS Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.InsCompanyListActivity"
+            android:exported="false"
+            android:label="Company Name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.VehiclePlaceFaildListActivity"
+            android:exported="false"
+            android:label="Failed Place Vehicles"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddVehiclePlaceFaildActivity"
+            android:exported="false"
+            android:label="Failed Place Vehicle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddUpdateEmployeeActivity"
+            android:exported="false"
+            android:label="Add Employee"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.detailsData.TransferHistoryActivity"
+            android:exported="false"
+            android:label="Transfer History"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".web_view.WebEmpUploadActivity"
+            android:exported="false"
+            android:label="Upload"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.detailsData.CustomerDetailsActivity"
+            android:exported="false"
+            android:label="Feedback"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.CustomerListActivity"
+            android:exported="false"
+            android:label="Customers"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddUpdateCustomerActivity"
+            android:exported="false"
+            android:label="Add Customer"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.detailsData.TargetAchivementDetailsActivity"
+            android:exported="false"
+            android:label="Target/Achievement"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddDailyBusinessAmountActivity"
+            android:exported="false"
+            android:label="Add Booking"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".web_view.ArcWebViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".activity.updateData.UpdateProfileActivity"
+            android:exported="false"
+            android:label="Profile Update"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.employee.BlockEmployeeActivity"
+            android:exported="false"
+            android:label="Block Employee"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.employee.EmployeeTransferActivity"
+            android:exported="false"
+            android:label="Transfer Employee To Other Branch"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddConveyanceMobileActivity"
+            android:exported="false"
+            android:label="Conveyance/Mobile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.AdminBranchListActivity"
+            android:exported="false"
+            android:label="Branches"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddSweeperPeonActivity"
+            android:exported="false"
+            android:label="Sweeper/Peon"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.updateData.AdminUpdateAdministrExpencesActivity"
+            android:exported="false"
+            android:label="Admin Expenses"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.employee.EmployeeConvenceListActivity"
+            android:exported="false"
+            android:label="Employee Conveyance"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.PeonSweeperListActivity"
+            android:exported="false"
+            android:label="Peon/Sweeper"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.WeightMCListActivity"
+            android:exported="false"
+            android:label="Weight Machine"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.MoterCycleListActivity"
+            android:exported="false"
+            android:label="Moter Cycle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.LandLordListActivity"
+            android:exported="false"
+            android:label="Landlord Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.updateData.UpdateLandlordDetailsActivity"
+            android:exported="false"
+            android:label="Update Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.updateData.DailyTargetUpdateActivity"
+            android:exported="false"
+            android:label="Monthly Traget Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.AdministratiExpListActivity"
+            android:exported="false"
+            android:label="Admin Expenses"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.otherAndMain.OtherExpensesActivity"
+            android:exported="false"
+            android:label="Other Expenses"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.updateData.UpdateAdminExpencesActivity"
+            android:exported="false"
+            android:label="Update Admin Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.detailsData.AdministativeExpensesDetailsActivity"
+            android:exported="false"
+            android:label="Admin Expenses"
+            android:screenOrientation="portrait" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <!-- resource file to create -->
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".activity.detailsData.BranchDetailsActivity"
+            android:exported="false"
+            android:label="Branch Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddBranchExpencessActivity"
+            android:exported="false"
+            android:label="Add Expenses"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddWeightMachineActivity"
+            android:exported="false"
+            android:label="Add/Update Deatails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddMoterCycleActivity"
+            android:exported="false"
+            android:label="Add/Update Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.employee.EmployeeDetailsActivity"
+            android:label="Employee Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.employee.EmployeeListActivity"
+            android:exported="false"
+            android:label="Employee List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.BranchListActivity"
+            android:exported="false"
+            android:label="Branches"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.detailsData.DetailsActivity"
+            android:exported="false"
+            android:label="Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.MessOfficeGodownListActivity"
+            android:exported="false"
+            android:label="Mess/Office/Godown List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddMessActivity"
+            android:exported="false"
+            android:label="Add New Mess"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddOfficeGodownActivity"
+            android:exported="false"
+            android:label="Add New Mess/Office/Godown"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.messDetails.MessListActivity"
+            android:exported="false"
+            android:label="Mess List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.DivisionListActivity"
+            android:exported="false"
+            android:label="Division List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.RegionListActivity"
+            android:exported="false"
+            android:label="Region List"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.otherAndMain.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.NoInternetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.SignupActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.SplashScreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".web_view.VideoWebViewActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".web_view.WebViewActiviry"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreen" />
+        <activity android:name=".authentication.ForgotPassword" />
+        <activity
+            android:name=".authentication.ResetPassword"
+            android:exported="false"
+            android:label="Update Password"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.employee.EmployeeTodayBirthListActivity"
+            android:exported="false"
+            android:label="Today Birthday"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".web_view.PrivacyPolicyWebViewActivity"
+            android:exported="true"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".web_view.TermAndConditionWebViewActivity"
+            android:exported="true"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreen" />
+        <activity
+            android:name=".web_view.WebViewpoppupActivity"
+            android:resizeableActivity="true"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activity.detailsData.BranchPicodeDetailsActivity"
+            android:exported="true"
+            android:label="List"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

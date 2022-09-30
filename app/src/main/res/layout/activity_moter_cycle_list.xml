@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.listData.MoterCycleListActivity">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        android:layout_marginTop="@dimen/_1sdp"
+        app:tabSelectedTextColor="@color/appColour"
+        app:tabTextAppearance="@style/MyTabLayoutTextAppearance">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tbAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tbActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tbExpire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exp. RC" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tbExIns"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exp. Ins." />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tbSold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sold" />
+    </com.google.android.material.tabs.TabLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:visibility="visible"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <AutoCompleteTextView
+                android:id="@+id/atSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="textCapCharacters"
+                android:drawableLeft="@drawable/search_24"
+                android:hint="Search"/>
+
+            <Button
+                android:id="@+id/addMoterCycle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="Add New"
+                android:minHeight="60dp"/>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/searchProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_20sdp"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiptoRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list"/>
+
+            </LinearLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+

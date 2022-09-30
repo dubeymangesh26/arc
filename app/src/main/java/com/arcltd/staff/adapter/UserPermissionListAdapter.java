@@ -1,0 +1,112 @@
+package com.arcltd.staff.adapter;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.arcltd.staff.R;
+import com.arcltd.staff.activity.otherAndMain.UserAppPermissionActivity;
+import com.arcltd.staff.response.AppPermissionListResponse;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class UserPermissionListAdapter extends RecyclerView.Adapter<UserPermissionListAdapter.ViewHolder> {
+    Context context;
+    List<AppPermissionListResponse.UserList> list;
+    RecyclerView menuList;
+    private AppPermissionListResponse wishList;
+    private int deliveryPosition;
+
+
+    public UserPermissionListAdapter(FragmentActivity activity, List<AppPermissionListResponse.UserList>
+            bookingLists, RecyclerView menuList, AppPermissionListResponse activeRerfreshWishList) {
+        this.context = activity;
+        this.menuList = menuList;
+        this.wishList = activeRerfreshWishList;
+        this.list = bookingLists;
+
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view;
+        view = LayoutInflater.from(context).inflate(R.layout.item_emplst_list, parent, false);
+        return new ViewHolder(view);
+
+
+    }
+    @Override
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+
+
+        holder.region.setText(list.get(position).getEmp_name());
+        holder.branchCode.setText(list.get(position).getBranch_code());
+        Glide.with(context)
+                .load(list.get(position).getProfilepic()) // image url
+                .placeholder(R.drawable.arcround) // any placeholder to load at start
+                .error(R.drawable.arcround)  // any image in case of error
+                .override(200, 200) // resizing
+                .centerCrop()
+                .into(holder.profilepic);
+
+        holder.listRegion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String data = new Gson().toJson(list.get(position));
+                Log.e("TAG", "MessList: "+data );
+                context.startActivity(new Intent(context, UserAppPermissionActivity.class).putExtra("data", data));
+
+            }
+        });
+
+
+    }
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+
+    public interface ListCallback {
+    }
+
+    public interface RerfreshWishList {
+        void refresh(Boolean b);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView region,branchCode;
+        LinearLayout listRegion;
+        CircleImageView profilepic;
+
+
+        public ViewHolder(@NonNull @NotNull View itemView) {
+            super(itemView);
+            region = itemView.findViewById(R.id.region);
+            listRegion = itemView.findViewById(R.id.listRegion);
+            branchCode = itemView.findViewById(R.id.branchCode);
+            profilepic = itemView.findViewById(R.id.profilePicture);
+
+
+
+        }
+    }
+
+}

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.addData.AddUpdateEmployeeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Registration"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_10sdp">
+
+                        <!--    <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/viewParent.headerText.NoMode"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="ARC Staff"
+                                    android:textColor="@color/primaryTextColor" />
+
+                                <ImageView
+                                    android:id="@+id/image_logo"
+                                    android:layout_width="@dimen/_75sdp"
+                                    android:layout_height="@dimen/_75sdp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:contentDescription="TODO" />
+
+
+                            </RelativeLayout>-->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginBottom="8dp"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="8dp">
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="10dp"
+                                    android:layout_marginBottom="@dimen/_20sdp"
+                                    android:orientation="vertical"
+                                    android:padding="@dimen/_10sdp">
+
+                                    <Spinner
+                                        android:id="@+id/spdivision"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="@dimen/_8sdp"
+                                        android:layout_marginVertical="@dimen/_8sdp"
+                                        android:minHeight="50dip"
+                                        android:layout_marginTop="@dimen/_20sdp"
+                                        android:background="@drawable/spinner_background"
+                                        android:paddingStart="@dimen/_10sdp"
+                                        android:paddingEnd="@dimen/_10sdp"
+                                        android:spinnerMode="dialog" />
+
+                                    <Spinner
+                                        android:id="@+id/spBranch"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="@dimen/_8sdp"
+                                        android:layout_marginVertical="@dimen/_8sdp"
+                                        android:minHeight="50dip"
+                                        android:layout_marginTop="@dimen/_20sdp"
+                                        android:background="@drawable/spinner_background"
+                                        android:paddingStart="@dimen/_10sdp"
+                                        android:paddingEnd="@dimen/_10sdp"
+                                        android:spinnerMode="dialog" />
+
+                                    <Spinner
+                                        android:id="@+id/spActiveRetire"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="@dimen/_8sdp"
+                                        android:minHeight="50dip"
+                                        android:layout_marginVertical="@dimen/_8sdp"
+                                        android:layout_marginTop="@dimen/_20sdp"
+                                        android:background="@drawable/spinner_background"
+                                        android:paddingStart="@dimen/_10sdp"
+                                        android:paddingEnd="@dimen/_10sdp"
+                                        android:spinnerMode="dialog" />
+
+                                    <AutoCompleteTextView
+                                        android:id="@+id/acType"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_10sdp"
+                                        android:layout_marginEnd="@dimen/_10sdp"
+                                        android:maxLines="1"
+                                        android:paddingTop="10dp"
+                                        android:paddingBottom="10dp"
+                                        android:singleLine="true"
+                                        android:textSize="@dimen/_12sdp"
+                                        android:visibility="gone" />
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="Employee Code"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editEmpCode"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:digits="ATR0123456789"
+                                            android:maxLength="6"
+                                            android:inputType="textCapCharacters"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="Name"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editTextName"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:inputType="textCapSentences"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="Date Of Birth"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/etDateofBirth"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:cursorVisible="false"
+                                            android:focusable="false" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="Qualification"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editqualification"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:inputType="textCapSentences"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="Design"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editTextDesign"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:inputType="textCapSentences"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="Joining Date"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/etJoiningDate"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:cursorVisible="false"
+                                            android:focusable="false" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="Salary"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editTextSalary"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:inputType="number"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="UAN No."
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editTextUanNo"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:inputType="number"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                                    <Button
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_10sdp"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginEnd="@dimen/_10sdp"
+                                        android:background="@drawable/refer_earn_button"
+                                        android:onClick="onClickSignUp"
+                                        android:text="Submit"
+                                        android:textColor="@color/white" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:gravity="center"
+                                        android:weightSum="12">
+
+                                        <View
+                                            android:layout_width="0dp"
+                                            android:layout_height="1dp"
+                                            android:layout_weight="3"
+                                            android:background="@color/colorPrimaryDark" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center|bottom"
+                            android:layout_marginBottom="20dp"
+                            android:visibility="gone" />
+
+
+                    </LinearLayout>
+
+                </ScrollView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
