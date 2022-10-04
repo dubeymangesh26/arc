@@ -37,6 +37,7 @@ public class AddMoterCycleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_moter_cycle);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
@@ -191,7 +192,6 @@ public class AddMoterCycleActivity extends BaseActivity {
             if (addUpdateMoterCycleResponse != null) {
                 if (addUpdateMoterCycleResponse.getResponseCode().equals(200)) {
                     Infrastructure.dismissProgressDialog();
-                    startActivity(new Intent(this, MainActivity.class));
                     finish();
                     Toast.makeText(this, addUpdateMoterCycleResponse.getMessage(), Toast.LENGTH_LONG).show();
 
@@ -199,7 +199,7 @@ public class AddMoterCycleActivity extends BaseActivity {
 
                 }else {
                     Toast.makeText(this, addUpdateMoterCycleResponse.getMessage(), Toast.LENGTH_LONG).show();
-
+                    finish();
                 }
             } else {
                 Infrastructure.dismissProgressDialog();
@@ -262,5 +262,6 @@ public class AddMoterCycleActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }

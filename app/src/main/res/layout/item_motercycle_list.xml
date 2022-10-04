@@ -301,14 +301,18 @@
                     android:textSize="@dimen/_10ssp" />
             </LinearLayout>
 
-            <Button
+            <TextView
                 android:id="@+id/btnSold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_gravity="center"
-                android:background="@drawable/refer_earn_button"
-                android:text="Sold Out"
+                android:visibility="visible"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/orange"
+               android:layout_gravity="end"
+                android:textSize="@dimen/_15ssp"
+                android:drawablePadding="@dimen/_5sdp"
+                android:drawableRight="@drawable/soldoutsmall"
+                android:text="Sold"
                 android:textStyle="bold"/>
 
         </LinearLayout>

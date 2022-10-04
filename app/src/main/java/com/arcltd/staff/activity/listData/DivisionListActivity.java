@@ -42,6 +42,7 @@ public class DivisionListActivity extends BaseActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         list=findViewById(R.id.list);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);
 
         divisionList();

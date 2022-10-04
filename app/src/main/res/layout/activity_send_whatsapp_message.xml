@@ -101,7 +101,7 @@
                 android:layout_marginBottom="15sp"
                 android:background="@drawable/refer_earn_button"
                 android:onClick="submitMessage"
-                android:text="Submit"
+                android:text="Share"
                 android:textColor="@color/white" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

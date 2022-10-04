@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,8 +44,9 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
 
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view;
         view = LayoutInflater.from(context).inflate(R.layout.item_emplst_list, parent, false);
@@ -93,7 +95,7 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView region,branchCode;
-        LinearLayout listRegion;
+        CardView listRegion;
         CircleImageView profilepic;
 
 

@@ -68,6 +68,7 @@ public class SignupActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_signup);
 
         if (getSupportActionBar() != null)
@@ -235,24 +236,69 @@ public class SignupActivity extends BaseActivity {
                     RetrofitClient.saveUserPreference(SignupActivity.this, Constants.EMP_CODE, registerRespponse.getData().getEmp_code());
                     RetrofitClient.saveUserPreference(SignupActivity.this, Constants.DESIGN, registerRespponse.getData().getDesign());
                     RetrofitClient.saveUserPreference(SignupActivity.this, Constants.STATUS, registerRespponse.getData().getStatus());
+
+                    final Toast toast = new Toast(getApplicationContext());
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    View custom_view = getLayoutInflater().inflate(R.layout.success_tost, null);
+                    TextView message=custom_view.findViewById(R.id.message);
+                    message.setText(registerRespponse.getMessage());
+                    toast.setView(custom_view);
+                    toast.show();
+
                     break;
                 case "404":
-                    Toast.makeText(SignupActivity.this, registerRespponse.getMessage(), Toast.LENGTH_LONG).show();
+                    final Toast toast1 = new Toast(getApplicationContext());
+                    toast1.setDuration(Toast.LENGTH_LONG);
+                    View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                    TextView message1=custom_viewError.findViewById(R.id.message);
+                    message1.setText(registerRespponse.getMessage());
+                    toast1.setView(custom_viewError);
+                    toast1.show();
                     break;
                 case "304":
-                    Toast.makeText(SignupActivity.this, registerRespponse.getMessage(), Toast.LENGTH_LONG).show();
+                    final Toast toast2 = new Toast(getApplicationContext());
+                    toast2.setDuration(Toast.LENGTH_LONG);
+                    View custom_viewError1 = getLayoutInflater().inflate(R.layout.error_tost, null);
+                    TextView message2=custom_viewError1.findViewById(R.id.message);
+                    message2.setText(registerRespponse.getMessage());
+                    toast2.setView(custom_viewError1);
+                    toast2.show();
                     break;
                 case "400":
-                    Toast.makeText(SignupActivity.this, registerRespponse.getMessage(), Toast.LENGTH_LONG).show();
+                    final Toast toast3 = new Toast(getApplicationContext());
+                    toast3.setDuration(Toast.LENGTH_LONG);
+                    View custom_viewError2 = getLayoutInflater().inflate(R.layout.error_tost, null);
+                    TextView message3=custom_viewError2.findViewById(R.id.message);
+                    message3.setText(registerRespponse.getMessage());
+                    toast3.setView(custom_viewError2);
+                    toast3.show();
                     break;
                 case "401":
-                    Toast.makeText(SignupActivity.this, registerRespponse.getMessage(), Toast.LENGTH_LONG).show();
+                    final Toast toast4 = new Toast(getApplicationContext());
+                    toast4.setDuration(Toast.LENGTH_LONG);
+                    View custom_viewError3 = getLayoutInflater().inflate(R.layout.error_tost, null);
+                    TextView message4=custom_viewError3.findViewById(R.id.message);
+                    message4.setText(registerRespponse.getMessage());
+                    toast4.setView(custom_viewError3);
+                    toast4.show();
                     break;
                 case "403":
-                    Toast.makeText(SignupActivity.this, registerRespponse.getMessage(), Toast.LENGTH_LONG).show();
+                    final Toast toast5 = new Toast(getApplicationContext());
+                    toast5.setDuration(Toast.LENGTH_LONG);
+                    View custom_viewError4 = getLayoutInflater().inflate(R.layout.error_tost, null);
+                    TextView message5=custom_viewError4.findViewById(R.id.message);
+                    message5.setText(registerRespponse.getMessage());
+                    toast5.setView(custom_viewError4);
+                    toast5.show();
                     break;
                 case "405":
-                    Toast.makeText(SignupActivity.this, registerRespponse.getMessage(), Toast.LENGTH_LONG).show();
+                    final Toast toast6 = new Toast(getApplicationContext());
+                    toast6.setDuration(Toast.LENGTH_LONG);
+                    View custom_viewError5 = getLayoutInflater().inflate(R.layout.error_tost, null);
+                    TextView message6=custom_viewError5.findViewById(R.id.message);
+                    message6.setText(registerRespponse.getMessage());
+                    toast6.setView(custom_viewError5);
+                    toast6.show();
                     break;
                 default:
                     Toast.makeText(SignupActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();

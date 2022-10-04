@@ -49,6 +49,7 @@ FeedbackListAdapter.AddRemark{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_customer_details);
 
         try {

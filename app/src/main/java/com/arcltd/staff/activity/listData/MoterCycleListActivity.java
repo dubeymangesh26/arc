@@ -59,6 +59,7 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_moter_cycle_list);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -318,5 +319,11 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
     }
 }

@@ -15,6 +15,7 @@ public class NoInternetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_no_internet);
 
         tryAgain = (Button) findViewById(R.id.try_again);

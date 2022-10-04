@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.updateData.UpdateLandlordDetailsActivity;
 import com.arcltd.staff.response.LandlordGodownListResponse;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +66,7 @@ public class LandlordGodownListAdapter extends RecyclerView.Adapter<LandlordGodo
             @Override
             public void onClick(View v) {
 
-                final Dialog dialog = new Dialog(context);
+                final BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(R.layout.item_landlor_godown_list);
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
                 lp.copyFrom(dialog.getWindow().getAttributes());

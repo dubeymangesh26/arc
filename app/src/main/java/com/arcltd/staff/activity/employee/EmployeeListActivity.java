@@ -3,6 +3,7 @@ package com.arcltd.staff.activity.employee;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -41,7 +42,7 @@ public class EmployeeListActivity extends BaseActivity {
     SwipeRefreshLayout swiptoRefresh;
     LinearLayout liDeleteUpdate;
     private EmployeeListAdapter.RerfreshWishList activeRerfreshWishList;
-    String branch_code="",delete, url="http://onlineformsolution.in/arcMessApi/update_employee.php";
+    String branch_code="",delete, url="";
     AutoCompleteTextView atSearch;
     ProgressBar searchProgressBar;
 
@@ -50,6 +51,7 @@ public class EmployeeListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_list);
 
 
@@ -155,8 +157,9 @@ public class EmployeeListActivity extends BaseActivity {
                 if (employeeListResponse.getEmployee_list()!=null) {
                     searchProgressBar.setVisibility(View.GONE);
 
-                    list.setLayoutManager(new LinearLayoutManager(
-                            this, RecyclerView.VERTICAL, false));
+                    list.setLayoutManager(new GridLayoutManager(
+                            this,2, RecyclerView.VERTICAL, false));
+
                     EmployeeListAdapter listAdapter = new EmployeeListAdapter(this, employeeListResponse.getEmployee_list()
                             , list, employeeListResponse);
                     list.setAdapter(listAdapter);

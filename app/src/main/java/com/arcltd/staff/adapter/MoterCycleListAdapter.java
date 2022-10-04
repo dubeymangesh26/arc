@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,12 +19,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddMoterCycleActivity;
 import com.arcltd.staff.response.MoterCycleListResponse;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -67,12 +70,19 @@ public class MoterCycleListAdapter extends RecyclerView.Adapter<MoterCycleListAd
         holder.branchCode.setText(list.get(position).getBranch_code());
         holder.item.setText(list.get(position).getVehicle_no());
 
+        if (!list.get(position).getSold_status().equals("Y")){
+            holder.cvView.setBackgroundColor(Color.WHITE);
+        }else {
+            holder.cvView.setBackgroundColor(Color.YELLOW);
+        }
+
 
         holder.listRegion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final Dialog dialog = new Dialog(context);
+
+                final BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(R.layout.item_motercycle_list);
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
                 lp.copyFrom(dialog.getWindow().getAttributes());
@@ -90,7 +100,7 @@ public class MoterCycleListAdapter extends RecyclerView.Adapter<MoterCycleListAd
                     TextView tvBranchCode,tvVehicleno,tvRCLastDate,tvMake,tvMpdel,tvInsUpTo,tvstdKm,tvInsNo,
                             tvUserName;
                     ImageView edit;
-                    Button btnSold;
+                    TextView btnSold;
 
                     tvBranchCode = dialog.findViewById(R.id.tvBranchCode);
                     tvVehicleno = dialog.findViewById(R.id.tvVehicleno);
@@ -201,6 +211,7 @@ public class MoterCycleListAdapter extends RecyclerView.Adapter<MoterCycleListAd
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView branchCode,item;
         LinearLayout listRegion;
+        CardView cvView;
 
 
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -208,6 +219,7 @@ public class MoterCycleListAdapter extends RecyclerView.Adapter<MoterCycleListAd
             branchCode = itemView.findViewById(R.id.branchCode);
             item = itemView.findViewById(R.id.item);
             listRegion = itemView.findViewById(R.id.listRegion);
+            cvView = itemView.findViewById(R.id.cvView);
 
         }
     }

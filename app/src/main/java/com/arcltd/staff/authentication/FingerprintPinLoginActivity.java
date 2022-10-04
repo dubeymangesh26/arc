@@ -29,6 +29,7 @@ public class FingerprintPinLoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_fingerprint_pin_login);
 
         btn_fppin  = findViewById(R.id.btn_fppin);
@@ -41,9 +42,17 @@ public class FingerprintPinLoginActivity extends BaseActivity {
             public void onAuthenticationError(int errorCode,
                                               @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
-                Toast.makeText(getApplicationContext(),
+
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                TextView message=custom_viewError.findViewById(R.id.message);
+                message.setText("Login Error"+errString);
+                toast.setView(custom_viewError);
+
+               /* Toast.makeText(getApplicationContext(),
                                 "Login error: " + errString, Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
 
 
             }
@@ -63,8 +72,16 @@ public class FingerprintPinLoginActivity extends BaseActivity {
 
                 //  overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
                 finish();
-                Toast.makeText(getApplicationContext(),
-                        "Login Success!" , Toast.LENGTH_SHORT).show();
+
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_view = getLayoutInflater().inflate(R.layout.success_tost, null);
+                TextView message=custom_view.findViewById(R.id.message);
+                message.setText("Login Success!");
+                toast.setView(custom_view);
+                toast.show();
+                /*Toast.makeText(getApplicationContext(),
+                        "Login Success!" , Toast.LENGTH_SHORT).show();*/
 
             }
 
@@ -75,9 +92,17 @@ public class FingerprintPinLoginActivity extends BaseActivity {
                /* startActivity(new Intent(FingerprintPinLoginActivity.this, LoginActivity.class));
                 //  overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
                 finish();*/
-                Toast.makeText(getApplicationContext(), "Login failed",
+
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                TextView message=custom_viewError.findViewById(R.id.message);
+                message.setText("Login Failed");
+                toast.setView(custom_viewError);
+
+              /*  Toast.makeText(getApplicationContext(), "Login failed",
                                 Toast.LENGTH_SHORT)
-                        .show();
+                        .show();*/
 
             }
         });

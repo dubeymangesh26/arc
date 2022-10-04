@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -49,6 +50,7 @@ public class EmployeeTodayBirthListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_list);
 
 
@@ -140,8 +142,8 @@ public class EmployeeTodayBirthListActivity extends BaseActivity {
                 if (employeeListResponse.getEmployee_list()!=null) {
                     searchProgressBar.setVisibility(View.GONE);
 
-                    list.setLayoutManager(new LinearLayoutManager(
-                            this, RecyclerView.VERTICAL, false));
+                    list.setLayoutManager(new GridLayoutManager(
+                            this,2, RecyclerView.VERTICAL, false));
                     EmployeeBirthdayListAdapter listAdapter = new EmployeeBirthdayListAdapter(this, employeeListResponse.getEmployee_list()
                             , list, employeeListResponse);
                     list.setAdapter(listAdapter);

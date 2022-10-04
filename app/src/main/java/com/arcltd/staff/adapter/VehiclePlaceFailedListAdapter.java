@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.response.VehicleFailListResponse;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -62,7 +63,7 @@ public class VehiclePlaceFailedListAdapter extends RecyclerView.Adapter<VehicleP
             @Override
             public void onClick(View v) {
 
-                final Dialog dialog = new Dialog(context);
+                final BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(R.layout.item_faildplc_vehicle_list);
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
                 lp.copyFrom(dialog.getWindow().getAttributes());

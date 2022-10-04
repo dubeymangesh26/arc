@@ -22,6 +22,7 @@ import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddUpdateCustomerActivity;
 import com.arcltd.staff.activity.detailsData.CustomerDetailsActivity;
 import com.arcltd.staff.response.CustomerListResponse;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -76,7 +77,7 @@ public class CustomerListAdapter extends RecyclerView.Adapter<CustomerListAdapte
                 @Override
                 public void onClick(View v) {
 
-                    final Dialog dialog = new Dialog(context);
+                    final BottomSheetDialog dialog = new BottomSheetDialog(context);
                     dialog.setContentView(R.layout.item_customer_detail);
                     WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
                     lp.copyFrom(dialog.getWindow().getAttributes());

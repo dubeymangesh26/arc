@@ -42,6 +42,7 @@ public class DetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_details);
 
         try {
@@ -158,7 +159,7 @@ public class DetailsActivity extends BaseActivity {
 
 
                 }else {
-                    Toast.makeText(this, targetResponseResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, targetResponseResponse.getMessage(), Toast.LENGTH_LONG).show();
 
                 }
             } else {

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,7 +84,7 @@ public class EmployeeBirthdayListAdapter extends RecyclerView.Adapter<EmployeeBi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView region,branchCode;
-        LinearLayout listRegion;
+        CardView listRegion;
 
 
         public ViewHolder(@NonNull @NotNull View itemView) {

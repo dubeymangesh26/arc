@@ -52,6 +52,7 @@ public class EmployeeDetailsActivity extends BaseActivity implements EmployeeRem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_details);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         try {
@@ -199,7 +200,7 @@ public class EmployeeDetailsActivity extends BaseActivity implements EmployeeRem
 
 
                 }else {
-                    Toast.makeText(this, empRemarkListResponse.getMessage(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(this, empRemarkListResponse.getMessage(), Toast.LENGTH_LONG).show();
 
                 }
             } else {

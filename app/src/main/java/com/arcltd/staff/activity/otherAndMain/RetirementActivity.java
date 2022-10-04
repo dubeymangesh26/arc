@@ -3,6 +3,7 @@ package com.arcltd.staff.activity.otherAndMain;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -49,6 +50,7 @@ public class RetirementActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_retirement);
 
 
@@ -154,8 +156,8 @@ public class RetirementActivity extends BaseActivity {
                 if (employeeListResponse.getEmployee_list()!=null) {
                     searchProgressBar.setVisibility(View.GONE);
 
-                    list.setLayoutManager(new LinearLayoutManager(
-                            this, RecyclerView.VERTICAL, false));
+                    list.setLayoutManager(new GridLayoutManager(
+                            this,2, RecyclerView.VERTICAL, false));
                     RetireEmployeeListAdapter listAdapter = new RetireEmployeeListAdapter(this, employeeListResponse.getEmployee_list()
                             , list, employeeListResponse);
                     list.setAdapter(listAdapter);

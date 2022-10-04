@@ -38,6 +38,7 @@ public class PdfViewerActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_video_web_view);
 
         url = getIntent().getExtras().getString("link");

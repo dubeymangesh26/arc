@@ -19,6 +19,7 @@ import androidx.core.content.FileProvider;
 
 import com.arcltd.staff.BuildConfig;
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.otherAndMain.SendWhatsappMessageActivity;
 import com.arcltd.staff.response.BranchListResponse;
 import com.arcltd.staff.response.PincodeBranchListResponse;
 import com.google.gson.Gson;
@@ -33,12 +34,13 @@ public class BranchPicodeDetailsActivity extends AppCompatActivity {
     TextView tvRegion,tvDivision,tvBranchName,tvBraMangNo,tvPhNo,tvBranchMobil,tvEmailID,tvBranchAddress;
     String data;
     PincodeBranchListResponse dataBean;
-    String uriString,path,folderPath;
+    String uriString,path,folderPath,messageSendWhatsapp;
     Uri bmpUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_branch_details);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -71,6 +73,14 @@ public class BranchPicodeDetailsActivity extends AppCompatActivity {
             tvPhNo.setText(dataBean.getSc_std_code()+" "+dataBean.getSc_phone_number());
             tvBranchMobil.setText(dataBean.getSc_branch_mobileno());
             tvEmailID.setText(dataBean.getSc_email_id());
+
+            messageSendWhatsapp="Associated Road Carriers Limited \n"
+                    +"Branch Name :- "+dataBean.getSc_branch_name()+"\n"
+                    +"Branch Manager Mob.:- "+dataBean.getSc_branch_mngr_mob()+"\n"
+                    +"Phone Number:- "+dataBean.getSc_std_code()+" "+dataBean.getSc_phone_number()+"\n"
+                    +"Email ID:- "+dataBean.getSc_email_id()+"\n"
+                    +"Branch Mob.:- "+dataBean.getSc_branch_mobileno()+"\n"
+                    +"Address:- "+dataBean.getSc_branch_address();
 
             tvBraMangNo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -195,5 +205,10 @@ public class BranchPicodeDetailsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void sharedataWhatsapp(View view) {
+        startActivity(new Intent(BranchPicodeDetailsActivity.this, SendWhatsappMessageActivity.class)
+                .putExtra("details",messageSendWhatsapp));
     }
 }

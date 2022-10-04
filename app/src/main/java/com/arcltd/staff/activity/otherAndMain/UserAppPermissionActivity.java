@@ -49,6 +49,7 @@ public class UserAppPermissionActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_user_app_permission);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         empName=findViewById(R.id.empName);
@@ -312,12 +313,27 @@ public class UserAppPermissionActivity extends BaseActivity {
             if (updatePermissionResponse != null) {
                Infrastructure.dismissProgressDialog();
 
-                    Toast.makeText(this, updatePermissionResponse.getMessage(), Toast.LENGTH_LONG).show();
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_view = getLayoutInflater().inflate(R.layout.success_tost, null);
+                TextView message=custom_view.findViewById(R.id.message);
+                message.setText(updatePermissionResponse.getMessage());
+                toast.setView(custom_view);
+                toast.show();
+
+                  //  Toast.makeText(this, updatePermissionResponse.getMessage(), Toast.LENGTH_LONG).show();
                     finish();
 
             } else {
                 ELog.e(TAG, "Exception in updatePermissionResponse" + updatePermissionResponse.getResponseCode());
-                Toast.makeText(this, updatePermissionResponse.getMessage(), Toast.LENGTH_LONG).show();
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                TextView message=custom_viewError.findViewById(R.id.message);
+                message.setText(updatePermissionResponse.getMessage());
+                toast.setView(custom_viewError);
+                toast.show();
+               // Toast.makeText(this, updatePermissionResponse.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         } catch (Exception e) {

@@ -63,6 +63,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_login);
 
         if(getSupportActionBar()!=null)
@@ -273,18 +274,64 @@ public class LoginActivity extends BaseActivity {
                     finish();
                 }
 
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_view = getLayoutInflater().inflate(R.layout.success_tost, null);
+                TextView message=custom_view.findViewById(R.id.message);
+                message.setText(loginResponse.getMessage());
+                toast.setView(custom_view);
+                toast.show();
+
             } else if (loginResponse.getResponsecode().equals("404")) {
-                Toast.makeText(LoginActivity.this, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                TextView message=custom_viewError.findViewById(R.id.message);
+                message.setText(loginResponse.getMessage());
+                toast.setView(custom_viewError);
+                toast.show();
+               // Toast.makeText(LoginActivity.this, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
             } else if (loginResponse.getResponsecode().equals("304")) {
-                Toast.makeText(LoginActivity.this, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                TextView message=custom_viewError.findViewById(R.id.message);
+                message.setText(loginResponse.getMessage());
+                toast.setView(custom_viewError);
+                toast.show();
             } else if (loginResponse.getResponsecode().equals("400")) {
-                Toast.makeText(LoginActivity.this, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                TextView message=custom_viewError.findViewById(R.id.message);
+                message.setText(loginResponse.getMessage());
+                toast.setView(custom_viewError);
+                toast.show();
             } else if (loginResponse.getResponsecode().equals("401")) {
-                Toast.makeText(LoginActivity.this, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                TextView message=custom_viewError.findViewById(R.id.message);
+                message.setText(loginResponse.getMessage());
+                toast.setView(custom_viewError);
+                toast.show();
             } else if (loginResponse.getResponsecode().equals("405")) {
-                Toast.makeText(LoginActivity.this, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                TextView message=custom_viewError.findViewById(R.id.message);
+                message.setText(loginResponse.getMessage());
+                toast.setView(custom_viewError);
+                toast.show();
             } else {
-                Toast.makeText(LoginActivity.this, "Something Went Wrong", Toast.LENGTH_LONG).show();
+                final Toast toast = new Toast(getApplicationContext());
+                toast.setDuration(Toast.LENGTH_LONG);
+                View custom_viewError = getLayoutInflater().inflate(R.layout.error_tost, null);
+                TextView message=custom_viewError.findViewById(R.id.message);
+                message.setText("Something Went Wrong");
+                toast.setView(custom_viewError);
+                toast.show();
+
             }
             //  new ErrorHandlerCode(LoginActivity.this, loginResponse.getResponse().getCode(), loginResponse.getResponse().getMsg());
 

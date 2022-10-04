@@ -24,15 +24,15 @@ android {
         applicationId "com.arcltd.staff"
         minSdk 26
         targetSdk 32
-        versionCode 4
-        versionName "1.3"
+        versionCode 5
+        versionName "1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -102,6 +102,16 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.1'
 
     implementation 'com.karumi:dexter:6.0.2'
+
+    //For App Auto Update--
+    // In your app’s build.gradle file:
+
+    implementation 'com.google.android.play:app-update:2.0.0'
+     // For Kotlin users also add the Kotlin extensions library for Play In-App Update:
+    implementation 'com.google.android.play:app-update-ktx:2.0.0'
+
+
+
 
 
 

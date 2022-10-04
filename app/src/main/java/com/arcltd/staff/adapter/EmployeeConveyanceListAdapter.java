@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddConveyanceMobileActivity;
 import com.arcltd.staff.response.ConveyanceMobileListResponse;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +63,7 @@ public class EmployeeConveyanceListAdapter extends RecyclerView.Adapter<Employee
             @Override
             public void onClick(View v) {
 
-                final Dialog dialog = new Dialog(context);
+                final BottomSheetDialog dialog = new BottomSheetDialog(context);
                 dialog.setContentView(R.layout.item_conveyancemobile_list);
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
                 lp.copyFrom(dialog.getWindow().getAttributes());

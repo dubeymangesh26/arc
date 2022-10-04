@@ -27,17 +27,23 @@ public class SendWhatsappMessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_send_whatsapp_message);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         etMobile=findViewById(R.id.etMobile);
         etMessage=findViewById(R.id.etMessage);
+
+        messagestr=getIntent().getExtras().getString("details");
+        if (!messagestr.equals("")){
+            etMessage.setText(messagestr);
+        }
 
     }
 
     public void submitMessage(View view) {
         if (validate()){
             phonestr="+91"+etMobile.getText().toString();
-            messagestr="Hi,"+etMessage.getText().toString();
+            messagestr=etMessage.getText().toString();
             if (validate()){
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=" + phonestr +
                         "&text=" + messagestr));

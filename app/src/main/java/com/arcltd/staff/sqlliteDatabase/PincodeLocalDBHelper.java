@@ -11,6 +11,8 @@ import com.arcltd.staff.response.PincodeBranchListResponse;
 import java.util.ArrayList;
 
 public class PincodeLocalDBHelper extends SQLiteOpenHelper {
+    private static PincodeLocalDBHelper sInstance;
+
     private static final String DB_NAME = "pincodelist";
     // below int is our database version
     private static final int DB_VERSION = 1;
@@ -33,6 +35,16 @@ public class PincodeLocalDBHelper extends SQLiteOpenHelper {
     private static final String UPDATED_DATE = "updated_date";
     private static final String BRANCH_PINCODE = "branch_pincode";
     private static final String SERVICE_PINCODE = "service_pincode";
+
+
+    public static PincodeLocalDBHelper getInstance(Context context) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        if (sInstance == null) {
+            sInstance = new PincodeLocalDBHelper(context.getApplicationContext());
+        }
+        return sInstance;
+    }
 
 
     public PincodeLocalDBHelper(Context context) {
@@ -159,5 +171,7 @@ public class PincodeLocalDBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
+
+
 
 }

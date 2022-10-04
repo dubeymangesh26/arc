@@ -145,7 +145,7 @@ public class ProfileFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), SendWhatsappMessageActivity.class)
-                        .putExtra("D", "D"));
+                        .putExtra("details", "Hi"));
 
             }
         });
