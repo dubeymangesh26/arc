@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.otherAndMain.MainActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
@@ -67,6 +69,7 @@ public class AddSweeperPeonActivity extends BaseActivity {
         setContentView(R.layout.activity_add_sweeper_peon);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etSweeperPeonCode =findViewById(R.id.etSweeperPeonCode);
         etSweeperPeonName =findViewById(R.id.etSweeperPeonName);

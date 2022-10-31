@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.listData.CustomerListActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
@@ -52,6 +54,8 @@ public class AddUpdateCustomerActivity extends BaseActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_update_customer);
+
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
             data = Objects.requireNonNull(getIntent().getExtras()).getString("data");

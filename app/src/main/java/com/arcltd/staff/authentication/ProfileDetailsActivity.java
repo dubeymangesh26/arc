@@ -26,6 +26,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.updateData.UpdateProfileActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.WebConstants;
@@ -69,6 +71,8 @@ public class ProfileDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_profile_details);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
 
         etBranchCode=findViewById(R.id.etBranchCode);
         etEmployeeId=findViewById(R.id.etEmployeeId);

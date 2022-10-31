@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.DivisionListAdapter;
 import com.arcltd.staff.adapter.MessDivisionListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -42,6 +44,8 @@ public class MessDivisionListActivity extends BaseActivity {
         setContentView(R.layout.activity_division_list);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         list=findViewById(R.id.list);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);
 

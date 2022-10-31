@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 
 import java.util.Objects;
 
@@ -16,7 +18,9 @@ public class DailyTargetUpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_daily_target_update);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
 
     }

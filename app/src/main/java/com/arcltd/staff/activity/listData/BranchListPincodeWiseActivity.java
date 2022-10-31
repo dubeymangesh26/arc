@@ -8,18 +8,24 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -30,6 +36,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.sqlliteDatabase.PincodeLocalDBHelper;
 import com.arcltd.staff.adapter.BranchLocalPincodeListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -46,6 +54,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class BranchListPincodeWiseActivity extends BaseActivity {
@@ -59,6 +68,8 @@ public class BranchListPincodeWiseActivity extends BaseActivity {
     PincodeLocalDBHelper DB;
     public static final int MULTIPLE_PERMISSIONS = 10;
     String[] permissions;
+    SpeechRecognizer speechRecognizer;
+    ImageView micButton;
 
 
     @Override
@@ -68,13 +79,85 @@ public class BranchListPincodeWiseActivity extends BaseActivity {
         setContentView(R.layout.activity_branch_list_pincode);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         list = findViewById(R.id.list);
+        micButton = findViewById(R.id.ivPincodeMic);
         swiptoRefresh = findViewById(R.id.swiptoRefresh);
         searchProgressBar = findViewById(R.id.searchProgressBar);
         atSearch = findViewById(R.id.atSearch);
         //getSavebranchList();
         responselist = new ArrayList<>();
         DB = new PincodeLocalDBHelper(this);
+
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+                atSearch.setText("");
+                atSearch.setHint("Listening...");
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+
+            }
+
+            @Override
+            public void onError(int i) {
+
+            }
+
+            @Override
+            public void onResults(Bundle bundle) {
+                micButton.setImageResource(R.drawable.ic_mic_24);
+                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                atSearch.setText(data.get(0));
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
+
+            }
+        });
+
+        micButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    speechRecognizer.stopListening();
+                }
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    // micButton.setImageResource(R.drawable.ic_mic_24);
+                    speechRecognizer.startListening(speechRecognizerIntent);
+                }
+                return false;
+            }
+        });
 
         atSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -129,6 +212,7 @@ public class BranchListPincodeWiseActivity extends BaseActivity {
 
         permissions = new String[]{
                 Manifest.permission.CALL_PHONE,
+                Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.ACCESS_NETWORK_STATE};
         checkPermissions();
 
@@ -308,4 +392,11 @@ public class BranchListPincodeWiseActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        speechRecognizer.destroy();
+    }
+
 }

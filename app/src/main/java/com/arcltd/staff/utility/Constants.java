@@ -120,6 +120,7 @@ public class Constants {
         public static final int INCHARGE_LIST = 1046;
         public static final int PERMISSION_LIST = 1047;
         public static final int BRANCH_LIST_PINCODE = 1048;
+        public static final int CRASH_REPORT = 1049;
     }
     public static final String CITY_NAME = "CITY_NAME";
     public static final String CITY_ID = "CITY_ID";

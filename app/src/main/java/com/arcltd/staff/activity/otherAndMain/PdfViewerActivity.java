@@ -23,6 +23,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -40,6 +43,8 @@ public class PdfViewerActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_video_web_view);
+
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         url = getIntent().getExtras().getString("link");
         Log.e( "onCreateLink: ",url );

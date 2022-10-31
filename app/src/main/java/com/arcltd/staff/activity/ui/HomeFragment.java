@@ -31,6 +31,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddVehiclePlaceFaildActivity;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.detailsData.AdministativeExpensesDetailsActivity;
 import com.arcltd.staff.activity.detailsData.ViewExcelActivity;
 import com.arcltd.staff.activity.listData.BranchListActivity;
@@ -65,10 +67,10 @@ import java.util.TimerTask;
 
 
 public class HomeFragment extends BaseFragment {
-    CardView cvBranchList, cvTrackBNS;
-    RelativeLayout rkTrackCNS, divMess, div, cvAdvExpences, cvOtherExpences, cvSendProfiel,
-            cvARC, cvAdvCustomer,cvAddFaieldList,cvAddFaield,incharge;
-    LinearLayout liHR, liBM;
+    CardView cvBranchList,cvTrackBNS;
+    RelativeLayout rkTrackCNS,divMess,div,cvAdvExpences,cvOtherExpences,cvSendProfiel,
+            cvARC,cvAdvCustomer,cvAddFaieldList,cvAddFaield,incharge;
+    LinearLayout liHR,liBM;
     private List<The_Slide_Items_Model_Class> listItems;
     private ViewPager page;
     TabLayout tabLayout;
@@ -82,6 +84,7 @@ public class HomeFragment extends BaseFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        HandleAppCrashActivity.deploy(getActivity(), CrashReportActivity.class);
         ativeStatus();
         diviceSendtoken();
         userPermissionList();

@@ -19,6 +19,8 @@ import androidx.core.content.FileProvider;
 
 import com.arcltd.staff.BuildConfig;
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.otherAndMain.SendWhatsappMessageActivity;
 import com.arcltd.staff.response.BranchListResponse;
 import com.arcltd.staff.response.PincodeBranchListResponse;
@@ -31,7 +33,7 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 public class BranchPicodeDetailsActivity extends AppCompatActivity {
-    TextView tvRegion,tvDivision,tvBranchName,tvBraMangNo,tvPhNo,tvBranchMobil,tvEmailID,tvBranchAddress;
+    TextView tvRegion,tvDivision,tvBranchName,tvBraMangNo,tvPhNo,tvBranchMobil,tvEmailID,tvBranchAddress,tvBranchCode;
     String data;
     PincodeBranchListResponse dataBean;
     String uriString,path,folderPath,messageSendWhatsapp;
@@ -44,7 +46,7 @@ public class BranchPicodeDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_branch_details);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
             data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
@@ -63,10 +65,12 @@ public class BranchPicodeDetailsActivity extends AppCompatActivity {
         tvPhNo=findViewById(R.id.tvPhNo);
         tvBranchMobil=findViewById(R.id.tvBranchMobil);
         tvEmailID=findViewById(R.id.tvEmailID);
+        tvBranchCode=findViewById(R.id.tvBranchCode);
 
         try {
             tvRegion.setText(dataBean.getSc_region_name());
             tvDivision.setText(dataBean.getSc_division_name());
+            tvBranchCode.setText(dataBean.getSc_branch_code());
             tvBranchName.setText(dataBean.getSc_branch_name());
             tvBraMangNo.setText(dataBean.getSc_branch_mngr_mob());
             tvBranchAddress.setText(dataBean.getSc_branch_address());

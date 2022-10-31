@@ -20,6 +20,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.AdminBranchListAdapter;
 import com.arcltd.staff.adapter.InsCMPAmountListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -48,6 +50,8 @@ public class InsCMPAmountActivity extends BaseActivity {
         setContentView(R.layout.activity_ins_cmpamount);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         list=findViewById(R.id.list);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);
 

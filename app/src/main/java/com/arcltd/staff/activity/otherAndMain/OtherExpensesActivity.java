@@ -12,6 +12,8 @@ import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddBranchExpencessActivity;
 import com.arcltd.staff.activity.addData.AddMoterCycleActivity;
 import com.arcltd.staff.activity.addData.AddWeightMachineActivity;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.listData.MoterCycleListActivity;
 import com.arcltd.staff.networkhandler.remote.RetrofitClient;
 import com.arcltd.staff.utility.Constants;
@@ -29,6 +31,7 @@ public class OtherExpensesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_other_expenses);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         motercyle = findViewById(R.id.motercyle);
         weightMachine = findViewById(R.id.weightMachine);

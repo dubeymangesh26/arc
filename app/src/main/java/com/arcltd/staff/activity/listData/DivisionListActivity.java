@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.DivisionListAdapter;
 import com.arcltd.staff.adapter.RegionListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -41,6 +43,8 @@ public class DivisionListActivity extends BaseActivity {
         setContentView(R.layout.activity_division_list);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         list=findViewById(R.id.list);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);

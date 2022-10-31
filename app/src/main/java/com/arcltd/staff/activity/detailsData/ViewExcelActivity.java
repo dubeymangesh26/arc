@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.DivisionListAdapter;
 import com.arcltd.staff.adapter.InchargeListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -43,6 +45,7 @@ public class ViewExcelActivity extends BaseActivity {
         setContentView(R.layout.activity_view_excel);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list = findViewById(R.id.list);
         swiptoRefresh = findViewById(R.id.swiptoRefresh);

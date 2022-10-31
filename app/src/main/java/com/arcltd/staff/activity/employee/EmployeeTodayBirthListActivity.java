@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.EmployeeBirthdayListAdapter;
 import com.arcltd.staff.adapter.EmployeeListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -53,7 +55,7 @@ public class EmployeeTodayBirthListActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_list);
 
-
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         list=findViewById(R.id.list);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);

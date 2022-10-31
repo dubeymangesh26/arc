@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.MoterCycleListAdapter;
 import com.arcltd.staff.adapter.PeonSweeperListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -40,7 +42,9 @@ public class PeonSweeperListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_peon_sweeper_list);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
 
         list = findViewById(R.id.list);

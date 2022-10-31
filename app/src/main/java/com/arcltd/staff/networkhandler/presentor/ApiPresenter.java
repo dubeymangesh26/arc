@@ -115,6 +115,65 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
+    public void getCrashReport(CompositeDisposable disposable, final int requestCode, String request_data,
+                               String type) {
+        Log.e(TAG, "getCrashReport: " + "  https://niharexpress.com/appApi/api?" +
+                 "&request_data=" + request_data + "&type=" + type );
+
+        disposable.add(
+                webService.getCrashData(request_data, type)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
+    public void getCrashList(CompositeDisposable disposable, int requestCode, String region_id,String search) {
+        Log.e(TAG, "getUserList   " + " region_id-" + region_id+ " search-" + search);
+        disposable.add(
+                webService.list_crash(region_id,search)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
+
+
     public void getUserPermissionList(CompositeDisposable disposable, int requestCode, String region_id,String search) {
         Log.e(TAG, "getUserList   " + " region_id-" + region_id+ " search-" + search);
         disposable.add(

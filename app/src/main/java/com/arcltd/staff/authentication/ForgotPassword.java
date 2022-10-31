@@ -20,6 +20,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
 import com.arcltd.staff.response.FinalSignUpResponseResponse;
@@ -44,6 +46,10 @@ public class ForgotPassword extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_forgot_password);
+
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
+
         reset = (TextView) findViewById(R.id.resetpass);
         etOtp = findViewById(R.id.etOtp);
         emaiId = findViewById(R.id.member_email);

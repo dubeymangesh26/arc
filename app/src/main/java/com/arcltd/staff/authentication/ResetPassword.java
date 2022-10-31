@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
 import com.arcltd.staff.response.UpdatePassResponse;
@@ -38,6 +40,8 @@ public class ResetPassword extends BaseActivity {
         setContentView(R.layout.activity_reset_password);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
 
         signup = (TextView) findViewById(R.id.signupfromchanepass);
         oPassword = findViewById(R.id.oldpassword);

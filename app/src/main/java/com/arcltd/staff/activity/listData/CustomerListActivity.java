@@ -20,6 +20,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddUpdateCustomerActivity;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.CustomerListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
@@ -48,6 +50,8 @@ public class CustomerListActivity extends BaseActivity {
         setContentView(R.layout.activity_customer_list);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         list=findViewById(R.id.list);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);
         searchProgressBar=findViewById(R.id.searchProgressBar);

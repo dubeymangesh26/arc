@@ -13,18 +13,25 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +39,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.employee.EmployeeListActivity;
 import com.arcltd.staff.adapter.BranchLocalListAdapter;
 import com.arcltd.staff.adapter.BranchLocalPincodeListAdapter;
@@ -57,6 +66,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class BranchListActivity extends BaseActivity {
@@ -70,30 +80,102 @@ public class BranchListActivity extends BaseActivity {
     BranchLocalDBHelper DB;
     public static final int MULTIPLE_PERMISSIONS = 10;
     String[] permissions;
-
+    SpeechRecognizer speechRecognizer;
+    ImageView micButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_branch_list);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         list = findViewById(R.id.list);
         swiptoRefresh = findViewById(R.id.swiptoRefresh);
         searchProgressBar = findViewById(R.id.searchProgressBar);
         atSearch = findViewById(R.id.atSearch);
-
         responselist = new ArrayList<>();
         DB = new BranchLocalDBHelper(this);
+
+        micButton = findViewById(R.id.ivMicAudio);
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+                atSearch.setText("");
+                atSearch.setHint("Listening...");
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+
+            }
+
+            @Override
+            public void onError(int i) {
+
+            }
+
+            @Override
+            public void onResults(Bundle bundle) {
+                micButton.setImageResource(R.drawable.ic_mic_24);
+                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                atSearch.setText(data.get(0));
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
+
+            }
+        });
+
+        micButton.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                speechRecognizer.stopListening();
+            }
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                // micButton.setImageResource(R.drawable.ic_mic_24);
+                speechRecognizer.startListening(speechRecognizerIntent);
+            }
+            return false;
+        });
+
 
         atSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
                 listAdapter.getFilter().filter(editable.toString());
@@ -130,7 +212,6 @@ public class BranchListActivity extends BaseActivity {
         });
 
 
-
         if (RetrofitClient.getStringUserPreference(this, Constants.BRANCH_CHECK) != null) {
             showBranch();
         } else {
@@ -140,6 +221,7 @@ public class BranchListActivity extends BaseActivity {
 
         permissions = new String[]{
                 Manifest.permission.CALL_PHONE,
+                Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.ACCESS_NETWORK_STATE};
 
         checkPermissions();
@@ -153,6 +235,7 @@ public class BranchListActivity extends BaseActivity {
 
     }
 
+
     private void askPermissions() {
         int result;
         List<String> listPermissionsNeeded = new ArrayList<>();
@@ -161,7 +244,7 @@ public class BranchListActivity extends BaseActivity {
             if (result != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(p);
             } else {
-              //  askPermissions();
+                //  askPermissions();
             }
         }
         if (!listPermissionsNeeded.isEmpty()) {
@@ -206,7 +289,6 @@ public class BranchListActivity extends BaseActivity {
                         nbutton.setTextColor(Color.rgb(30, 144, 255));
 
                     }
-
                 }
 
             }
@@ -316,4 +398,13 @@ public class BranchListActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        speechRecognizer.destroy();
+    }
+
+
 }

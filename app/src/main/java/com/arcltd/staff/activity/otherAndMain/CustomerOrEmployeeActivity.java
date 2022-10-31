@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.without_login.WithoutLoginActivity;
 import com.arcltd.staff.authentication.LoginActivity;
 import com.arcltd.staff.networkhandler.remote.RetrofitClient;
@@ -20,7 +22,7 @@ public class CustomerOrEmployeeActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_customer_or_employee);
 
-
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
     }
 
     public void Customer(View view) {

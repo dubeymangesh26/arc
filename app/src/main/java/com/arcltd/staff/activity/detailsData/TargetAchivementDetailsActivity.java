@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.TargetAchivementListAdapter;
 import com.arcltd.staff.adapter.TargetListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -51,6 +53,8 @@ public class TargetAchivementDetailsActivity extends BaseActivity {
         tvPartTarget = findViewById(R.id.tvPartTarget);
         tvFtlTarget = findViewById(R.id.tvFtlTarget);
         tvTotalTarget = findViewById(R.id.tvTotalTarget);
+
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
             data = Objects.requireNonNull(getIntent().getExtras()).getString("data");

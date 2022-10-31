@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
 import com.arcltd.staff.networkhandler.remote.RetrofitClient;
@@ -66,6 +68,7 @@ public class EmployeeTransferActivity extends BaseActivity {
         setContentView(R.layout.activity_employee_transfer);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etCurrentBranch =findViewById(R.id.etCurrentBranch);
         etEmpCode =findViewById(R.id.etEmpCode);

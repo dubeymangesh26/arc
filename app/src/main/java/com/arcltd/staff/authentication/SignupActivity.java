@@ -29,6 +29,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
 import com.arcltd.staff.networkhandler.remote.RetrofitClient;
@@ -70,6 +72,9 @@ public class SignupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_signup);
+
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
 
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();

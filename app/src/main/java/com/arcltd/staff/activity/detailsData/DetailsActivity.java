@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddBranchExpencessActivity;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.employee.EmployeeConvenceListActivity;
 import com.arcltd.staff.activity.employee.EmployeeListActivity;
 import com.arcltd.staff.activity.listData.LandLordListActivity;
@@ -44,6 +46,8 @@ public class DetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_details);
+
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
             data = Objects.requireNonNull(getIntent().getExtras()).getString("data");

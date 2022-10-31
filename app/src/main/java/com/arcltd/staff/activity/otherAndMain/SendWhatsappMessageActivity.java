@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.authentication.SignupActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -29,7 +31,10 @@ public class SendWhatsappMessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_send_whatsapp_message);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         etMobile=findViewById(R.id.etMobile);
         etMessage=findViewById(R.id.etMessage);
 

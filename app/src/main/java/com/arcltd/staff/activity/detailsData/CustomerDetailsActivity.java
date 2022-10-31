@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddUpdateCustomerActivity;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.FeedbackListAdapter;
 import com.arcltd.staff.adapter.RemarkListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -51,6 +53,8 @@ FeedbackListAdapter.AddRemark{
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_customer_details);
+
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
             data = Objects.requireNonNull(getIntent().getExtras()).getString("data");

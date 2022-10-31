@@ -15,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
 import com.arcltd.staff.networkhandler.remote.RetrofitClient;
@@ -72,6 +74,7 @@ public class AddVehiclePlaceFaildActivity extends BaseActivity implements Adapte
         setContentView(R.layout.activity_addvehicle_place_faild);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etDate=findViewById(R.id.etDate);
         etVehicleCost=findViewById(R.id.etVehicleCost);

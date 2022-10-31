@@ -21,6 +21,8 @@ import com.arcltd.staff.response.BranchListPiccodeResponse;
 import com.arcltd.staff.response.BranchListResponse;
 import com.arcltd.staff.response.CheckStatusResponse;
 import com.arcltd.staff.response.ConveyanceMobileListResponse;
+import com.arcltd.staff.response.CrashReportListResponse;
+import com.arcltd.staff.response.CrashReportREsponse;
 import com.arcltd.staff.response.CustomerListResponse;
 import com.arcltd.staff.response.DeleteEmployeeResponse;
 import com.arcltd.staff.response.DeleteResponse;
@@ -69,6 +71,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface WebService {
 
@@ -109,6 +112,17 @@ public interface WebService {
     @POST("app_PermissionList.php")
     Single<AppPermissionListResponse> list_userPermission(@Field(value = "region_id", encoded = true) String region_id,
                                        @Field(value = "search", encoded = true) String search);
+
+    @FormUrlEncoded
+    @POST("crash_reportList.php")
+    Single<CrashReportListResponse> list_crash(@Field(value = "region_id", encoded = true) String region_id,
+                                               @Field(value = "search", encoded = true) String search);
+
+
+    @FormUrlEncoded
+    @POST("autoAddCrashReport.php")
+    Single<CrashReportREsponse> getCrashData(@Field(value = "report", encoded = true) String report,
+                                             @Field(value = "type", encoded = true) String type);
 
 
     @FormUrlEncoded

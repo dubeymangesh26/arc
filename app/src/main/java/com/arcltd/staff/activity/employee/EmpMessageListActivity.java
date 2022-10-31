@@ -21,6 +21,8 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.EmpMessageListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
@@ -46,6 +48,8 @@ public class EmpMessageListActivity extends BaseActivity {
         setContentView(R.layout.activity_emp_message_list);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         list = findViewById(R.id.list);
         swiptoRefresh = findViewById(R.id.swiptoRefresh);
         cbALL = findViewById(R.id.cbALL);

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.otherAndMain.MainActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
@@ -24,6 +26,10 @@ public class EmployeeStatusCheckActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_status_check);
+
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
+
         if (RetrofitClient.getStringUserPreference(this, Constants.VEARIFICATION_STATUS) == null) {
             ativeStatus();
         } else {

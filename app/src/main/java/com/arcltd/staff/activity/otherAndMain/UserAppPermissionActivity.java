@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.authentication.OTPActivity;
 import com.arcltd.staff.authentication.SignupActivity;
 import com.arcltd.staff.base.BaseActivity;
@@ -51,7 +53,10 @@ public class UserAppPermissionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_user_app_permission);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         empName=findViewById(R.id.empName);
         branchCode=findViewById(R.id.branchCode);
         div_branches=findViewById(R.id.div_branches);

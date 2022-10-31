@@ -36,6 +36,8 @@ import android.widget.Toast;
 
 import com.arcltd.staff.BuildConfig;
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.response.EmployeeListResponse;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
@@ -73,6 +75,8 @@ public class BirthdayWisheshActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_birthday_wishesh);
+
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etEmpCode=findViewById(R.id.etEmpCode);
         etEmpName=findViewById(R.id.etEmpName);

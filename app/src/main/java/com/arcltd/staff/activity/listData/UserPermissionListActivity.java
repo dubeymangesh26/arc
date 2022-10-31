@@ -18,6 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.UserPermissionListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
@@ -50,6 +52,8 @@ public class UserPermissionListActivity extends BaseActivity {
         setContentView(R.layout.activity_user_list);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         list = findViewById(R.id.list);
         swiptoRefresh = findViewById(R.id.swiptoRefresh);
         searchProgressBar = findViewById(R.id.searchProgressBar);

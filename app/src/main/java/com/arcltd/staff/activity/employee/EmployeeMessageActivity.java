@@ -20,6 +20,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.EmployeeMSGListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.firebase.FcmNotificationsSender;
@@ -52,7 +54,10 @@ public class EmployeeMessageActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_message);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         liSendEmp = findViewById(R.id.liSendEmp);
         cbALL = findViewById(R.id.cbALL);
         etEmpName = findViewById(R.id.etEmpName);

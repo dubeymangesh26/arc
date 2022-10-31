@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.listData.LandLordListActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
@@ -41,6 +43,9 @@ public class UpdateLandlordDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_update_landlord_details);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
+
         etBranchCode=findViewById(R.id.etBranchCode);
         etLocationAddress=findViewById(R.id.etLocationAddress);
         etLandlordName=findViewById(R.id.etLandlordName);

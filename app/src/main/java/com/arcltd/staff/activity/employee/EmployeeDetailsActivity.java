@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.detailsData.TransferHistoryActivity;
 import com.arcltd.staff.adapter.EmployeeRemarkListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -44,7 +47,7 @@ import java.util.StringTokenizer;
 public class EmployeeDetailsActivity extends BaseActivity implements EmployeeRemarkListAdapter.DeleteRemark {
     RecyclerView list;
     TextView tvRegion,tvDivision,tvEmpName,tvEmpCode,tvEmpQuali,tvAppoimentDate,
-            tvDesign,tvSalary,tvUpdatedDate,branchCode,tvBranchName,tvDateofBirth,tvRetirementDate,tvUan;
+            tvDesign,tvSalary,tvUpdatedDate,branchCode,tvBranchName,tvDateofBirth,tvRetirementDate,tvUan,tvEmpMobile;
     String data,empCode,activeStatus,status,branch_code;
     Button tvActiveInactive;
     EmployeeListResponse.EmployeeList dataBean;
@@ -54,7 +57,10 @@ public class EmployeeDetailsActivity extends BaseActivity implements EmployeeRem
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_details);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
+
         try {
             data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
             dataBean = new Gson().fromJson(data, EmployeeListResponse.EmployeeList.class);
@@ -79,6 +85,7 @@ public class EmployeeDetailsActivity extends BaseActivity implements EmployeeRem
         tvDateofBirth=findViewById(R.id.tvDateofBirth);
         tvRetirementDate=findViewById(R.id.tvRetirementDate);
         tvUan=findViewById(R.id.tvUan);
+        tvEmpMobile=findViewById(R.id.tvEmpMobile);
         try {
             tvRegion.setText(dataBean.getRegion_name());
             tvDivision.setText(dataBean.getDivision_name());
@@ -93,9 +100,21 @@ public class EmployeeDetailsActivity extends BaseActivity implements EmployeeRem
             tvBranchName.setText(dataBean.getBranch_name());
             tvDateofBirth.setText(dataBean.getDat_of_birth());
             tvUan.setText(dataBean.getUan_no());
+            tvEmpMobile.setText(dataBean.getEmp_mob());
             empCode=dataBean.getEmp_code();
             branch_code=dataBean.getBranch_code();
             activeStatus=dataBean.getStatus();
+
+            tvEmpMobile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", tvEmpMobile.getText().toString(), null));
+                    startActivity(intent);
+
+                }
+            });
+
         } catch (Exception e) {
             Log.e("", "ListingDetail error: " + e);
         }

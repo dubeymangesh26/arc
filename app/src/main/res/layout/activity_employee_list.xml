@@ -64,14 +64,24 @@
 
             <AutoCompleteTextView
                 android:id="@+id/atSearch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_7sdp"
                 android:layout_marginEnd="@dimen/_7sdp"
+                android:layout_weight="1"
                 android:background="@drawable/spinner_background"
                 android:drawableLeft="@drawable/search_24"
                 android:hint="Search"
                 android:inputType="textCapCharacters" />
+
+            <ImageView
+                android:id="@+id/ivEmpMic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:background="@drawable/ic_mic_24"
+                tools:ignore="ContentDescription" />
 
         </LinearLayout>
 

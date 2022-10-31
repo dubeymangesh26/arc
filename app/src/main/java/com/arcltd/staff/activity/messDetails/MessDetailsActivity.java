@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.MessEmpListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
@@ -43,6 +45,7 @@ public class MessDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_mess_details);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
         try {
             data = Objects.requireNonNull(getIntent().getExtras()).getString("dataDetails");
             dataBean = new Gson().fromJson(data, MessListResponse.MessList.class);

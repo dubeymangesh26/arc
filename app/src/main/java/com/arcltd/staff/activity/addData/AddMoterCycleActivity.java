@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.otherAndMain.MainActivity;
 import com.arcltd.staff.response.AddUpdateMoterCycleResponse;
 import com.arcltd.staff.response.MoterCycleListResponse;
@@ -40,6 +42,7 @@ public class AddMoterCycleActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_moter_cycle);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etVehicleNO =findViewById(R.id.etVehicleNO);
         etRegistrationExp =findViewById(R.id.etRegistrationExp);

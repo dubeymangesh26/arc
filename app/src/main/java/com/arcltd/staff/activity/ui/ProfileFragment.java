@@ -24,6 +24,8 @@ import com.arcltd.staff.activity.addData.AddConveyanceMobileActivity;
 import com.arcltd.staff.activity.addData.AddMessActivity;
 import com.arcltd.staff.activity.addData.AddSweeperPeonActivity;
 import com.arcltd.staff.activity.addData.AddUpdateEmployeeActivity;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.employee.EmpMessageListActivity;
 import com.arcltd.staff.activity.employee.EmployeeMessageActivity;
 import com.arcltd.staff.activity.otherAndMain.SendWhatsappMessageActivity;
@@ -66,6 +68,7 @@ public class ProfileFragment extends BaseFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        HandleAppCrashActivity.deploy(getActivity(), CrashReportActivity.class);
         userPermissionList();
         getdataCommon(view);
         fullName = RetrofitClient.getStringUserPreference(getActivity(), Constants.FIRSTNAME);

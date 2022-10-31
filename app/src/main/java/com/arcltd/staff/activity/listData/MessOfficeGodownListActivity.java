@@ -18,6 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.DivisionListAdapter;
 import com.arcltd.staff.adapter.OfiiceGodownMessListAdapter;
 import com.arcltd.staff.base.BaseActivity;
@@ -46,7 +48,9 @@ public class MessOfficeGodownListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_mess_office_godown_list);
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
             div_id = Objects.requireNonNull(getIntent().getExtras()).getString("div_id");

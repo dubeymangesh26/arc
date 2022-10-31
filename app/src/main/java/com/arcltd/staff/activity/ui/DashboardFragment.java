@@ -20,6 +20,8 @@ import androidx.constraintlayout.widget.Constraints;
 import androidx.viewpager.widget.ViewPager;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.crashReport.CrashReportActivity;
+import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.listData.AdministratiExpListActivity;
 import com.arcltd.staff.activity.employee.EmployeeConvenceListActivity;
 import com.arcltd.staff.activity.employee.EmployeeListActivity;
@@ -60,8 +62,10 @@ public class DashboardFragment extends BaseFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        HandleAppCrashActivity.deploy(getActivity(), CrashReportActivity.class);
         userPermissionList();
         getview(view);
+
         return view;
     }
 
