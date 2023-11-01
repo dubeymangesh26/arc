@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <external-path
+        name="external_files"
+        path="." />
+    <external-path
         name="external"
         path="." />
     <external-files-path
@@ -15,14 +18,5 @@
     <files-path
         name="files"
         path="." />
-    <cache-path
-        name="my_documents"
-        path="assets/"/>
-    <cache-path
-        name="my_pdf"
-        path="cache/"/>
-    <cache-path
-        name="my_documents"
-        path="row/"/>
 
 </paths>

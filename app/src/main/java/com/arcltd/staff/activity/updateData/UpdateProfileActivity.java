@@ -3,8 +3,6 @@ package com.arcltd.staff.activity.updateData;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,10 +14,8 @@ import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
-import com.arcltd.staff.response.OfficeGodownMessListResponse;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.ProfileResponseResponse;
-import com.arcltd.staff.response.TargetResponseResponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;

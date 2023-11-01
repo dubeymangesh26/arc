@@ -26,7 +26,7 @@ import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.EmpMessageListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.EmpMessageListResponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;
@@ -160,7 +160,7 @@ public class EmpMessageListActivity extends BaseActivity {
                     Infrastructure.dismissProgressDialog();
 
                     list.setLayoutManager(new LinearLayoutManager(
-                            this, RecyclerView.VERTICAL, true));
+                            this, RecyclerView.VERTICAL, false));
                     EmpMessageListAdapter listAdapter = new EmpMessageListAdapter(this,
                             messageListResponse.getEmployee_message()
                             , list, messageListResponse);

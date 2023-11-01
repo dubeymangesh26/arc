@@ -27,7 +27,7 @@ import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.otherAndMain.MainActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.LoginRespponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;
@@ -76,6 +76,7 @@ public class LoginActivity extends BaseActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
 
+
         editTextPassword = findViewById(R.id.editTextPassword);
         editTextEmail = findViewById(R.id.editTextEmail);
         image_logo = findViewById(R.id.image_logo);
@@ -85,6 +86,8 @@ public class LoginActivity extends BaseActivity {
         // loginButton = findViewById(R.id.loginButton);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         Glide.with(this).load(R.drawable.eagle).into(image_logo);
+
+
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {

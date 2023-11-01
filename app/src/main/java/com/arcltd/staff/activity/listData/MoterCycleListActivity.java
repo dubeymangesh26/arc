@@ -3,16 +3,12 @@ package com.arcltd.staff.activity.listData;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,21 +17,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddMoterCycleActivity;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
-import com.arcltd.staff.adapter.DivisionListAdapter;
 import com.arcltd.staff.adapter.MoterCycleListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
-import com.arcltd.staff.response.DivisionListResponse;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.MoterCycleListResponse;
 import com.arcltd.staff.response.SoldMoterCycleResponse;
 import com.arcltd.staff.utility.Constants;
@@ -50,11 +43,12 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
     RecyclerView list;
     SwipeRefreshLayout swiptoRefresh;
     private MoterCycleListAdapter.RerfreshWishList activeRerfreshWishList;
-    String branch_code,status="";
+    String branch_code,status="",loginType;
     AutoCompleteTextView atSearch;
     ProgressBar searchProgressBar;
     TabLayout tabLayout;
     Button addMoterCycle;
+    LinearLayout liSearch;
     int tabPosition;
 
 
@@ -73,6 +67,7 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
         atSearch=findViewById(R.id.atSearch);
         tabLayout=findViewById(R.id.tabLayout);
         addMoterCycle=findViewById(R.id.addMoterCycle);
+        liSearch=findViewById(R.id.liSearch);
 
         if (RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.LOGIN_TYPE).equals("BM")){
             addMoterCycle.setVisibility(View.VISIBLE);
@@ -154,7 +149,16 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
         });*/
 
 
-        try {
+        branch_code = getIntent().getExtras().getString("branch_code");
+        loginType = getIntent().getExtras().getString("loginType");
+        status = getIntent().getExtras().getString("status");
+        if (!loginType.equals("RG")){
+            liSearch.setVisibility(View.GONE);
+        }else {
+            liSearch.setVisibility(View.VISIBLE);
+        }
+
+       /* try {
             if (!getIntent().getExtras().getString("branch_code").equals("T")) {
                 branch_code = getIntent().getExtras().getString("branch_code");
             } else {
@@ -170,7 +174,7 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
         }catch (Exception e){
             Log.e(TAG, "onCreate: ",e );
         }
-
+*/
         motercycleList();
 
 
@@ -206,7 +210,7 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
             if (Infrastructure.isInternetPresent()) {
                 searchProgressBar.setVisibility(View.VISIBLE);
                 apiPresenter.motercycleList(disposable, Constants.ApiRequestCode.MOTERCYCLELIST,
-                        branch_code,atSearch.getText().toString(),status);
+                        branch_code,atSearch.getText().toString(),loginType,status);
 
             } else {
                 new ErrorHandlerCode(this, NO_INTERNET, getString(R.string.no_internet_connection_message));

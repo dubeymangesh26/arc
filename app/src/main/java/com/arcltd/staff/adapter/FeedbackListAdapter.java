@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arcltd.staff.R;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.FeedbackListResponse;
 import com.arcltd.staff.utility.Constants;
 

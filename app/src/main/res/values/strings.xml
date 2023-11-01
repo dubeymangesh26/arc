@@ -69,4 +69,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_pdf_viewer">PdfViewerActivity</string>
     <string name="title_activity_main_without_login">MainWithoutLoginActivity</string>
+    <string name="Rs">\u20B9</string>
+    <string name="otpmsg">Enter OTP That Send At Your Email ID. If not receive, Please check in Spam</string>
+    <string name="acnotverify">Still Your Account Not Verify, Please Verify</string>
 </resources>

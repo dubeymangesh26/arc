@@ -6,14 +6,11 @@ import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognitionListener;
@@ -31,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,28 +37,18 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
-import com.arcltd.staff.activity.employee.EmployeeListActivity;
 import com.arcltd.staff.adapter.BranchLocalListAdapter;
-import com.arcltd.staff.adapter.BranchLocalPincodeListAdapter;
-import com.arcltd.staff.authentication.SplashScreenActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.BranchListResponse;
 import com.arcltd.staff.response.BranchLocalListResponse;
-import com.arcltd.staff.response.PincodeBranchListResponse;
-import com.arcltd.staff.response.SvaeBranchListResponse;
 import com.arcltd.staff.sqlliteDatabase.BranchLocalDBHelper;
-import com.arcltd.staff.sqlliteDatabase.PincodeLocalDBHelper;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
-import com.arcltd.staff.web_view.WebEmpUploadActivity;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,6 +69,7 @@ public class BranchListActivity extends BaseActivity {
     SpeechRecognizer speechRecognizer;
     ImageView micButton;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -212,9 +199,30 @@ public class BranchListActivity extends BaseActivity {
         });
 
 
-        if (RetrofitClient.getStringUserPreference(this, Constants.BRANCH_CHECK) != null) {
+
+       /* if (RetrofitClient.getStringUserPreference(this, Constants.BRANCH_CHECK) != null) {
             showBranch();
         } else {
+            branchList();
+        }
+*/
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isFirstLaunch = preferences.getBoolean(Constants.FIRST_LAUNCH_KEY, true);
+
+        if (isFirstLaunch) {
+            // First time launch: Show progress dialog, update flag, and fetch data
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(Constants.FIRST_LAUNCH_KEY, false);
+            editor.apply();
+
+            // Show progress dialog
+            Infrastructure.showProgressDialog(this);
+
+            // Fetch and update data
+            branchList();
+        } else {
+            // Not the first time launch: Fetch and update data
+            showBranch();
             branchList();
         }
 
@@ -311,7 +319,7 @@ public class BranchListActivity extends BaseActivity {
     private void branchList() {
         try {
             if (Infrastructure.isInternetPresent()) {
-                Infrastructure.showProgressDialog(this);
+
                 apiPresenter.list_branch(disposable, Constants.ApiRequestCode.BRANCH_LIST,
                         atSearch.getText().toString(), "");
 
@@ -338,7 +346,7 @@ public class BranchListActivity extends BaseActivity {
             Log.e(TAG, "branchListResponse: " + new GsonBuilder().create().toJson(branchListResponse));
             if (branchListResponse != null) {
                 if (branchListResponse.getBranchList() != null) {
-
+                  DB.clearData();
                     for (int i = 0; i < branchListResponse.getBranchList().size(); i++) {
                         DB.addNewList(
                                 branchListResponse.getBranchList().get(i).getBranch_id(),

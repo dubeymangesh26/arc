@@ -1,10 +1,8 @@
 package com.arcltd.staff.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arcltd.staff.R;
-import com.arcltd.staff.activity.otherAndMain.PdfViewerActivity;
+import com.arcltd.staff.activity.otherAndMain.PdfViewerReaderActivity;
 import com.arcltd.staff.response.InchargeListResponse;
 
 import org.jetbrains.annotations.NotNull;
@@ -69,7 +67,7 @@ public class InchargeListAdapter extends RecyclerView.Adapter<InchargeListAdapte
                 catch (ActivityNotFoundException e) {
 
                 }*/
-                context.startActivity(new Intent(context, PdfViewerActivity.class).putExtra("link",path));
+                context.startActivity(new Intent(context, PdfViewerReaderActivity.class).putExtra("link",path));
 
             }
         });

@@ -45,6 +45,35 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:226690019111:android:d3389fc0dcf5bf9febc302",
+        "android_client_info": {
+          "package_name": "com.arcltd.messpay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226690019111-jkarv6qe7s74fkisnrkp8fp46gnvr0fs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSew45CgtuvlhMv7cpX364_JzNWPyfCGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226690019111-jkarv6qe7s74fkisnrkp8fp46gnvr0fs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:226690019111:android:e74af00a7acfbadfebc302",
         "android_client_info": {
           "package_name": "com.arcltd.staff"

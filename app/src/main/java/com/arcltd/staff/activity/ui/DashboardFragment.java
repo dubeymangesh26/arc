@@ -2,10 +2,8 @@ package com.arcltd.staff.activity.ui;
 
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
-import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.constraintlayout.widget.Constraints;
 import androidx.viewpager.widget.ViewPager;
@@ -26,16 +23,17 @@ import com.arcltd.staff.activity.listData.AdministratiExpListActivity;
 import com.arcltd.staff.activity.employee.EmployeeConvenceListActivity;
 import com.arcltd.staff.activity.employee.EmployeeListActivity;
 import com.arcltd.staff.activity.employee.EmployeeTodayBirthListActivity;
+import com.arcltd.staff.activity.listData.ArcStructurePDFListActivity;
+import com.arcltd.staff.activity.listData.BookingListActivity;
 import com.arcltd.staff.activity.listData.InsCompanyListActivity;
 import com.arcltd.staff.activity.listData.LandLordListActivity;
 import com.arcltd.staff.activity.listData.MoterCycleListActivity;
-import com.arcltd.staff.activity.otherAndMain.PdfViewerActivity;
 import com.arcltd.staff.activity.otherAndMain.RetirementActivity;
 import com.arcltd.staff.activity.listData.WeightMCListActivity;
 import com.arcltd.staff.adapter.The_Slide_items_Pager_Adapter;
 import com.arcltd.staff.base.BaseFragment;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.AppPermissionListResponse;
 import com.arcltd.staff.response.The_Slide_Items_Model_Class;
 import com.arcltd.staff.utility.Constants;
@@ -46,6 +44,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimerTask;
 
 public class DashboardFragment extends BaseFragment {
@@ -57,7 +56,7 @@ public class DashboardFragment extends BaseFragment {
     private List<The_Slide_Items_Model_Class> listItems;
     private ViewPager page;
     private TabLayout tabLayout;
-    String arc_structure="http://onlineformsolution.in/arcMessApi/upload/STR.pdf";
+    String branchCode,loginType;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,6 +86,9 @@ public class DashboardFragment extends BaseFragment {
         page = view.findViewById(R.id.my_pager);
         tabLayout = view.findViewById(R.id.my_tablayout);
 
+        branchCode=RetrofitClient.getStringUserPreference(requireActivity(),Constants.BRANCH_CODE);
+        loginType=RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE);
+
 
         listItems = new ArrayList<>();
         listItems.add(new The_Slide_Items_Model_Class(R.drawable.slide_zero, "Slider 1 Title"));
@@ -103,32 +105,70 @@ public class DashboardFragment extends BaseFragment {
         timer.scheduleAtFixedRate(new The_slide_timer(), 2000, 3000);
         tabLayout.setupWithViewPager(page, true);
 
+
+        if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("RG")){
+            listBike.setVisibility(View.VISIBLE);
+        }else if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("BM")){
+            listBike.setVisibility(View.VISIBLE);
+        }else {
+            listBike.setVisibility(View.GONE);
+        }
+
+        if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("RG")){
+            listWeightMachine.setVisibility(View.VISIBLE);
+        }else if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("BM")){
+            listWeightMachine.setVisibility(View.GONE);
+        } else {
+            listWeightMachine.setVisibility(View.GONE);
+        }
+
+
+
         if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.EMP_DETAILS_PERMISSION).equals("N")){
             listEmployee.setVisibility(View.VISIBLE);
+        }else {
+            listEmployee.setVisibility(View.GONE);
         }
+
         if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.EMP_BIRTHDAY_DETAILS_PERMISSION).equals("N")){
             listEmployeeDOB.setVisibility(View.VISIBLE);
+        }else {
+            listEmployeeDOB.setVisibility(View.GONE);
         }
+
         if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.RETIREMENT_DETAILS_PERMISSION).equals("N")){
             listRetireEmp.setVisibility(View.VISIBLE);
+        }else {
+            listRetireEmp.setVisibility(View.GONE);
         }
-        if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.MOTERCYCLE_LIST_PERMISSION).equals("N")){
-            listBike.setVisibility(View.VISIBLE);
-        }
+
+
+
         if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.INCIDENTAL_LIST_PERMISSION).equals("N")){
             listInsidental.setVisibility(View.VISIBLE);
+        }else {
+            listInsidental.setVisibility(View.GONE);
         }
-        if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.WEIGHT_MC_LIST_PERMISSION).equals("N")){
-            listWeightMachine.setVisibility(View.VISIBLE);
-        }
+
+
         if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.EMP_CONVEYANCE_PERMISSION).equals("N")){
             listConveyance.setVisibility(View.VISIBLE);
+        }else {
+            listConveyance.setVisibility(View.GONE);
         }
+
         if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.LANDLORD_DETAILS_PERMISSION).equals("N")){
             listlandlord.setVisibility(View.VISIBLE);
-        } if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.ADMIN_EXPENCES_PERMISSION).equals("N")){
-            liAdministrati.setVisibility(View.VISIBLE);
+        }else {
+            listlandlord.setVisibility(View.GONE);
         }
+
+        if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.ADMIN_EXPENCES_PERMISSION).equals("N")){
+            liAdministrati.setVisibility(View.VISIBLE);
+        }else {
+            liAdministrati.setVisibility(View.GONE);
+        }
+
 
 
 
@@ -136,9 +176,8 @@ public class DashboardFragment extends BaseFragment {
 
 
         try {
-            if (!RetrofitClient.getStringUserPreference(getContext(), Constants.NOOF_EMPLOYEE).equals("")) {
-                tvNoOfEmp.setText("Total Region Employee : "
-                        + RetrofitClient.getStringUserPreference(getContext(), Constants.NOOF_EMPLOYEE));
+            if (!RetrofitClient.getStringUserPreference(requireContext(), Constants.NOOF_EMPLOYEE).equals("")) {
+                tvNoOfEmp.setText("Total Region Employee : " + RetrofitClient.getStringUserPreference(getContext(), Constants.NOOF_EMPLOYEE));
                 tvNoOfEmp.setVisibility(View.VISIBLE);
             } else {
                 tvNoOfEmp.setVisibility(View.GONE);
@@ -151,9 +190,9 @@ public class DashboardFragment extends BaseFragment {
         cvTarget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Work in Progress", Toast.LENGTH_LONG).show();
-                /*startActivity(new Intent(getActivity(), EmployeeListActivity.class)
-                        .putExtra("D", "D"));*/
+              //  Toast.makeText(getActivity(), "Work in Progress", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getActivity(), BookingListActivity.class)
+                        .putExtra("D", "D"));
 
             }
         });
@@ -169,20 +208,9 @@ public class DashboardFragment extends BaseFragment {
         cvStructure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), PdfViewerActivity.class).putExtra("link",arc_structure));
+                startActivity(new Intent(getActivity(), ArcStructurePDFListActivity.class));
 
-               /* Uri path = Uri.parse(arc_structure);
-                Intent pdfOpenintent = new Intent(Intent.ACTION_VIEW);
-                pdfOpenintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                pdfOpenintent.setDataAndType(path, "application/pdf");
-                try {
-                    requireContext().startActivity(pdfOpenintent);
-                }
-                catch (ActivityNotFoundException e) {
-
-                }
-*/
-        }
+            }
         });
 
 
@@ -208,7 +236,8 @@ public class DashboardFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), MoterCycleListActivity.class)
-                        .putExtra("branch_code", "T")
+                        .putExtra("branch_code", branchCode)
+                        .putExtra("loginType", loginType)
                         .putExtra("status", "A"));
 
             }

@@ -11,6 +11,7 @@ import com.arcltd.staff.R;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.base.BaseActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -37,7 +38,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -50,19 +51,20 @@ public class MainActivity extends BaseActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
+        appUpdateManager = AppUpdateManagerFactory.create(this);
         installStateUpdatedListener = state -> {
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
                 popupSnackBarForCompleteUpdate();
             } else if (state.installStatus() == InstallStatus.INSTALLED) {
                 removeInstallStateUpdateListener();
             } else {
-                Toast.makeText(getApplicationContext(), "InstallStateUpdatedListener: state: " + state.installStatus(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Please Wait: " + state.installStatus(), Toast.LENGTH_LONG).show();
             }
         };
         appUpdateManager.registerListener(installStateUpdatedListener);
         checkUpdate();
     }
+
 
     private void checkUpdate() {
 
@@ -78,6 +80,7 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+
     private void startUpdateFlow(AppUpdateInfo appUpdateInfo) {
         try {
             appUpdateManager.startUpdateFlowForResult(appUpdateInfo, AppUpdateType.FLEXIBLE, this, MainActivity.FLEXIBLE_APP_UPDATE_REQ_CODE);
@@ -86,16 +89,20 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FLEXIBLE_APP_UPDATE_REQ_CODE) {
             if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(getApplicationContext(), "Update canceled by user! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Update canceled by user! Result Code: " , Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Update canceled by user! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
             } else if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(),"Update success! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Update success! Result Code: " , Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Update success! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getApplicationContext(), "Update Failed! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Update Failed! Result Code: ", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "Update Failed! Result Code: " + resultCode, Toast.LENGTH_LONG).show();
                 checkUpdate();
             }
         }
@@ -109,9 +116,10 @@ public class MainActivity extends BaseActivity {
                         appUpdateManager.completeUpdate();
                     }
                 })
-                .setActionTextColor(getResources().getColor(R.color.purple_500))
                 .show();
     }
+
+
 
     private void removeInstallStateUpdateListener() {
         if (appUpdateManager != null) {
@@ -119,12 +127,24 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
+
     @Override
     protected void onStop() {
         super.onStop();
         removeInstallStateUpdateListener();
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Unregister the InstallStateUpdatedListener to prevent memory leaks
+        if (appUpdateManager != null) {
+            appUpdateManager.unregisterListener(installStateUpdatedListener);
+        }
+    }
 
 
     @Override

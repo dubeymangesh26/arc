@@ -1,64 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/drawable/avatar_10.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/drawable/button_background_blue.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/drawable/dropdown_scrollbar.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/drawable/ic_arrow_back_24.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/drawable/weight_24.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_add_branch_expencess.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_add_conveyance_mobile.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_add_ewight_machine.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_add_mess.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_add_moter_cycle.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_arc_web_view.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_branch_details.xml" value="0.25" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_branch_list.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_branch_list_pincode.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_crash_report.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_customer_or_employee.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_employee_list.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_example.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_main_without_login.xml" value="0.19010416666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_moter_cycle_list.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_other_expenses.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_popup_web_view.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_popup_webview.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_send_whatsapp_message.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_splash_screen.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_userlist.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_vehicle_place_faild_list.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_video_web_view.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_view_excel.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_web_emp_upload.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/activity_without_login.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/content_pdf_viewer.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/error_tost.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/fragment_dashboard.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/fragment_first.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/fragment_home.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/fragment_notifications.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/fragment_profile.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/fragment_reflow.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/fragment_second.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/fragment_settings.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/fragment_slideshow.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/item_allfeedback_list.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/item_allmixed_list.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/item_emplst_list.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/item_motercycle_list.xml" value="0.25" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/success_tost.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/userentry.xml" value="0.14166666666666666" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/video_loading_progress.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/layout/view_loading_video.xml" value="0.1" />
-        <entry key="..\:/Android_Project/arcltdstaff/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
-      </map>
-    </option>
-  </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -17,7 +17,7 @@ import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.updateData.UpdateAdminExpencesActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.AdvEXPResponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;

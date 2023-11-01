@@ -1,12 +1,16 @@
 package com.arcltd.staff.sqlliteDatabase;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.arcltd.staff.response.PincodeBranchListResponse;
+import com.arcltd.staff.utility.ELog;
 
 import java.util.ArrayList;
 
@@ -91,7 +95,9 @@ public class PincodeLocalDBHelper extends SQLiteOpenHelper {
         // on below line we are creating a variable for
         // our sqlite database and calling writable method
         // as we are writing data in our database.
-        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
 
         // on below line we are creating a
         // variable for content values.
@@ -114,55 +120,64 @@ public class PincodeLocalDBHelper extends SQLiteOpenHelper {
         values.put(BRANCH_PINCODE, sc_branch_pincode);
         values.put(SERVICE_PINCODE, sc_service_pincode);
 
-        db.insert(TABLE_NAME, null, values);
+
+            db.insert(TABLE_NAME, null, values);
 
         // at last we are closing our
         // database after adding database.
         db.close();
+
+        }catch (Exception e){
+            Log.e(TAG, "addNewList: ",e );
+        }
     }
+
 
 
     // we have created a new method for reading all the courses.
     public ArrayList<PincodeBranchListResponse> readCourses() {
         // on below line we are creating a
         // database for reading our database.
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        // on below line we are creating a cursor with query to read data from database.
-        Cursor cursorList = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+            SQLiteDatabase db = this.getReadableDatabase();
 
-        // on below line we are creating a new array list.
-        ArrayList<PincodeBranchListResponse> courseModalArrayList = new ArrayList<>();
+            // on below line we are creating a cursor with query to read data from database.
+            Cursor cursorList = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
 
-        // moving our cursor to first position.
-        if (cursorList.moveToFirst()) {
-            do {
-                // on below line we are adding the data from cursor to our array list.
-                courseModalArrayList.add(new PincodeBranchListResponse(
-                        cursorList.getString(1),
-                        cursorList.getString(2),
-                        cursorList.getString(3),
-                        cursorList.getString(4),
-                        cursorList.getString(5),
-                        cursorList.getString(6),
-                        cursorList.getString(7),
-                        cursorList.getString(8),
-                        cursorList.getString(9),
-                        cursorList.getString(10),
-                        cursorList.getString(11),
-                        cursorList.getString(12),
-                        cursorList.getString(13),
-                        cursorList.getString(14),
-                        cursorList.getString(15),
-                        cursorList.getString(16),
-                        cursorList.getString(17)));
-            } while (cursorList.moveToNext());
-            // moving our cursor to next.
-        }
-        // at last closing our cursor
-        // and returning our array list.
-        cursorList.close();
-        return courseModalArrayList;
+            // on below line we are creating a new array list.
+            ArrayList<PincodeBranchListResponse> courseModalArrayList = new ArrayList<>();
+
+            // moving our cursor to first position.
+            if (cursorList.moveToFirst()) {
+
+                do {
+                    // on below line we are adding the data from cursor to our array list.
+                    courseModalArrayList.add(new PincodeBranchListResponse(
+                            cursorList.getString(1),
+                            cursorList.getString(2),
+                            cursorList.getString(3),
+                            cursorList.getString(4),
+                            cursorList.getString(5),
+                            cursorList.getString(6),
+                            cursorList.getString(7),
+                            cursorList.getString(8),
+                            cursorList.getString(9),
+                            cursorList.getString(10),
+                            cursorList.getString(11),
+                            cursorList.getString(12),
+                            cursorList.getString(13),
+                            cursorList.getString(14),
+                            cursorList.getString(15),
+                            cursorList.getString(16),
+                            cursorList.getString(17)));
+                } while (cursorList.moveToNext());
+                // moving our cursor to next.
+            }
+            // at last closing our cursor
+            // and returning our array list.
+            cursorList.close();
+            return courseModalArrayList;
+
     }
 
     @Override

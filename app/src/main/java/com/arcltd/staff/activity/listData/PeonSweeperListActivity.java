@@ -3,7 +3,6 @@ package com.arcltd.staff.activity.listData;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,8 +20,6 @@ import com.arcltd.staff.adapter.MoterCycleListAdapter;
 import com.arcltd.staff.adapter.PeonSweeperListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
-import com.arcltd.staff.response.MoterCycleListResponse;
 import com.arcltd.staff.response.SweeperPeonListResponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;

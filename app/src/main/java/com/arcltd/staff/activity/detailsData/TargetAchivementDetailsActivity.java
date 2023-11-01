@@ -3,13 +3,11 @@ package com.arcltd.staff.activity.detailsData;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,11 +18,8 @@ import com.arcltd.staff.R;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.adapter.TargetAchivementListAdapter;
-import com.arcltd.staff.adapter.TargetListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
-import com.arcltd.staff.response.BranchListResponse;
 import com.arcltd.staff.response.TargetResponseResponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;

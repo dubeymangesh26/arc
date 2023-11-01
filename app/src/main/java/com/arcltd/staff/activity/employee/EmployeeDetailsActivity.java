@@ -47,7 +47,8 @@ import java.util.StringTokenizer;
 public class EmployeeDetailsActivity extends BaseActivity implements EmployeeRemarkListAdapter.DeleteRemark {
     RecyclerView list;
     TextView tvRegion,tvDivision,tvEmpName,tvEmpCode,tvEmpQuali,tvAppoimentDate,
-            tvDesign,tvSalary,tvUpdatedDate,branchCode,tvBranchName,tvDateofBirth,tvRetirementDate,tvUan,tvEmpMobile;
+            tvDesign,tvSalary,tvUpdatedDate,branchCode,tvBranchName,tvDateofBirth,tvRetirementDate,tvUan,tvEmpMobile,
+            tvFleet,tvBasic,tvHra,tvTga,tvPFNo,tvEmpGrade;
     String data,empCode,activeStatus,status,branch_code;
     Button tvActiveInactive;
     EmployeeListResponse.EmployeeList dataBean;
@@ -86,6 +87,12 @@ public class EmployeeDetailsActivity extends BaseActivity implements EmployeeRem
         tvRetirementDate=findViewById(R.id.tvRetirementDate);
         tvUan=findViewById(R.id.tvUan);
         tvEmpMobile=findViewById(R.id.tvEmpMobile);
+        tvFleet=findViewById(R.id.tvFleet);
+        tvBasic=findViewById(R.id.tvBasic);
+        tvHra=findViewById(R.id.tvHra);
+        tvTga=findViewById(R.id.tvTga);
+        tvPFNo=findViewById(R.id.tvPFNo);
+        tvEmpGrade=findViewById(R.id.tvEmpGrade);
         try {
             tvRegion.setText(dataBean.getRegion_name());
             tvDivision.setText(dataBean.getDivision_name());
@@ -101,6 +108,13 @@ public class EmployeeDetailsActivity extends BaseActivity implements EmployeeRem
             tvDateofBirth.setText(dataBean.getDat_of_birth());
             tvUan.setText(dataBean.getUan_no());
             tvEmpMobile.setText(dataBean.getEmp_mob());
+            tvFleet.setText(dataBean.getSal_fleet());
+            tvBasic.setText(dataBean.getSal_basic());
+            tvHra.setText(dataBean.getSal_hra());
+            tvTga.setText(dataBean.getSal_tga());
+            tvPFNo.setText(dataBean.getPf_number());
+            tvEmpGrade.setText(dataBean.getGread());
+
             empCode=dataBean.getEmp_code();
             branch_code=dataBean.getBranch_code();
             activeStatus=dataBean.getStatus();

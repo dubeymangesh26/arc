@@ -28,6 +28,7 @@ import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.employee.EmpMessageListActivity;
 import com.arcltd.staff.activity.employee.EmployeeMessageActivity;
+import com.arcltd.staff.activity.listData.HolidaysListActivity;
 import com.arcltd.staff.activity.otherAndMain.SendWhatsappMessageActivity;
 import com.arcltd.staff.activity.listData.UserPermissionListActivity;
 import com.arcltd.staff.authentication.LoginActivity;
@@ -35,7 +36,7 @@ import com.arcltd.staff.authentication.ProfileDetailsActivity;
 import com.arcltd.staff.authentication.ResetPassword;
 import com.arcltd.staff.base.BaseFragment;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.AppPermissionListResponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;
@@ -61,7 +62,7 @@ public class ProfileFragment extends BaseFragment {
 
     TextView logout, name, mobile_no;
     UserSessionManager session;
-    LinearLayout personalinfobtn,  liAddMess, regionManager,
+    LinearLayout personalinfobtn,  liAddMess, regionManager,listHolidays,
             addConveyanceMobile, addSweeperPeon, profile, passwardUpdate,liAdd_Emp,
             listSendMessage,liNotification,appPermission,sendMsgWhatsapp;
     String fullName, LastName, custId, email, mobile;
@@ -125,6 +126,7 @@ public class ProfileFragment extends BaseFragment {
         profilePicture = view.findViewById(R.id.profilePicture);
         appPermission = view.findViewById(R.id.appPermission);
         sendMsgWhatsapp = view.findViewById(R.id.sendMsgWhatsapp);
+        listHolidays = view.findViewById(R.id.listHolidays);
         view.findViewById(R.id.comStatus).setSelected(true);
 
         Glide.with(this)
@@ -144,6 +146,16 @@ public class ProfileFragment extends BaseFragment {
 
             }
         });
+
+        listHolidays.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), HolidaysListActivity.class)
+                        .putExtra("D", "D"));
+
+            }
+        });
+
         sendMsgWhatsapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

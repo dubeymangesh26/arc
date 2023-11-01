@@ -3,31 +3,22 @@ package com.arcltd.staff.activity.otherAndMain;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
-import com.arcltd.staff.authentication.OTPActivity;
-import com.arcltd.staff.authentication.SignupActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
 import com.arcltd.staff.response.AppPermissionListResponse;
-import com.arcltd.staff.response.EmployeeSignupDetailsResponse;
-import com.arcltd.staff.response.RegisterRespponse;
 import com.arcltd.staff.response.UpdatePermissionResponse;
-import com.arcltd.staff.response.UserListResponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;

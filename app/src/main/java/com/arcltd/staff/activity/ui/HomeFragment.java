@@ -19,8 +19,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -39,16 +42,19 @@ import com.arcltd.staff.activity.listData.BranchListActivity;
 import com.arcltd.staff.activity.listData.BranchListPincodeWiseActivity;
 import com.arcltd.staff.activity.listData.CustomerListActivity;
 import com.arcltd.staff.activity.listData.DivisionListActivity;
+import com.arcltd.staff.activity.listData.RateCardListActivity;
 import com.arcltd.staff.activity.listData.VehiclePlaceFaildListActivity;
 import com.arcltd.staff.activity.messDetails.MessDivisionListActivity;
 import com.arcltd.staff.activity.otherAndMain.OtherExpensesActivity;
 import com.arcltd.staff.adapter.The_Slide_items_Pager_Adapter;
 import com.arcltd.staff.authentication.LoginActivity;
 import com.arcltd.staff.base.BaseFragment;
+import com.arcltd.staff.cns_tracking.CNSTrackingActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.AppPermissionListResponse;
 import com.arcltd.staff.response.CheckStatusResponse;
+import com.arcltd.staff.response.ConsignmentTrackListResponse;
 import com.arcltd.staff.response.SendDiviceTokenResponse;
 import com.arcltd.staff.response.The_Slide_Items_Model_Class;
 import com.arcltd.staff.utility.Constants;
@@ -59,6 +65,7 @@ import com.arcltd.staff.web_view.WebViewActiviry;
 import com.arcltd.staff.web_view.WebViewpoppupActivity;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -67,10 +74,13 @@ import java.util.TimerTask;
 
 
 public class HomeFragment extends BaseFragment {
-    CardView cvBranchList,cvTrackBNS;
-    RelativeLayout rkTrackCNS,divMess,div,cvAdvExpences,cvOtherExpences,cvSendProfiel,
-            cvARC,cvAdvCustomer,cvAddFaieldList,cvAddFaield,incharge;
-    LinearLayout liHR,liBM;
+    CardView cvBranchList, cvTrackBNS;
+    AutoCompleteTextView atCnsSearch;
+    RelativeLayout rlBranchList,rkTrackCNS, divMess, div, cvAdvExpences, cvOtherExpences, cvSendProfiel,
+            cvARC, cvAdvCustomer, cvAddFaieldList, cvAddFaield, incharge,rkRateCard;
+    ProgressBar searchProgressBar;
+    ImageView ivCnsSearch;
+    LinearLayout liHR, liBM;
     private List<The_Slide_Items_Model_Class> listItems;
     private ViewPager page;
     TabLayout tabLayout;
@@ -92,7 +102,7 @@ public class HomeFragment extends BaseFragment {
 
 
         try {
-            if (RetrofitClient.getStringUserPreference(requireActivity(), Constants.DIVISION_BRANCHES_PERMISSION)!=null) {
+            if (RetrofitClient.getStringUserPreference(requireActivity(), Constants.DIVISION_BRANCHES_PERMISSION) != null) {
                 if (!RetrofitClient.getStringUserPreference(requireActivity(), Constants.DIVISION_BRANCHES_PERMISSION).equals("N")) {
                     div.setVisibility(View.VISIBLE);
                 }
@@ -103,8 +113,8 @@ public class HomeFragment extends BaseFragment {
                     cvSendProfiel.setVisibility(View.VISIBLE);
                 }
             }
-        }catch (Exception e){
-            Log.e(TAG, "onCreateView: ",e );
+        } catch (Exception e) {
+            Log.e(TAG, "onCreateView: ", e);
         }
 
 
@@ -119,6 +129,7 @@ public class HomeFragment extends BaseFragment {
         cvOtherExpences = view.findViewById(R.id.cvOtherExpences);
         cvSendProfiel = view.findViewById(R.id.cvSendProfiel);
         cvBranchList = view.findViewById(R.id.cvBranchList);
+        rlBranchList = view.findViewById(R.id.rlBranchList);
         liHR = view.findViewById(R.id.liHR);
         liBM = view.findViewById(R.id.liBM);
         cvTrackBNS = view.findViewById(R.id.cvTrackBNS);
@@ -131,6 +142,10 @@ public class HomeFragment extends BaseFragment {
         page = view.findViewById(R.id.my_pager);
         tabLayout = view.findViewById(R.id.my_tablayout);
         rkTrackCNS = view.findViewById(R.id.rkTrackCNS);
+        ivCnsSearch = view.findViewById(R.id.ivCnsSearch);
+        atCnsSearch = view.findViewById(R.id.atCnsSearch);
+        rkRateCard = view.findViewById(R.id.rkRateCard);
+        searchProgressBar = view.findViewById(R.id.searchProgressBar);
 
 
         listItems = new ArrayList<>();
@@ -149,36 +164,57 @@ public class HomeFragment extends BaseFragment {
         tabLayout.setupWithViewPager(page, true);
 
 
-
-
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
 
 
         if (RetrofitClient.getStringUserPreference(getContext(), Constants.LOGIN_TYPE).equals("DGM")) {
             cvAdvCustomer.setVisibility(View.VISIBLE);
-            cvAddFaieldList.setVisibility(View.VISIBLE);
+            cvAddFaieldList.setVisibility(View.GONE);
         } else if (RetrofitClient.getStringUserPreference(getContext(), Constants.LOGIN_TYPE).equals("BM")) {
             cvAdvCustomer.setVisibility(View.VISIBLE);
         } else {
             cvAdvCustomer.setVisibility(View.GONE);
         }
 
+        if (RetrofitClient.getStringUserPreference(getContext(), Constants.LOGIN_TYPE).equals("BM")) {
+            liBM.setVisibility(View.VISIBLE);
+        } else {
+            liBM.setVisibility(View.GONE);
+        }
 
-            if (RetrofitClient.getStringUserPreference(getContext(), Constants.LOGIN_TYPE).equals("BM")) {
-                liBM.setVisibility(View.VISIBLE);
-            } else {
-                liBM.setVisibility(View.GONE);
+        ivCnsSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!atCnsSearch.getText().toString().equals("")) {
+                    cnsTracking();
+                   /* Intent intent = new Intent(getActivity(), CNSTrackingActivity.class)
+                            .putExtra("CNS", atCnsSearch.getText().toString());
+                    startActivity(intent);*/
+                }else {
+                    Toast.makeText(getActivity(), "Please Enter Consignment Number", Toast.LENGTH_LONG).show();
+                }
+
             }
+        });
 
 
-        cvAddFaield.setOnClickListener(new View.OnClickListener() {
+        rkRateCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RateCardListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+         cvAddFaield.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddVehiclePlaceFaildActivity.class);
                 startActivity(intent);
             }
         });
+
         incharge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -345,7 +381,7 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
-        cvBranchList.setOnClickListener(new View.OnClickListener() {
+        rlBranchList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), BranchListActivity.class)
@@ -354,6 +390,8 @@ public class HomeFragment extends BaseFragment {
         });
 
     }
+
+
 
     private class The_slide_timer extends TimerTask {
         @Override
@@ -378,7 +416,6 @@ public class HomeFragment extends BaseFragment {
     private void ativeStatus() {
         try {
             if (Infrastructure.isInternetPresent()) {
-
                 apiPresenter.checkStaus(disposable, Constants.ApiRequestCode.ACTIV_STATUS,
                         RetrofitClient.getStringUserPreference(requireActivity(), Constants.EMP_CODE));
 
@@ -388,6 +425,23 @@ public class HomeFragment extends BaseFragment {
         } catch (Exception e) {
             ELog.e("TAG", "Exception in getUser_listFromWebservice", e);
         }
+    }
+
+    private void cnsTracking() {
+        try {
+            if (Infrastructure.isInternetPresent()) {
+                searchProgressBar.setVisibility(View.VISIBLE);
+                ivCnsSearch.setVisibility(View.GONE);
+                apiPresenter.sendCNSNO(disposable, Constants.ApiRequestCode.CNSTRACK,
+                        atCnsSearch.getText().toString());
+
+            } else {
+                new ErrorHandlerCode(getActivity(), NO_INTERNET, getString(R.string.no_internet_connection_message));
+            }
+        } catch (Exception e) {
+            ELog.e("TAG", "Exception in getConsignment_details", e);
+        }
+
     }
 
     private void diviceSendtoken() {
@@ -410,7 +464,12 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void showResult(Object object, int callAPIId) {
         ELog.d("TAG", "showResult: " + object);
-
+        searchProgressBar.setVisibility(View.GONE);
+        ivCnsSearch.setVisibility(View.VISIBLE);
+        if (callAPIId == Constants.ApiRequestCode.CNSTRACK) {
+            ConsignmentTrackListResponse consignmentTrackListResponse = (ConsignmentTrackListResponse) object;
+            getCNSTRACK(consignmentTrackListResponse);
+        }
         if (callAPIId == Constants.ApiRequestCode.ACTIV_STATUS) {
             CheckStatusResponse checkStatusResponse = (CheckStatusResponse) object;
             getStatus(checkStatusResponse);
@@ -427,6 +486,31 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    private void getCNSTRACK(ConsignmentTrackListResponse consignmentTrackListResponse) {
+
+        try {
+            Log.e(Constraints.TAG, "consignmentTrackListResponse: " + new GsonBuilder().create().toJson(consignmentTrackListResponse));
+            if (consignmentTrackListResponse != null) {
+                searchProgressBar.setVisibility(View.GONE);
+                if (consignmentTrackListResponse.getConsignment_list() != null) {
+                    String data = new Gson().toJson(consignmentTrackListResponse.getConsignment_list());
+                    Log.e("TAG", "saddLayoutCallBack: "+data );
+                    Intent intent = new Intent(getActivity(), CNSTrackingActivity.class)
+                            .putExtra("CNS_data", data);
+                    startActivity(intent);
+                }
+            } else {
+
+                ELog.e(Constraints.TAG, "Exception in consignmentTrackListResponse" + consignmentTrackListResponse.getResponseCode());
+                Toast.makeText(getActivity(), consignmentTrackListResponse.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        } catch (Exception e) {
+            ELog.e(Constraints.TAG, "Exception in appPermissionListResponse", e);
+        }
+
+    }
+
     private void deviceToken(SendDiviceTokenResponse sendDiviceTokenResponse) {
         try {
             Log.e(Constraints.TAG, "sendDiviceTokenResponse: " + new GsonBuilder().create().toJson(sendDiviceTokenResponse));
@@ -435,7 +519,7 @@ public class HomeFragment extends BaseFragment {
 
             } else {
                 ELog.e(Constraints.TAG, "Exception in sendDiviceTokenResponse" + sendDiviceTokenResponse.getResponseCode());
-               // Toast.makeText(getActivity(), employeeActive_inctiveResponse.getMessage(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getActivity(), employeeActive_inctiveResponse.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         } catch (Exception e) {
@@ -446,11 +530,11 @@ public class HomeFragment extends BaseFragment {
 
     private void getStatus(CheckStatusResponse checkStatusResponse) {
         try {
-           // Log.e(Constraints.TAG, "branchListResponse: " + new GsonBuilder().create().toJson(checkStatusResponse));
+            // Log.e(Constraints.TAG, "branchListResponse: " + new GsonBuilder().create().toJson(checkStatusResponse));
             if (checkStatusResponse != null) {
                 if (checkStatusResponse.getEmployee() != null) {
                     int f = checkStatusResponse.getEmployee().size();
-                   // Log.e("ListSize ", "ArrySize" + f);
+                    // Log.e("ListSize ", "ArrySize" + f);
                     RetrofitClient.saveUserPreference(getActivity(),
                             Constants.NOOF_EMPLOYEE, String.valueOf(checkStatusResponse.getEmployee().size()));
                     ;
@@ -506,8 +590,8 @@ public class HomeFragment extends BaseFragment {
         try {
             if (Infrastructure.isInternetPresent()) {
                 apiPresenter.getUserPermissionList(disposable, Constants.ApiRequestCode.PERMISSION_LIST,
-                        RetrofitClient.getStringUserPreference(requireActivity(),Constants.REGION_ID),
-                        RetrofitClient.getStringUserPreference(requireActivity(),Constants.EMP_CODE));
+                        RetrofitClient.getStringUserPreference(requireActivity(), Constants.REGION_ID),
+                        RetrofitClient.getStringUserPreference(requireActivity(), Constants.EMP_CODE));
             } else {
                 new ErrorHandlerCode(getActivity(), NO_INTERNET, getString(R.string.no_internet_connection_message));
             }
@@ -542,13 +626,13 @@ public class HomeFragment extends BaseFragment {
                     RetrofitClient.saveUserPreference(requireActivity(), Constants.TRANSFER_EMP_PERMISSION, appPermissionListResponse.getUser_list().get(0).getTransfer_emp());
                     RetrofitClient.saveUserPreference(requireActivity(), Constants.ACTIVE_DEACTIVE_PERMISSION, appPermissionListResponse.getUser_list().get(0).getActive_deactiveEmp());
 
-                    if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.DIVISION_BRANCHES_PERMISSION).equals("N")){
+                    if (!RetrofitClient.getStringUserPreference(requireActivity(), Constants.DIVISION_BRANCHES_PERMISSION).equals("N")) {
                         div.setVisibility(View.VISIBLE);
                     }
-                    if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.DIVISION_MESS_PERMISSION).equals("N")){
+                    if (!RetrofitClient.getStringUserPreference(requireActivity(), Constants.DIVISION_MESS_PERMISSION).equals("N")) {
                         divMess.setVisibility(View.VISIBLE);
                     }
-                    if (!RetrofitClient.getStringUserPreference(requireActivity(),Constants.SEND_PROFILE_PERMISSION).equals("N")){
+                    if (!RetrofitClient.getStringUserPreference(requireActivity(), Constants.SEND_PROFILE_PERMISSION).equals("N")) {
                         cvSendProfiel.setVisibility(View.VISIBLE);
                     }
                 }
@@ -556,7 +640,7 @@ public class HomeFragment extends BaseFragment {
             } else {
 
                 ELog.e(Constraints.TAG, "Exception in appPermissionListResponse" + appPermissionListResponse.getResponseCode());
-               // Toast.makeText(this, appPermissionListResponse.getMessage(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(this, appPermissionListResponse.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         } catch (Exception e) {

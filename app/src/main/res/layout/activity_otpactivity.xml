@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Still Your Account Not Verify, Please Verify "
+                android:text="@string/acnotverify"
                 android:textAlignment="center"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="@dimen/_11sdp" />
@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Enter OTP That Send At Your Email ID"
+                android:text="@string/otpmsg"
                 android:textAlignment="center"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="@dimen/_11sdp" />
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="+91 9137989033"
+                android:text="+91 0000000000"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />

@@ -11,7 +11,7 @@ import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.without_login.WithoutLoginActivity;
 import com.arcltd.staff.authentication.LoginActivity;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.utility.Constants;
 
 public class CustomerOrEmployeeActivity extends AppCompatActivity {

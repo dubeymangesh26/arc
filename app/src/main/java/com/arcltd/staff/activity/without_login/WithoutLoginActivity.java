@@ -1,17 +1,24 @@
 package com.arcltd.staff.activity.without_login;
 
+import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.Constraints;
 import androidx.viewpager.widget.ViewPager;
 
 import com.arcltd.staff.R;
@@ -20,7 +27,17 @@ import com.arcltd.staff.activity.listData.BranchListPincodeWiseActivity;
 import com.arcltd.staff.activity.otherAndMain.MainActivity;
 import com.arcltd.staff.adapter.The_Slide_items_Pager_Adapter;
 import com.arcltd.staff.authentication.LoginActivity;
+import com.arcltd.staff.base.BaseActivity;
+import com.arcltd.staff.cns_tracking.CNSTrackingActivity;
+import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
+import com.arcltd.staff.response.AppPermissionListResponse;
+import com.arcltd.staff.response.CheckStatusResponse;
+import com.arcltd.staff.response.ConsignmentTrackListResponse;
+import com.arcltd.staff.response.SendDiviceTokenResponse;
 import com.arcltd.staff.response.The_Slide_Items_Model_Class;
+import com.arcltd.staff.utility.Constants;
+import com.arcltd.staff.utility.ELog;
+import com.arcltd.staff.utility.Infrastructure;
 import com.arcltd.staff.web_view.ArcWebViewActivity;
 import com.arcltd.staff.web_view.WebViewActiviry;
 import com.google.android.gms.tasks.Task;
@@ -33,18 +50,23 @@ import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
-public  class WithoutLoginActivity extends AppCompatActivity {
+public  class WithoutLoginActivity extends BaseActivity {
     private AppUpdateManager appUpdateManager;
     private InstallStateUpdatedListener installStateUpdatedListener;
     private static final int FLEXIBLE_APP_UPDATE_REQ_CODE = 123;
 
     CardView cvBranchList, cvPincode,cvEmpLogin;
-    RelativeLayout rkTrackCNS, cvARC;
+    RelativeLayout rkTrackCNS, cvARC,rlBranchList;
+    AutoCompleteTextView atCnsSearch;
+    ProgressBar searchProgressBar;
+    ImageView ivCnsSearch;
     private List<The_Slide_Items_Model_Class> listItems;
     private ViewPager page;
     TabLayout tabLayout;
@@ -58,6 +80,7 @@ public  class WithoutLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_without_login);
 
         cvBranchList = findViewById(R.id.cvBranchList);
+        rlBranchList = findViewById(R.id.rlBranchList);
         cvPincode = findViewById(R.id.cvPincode);
         cvEmpLogin = findViewById(R.id.cvEmpLogin);
         rkTrackCNS = findViewById(R.id.rkTrackCNS);
@@ -65,6 +88,11 @@ public  class WithoutLoginActivity extends AppCompatActivity {
         page = findViewById(R.id.my_pager);
         tabLayout = findViewById(R.id.my_tablayout);
         comStatus=findViewById(R.id.comStatus);
+        ivCnsSearch = findViewById(R.id.ivCnsSearch);
+        atCnsSearch = findViewById(R.id.atCnsSearch);
+        searchProgressBar = findViewById(R.id.searchProgressBar);
+
+
         comStatus.setSelected(true);
 
 
@@ -82,6 +110,22 @@ public  class WithoutLoginActivity extends AppCompatActivity {
         java.util.Timer timer = new java.util.Timer();
         timer.scheduleAtFixedRate(new The_slide_timer(), 2000, 3000);
         tabLayout.setupWithViewPager(page, true);
+
+        ivCnsSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!atCnsSearch.getText().toString().equals("")) {
+                    cnsTracking();
+                   /* Intent intent = new Intent(getActivity(), CNSTrackingActivity.class)
+                            .putExtra("CNS", atCnsSearch.getText().toString());
+                    startActivity(intent);*/
+                }else {
+                    Toast.makeText(WithoutLoginActivity.this, "Please Enter Consignment Number", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
 
         rkTrackCNS.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +160,7 @@ public  class WithoutLoginActivity extends AppCompatActivity {
         });
 
 
-        cvBranchList.setOnClickListener(new View.OnClickListener() {
+        rlBranchList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(WithoutLoginActivity.this, BranchListActivity.class)
@@ -139,6 +183,69 @@ public  class WithoutLoginActivity extends AppCompatActivity {
         checkUpdate();
 
     }
+
+    private void cnsTracking() {
+        try {
+            if (Infrastructure.isInternetPresent()) {
+                searchProgressBar.setVisibility(View.VISIBLE);
+                ivCnsSearch.setVisibility(View.GONE);
+                apiPresenter.sendCNSNO(disposable, Constants.ApiRequestCode.CNSTRACK,
+                        atCnsSearch.getText().toString());
+
+            } else {
+                new ErrorHandlerCode(WithoutLoginActivity.this, NO_INTERNET, getString(R.string.no_internet_connection_message));
+            }
+        } catch (Exception e) {
+            ELog.e("TAG", "Exception in getConsignment_details", e);
+        }
+
+    }
+
+    @Override
+    public void showResult(Object object, int callAPIId) {
+        ELog.d("TAG", "showResult: " + object);
+        searchProgressBar.setVisibility(View.GONE);
+        ivCnsSearch.setVisibility(View.VISIBLE);
+        if (callAPIId == Constants.ApiRequestCode.CNSTRACK) {
+            ConsignmentTrackListResponse consignmentTrackListResponse = (ConsignmentTrackListResponse) object;
+            getCNSTRACK(consignmentTrackListResponse);
+        }
+    }
+
+    private void getCNSTRACK(ConsignmentTrackListResponse consignmentTrackListResponse) {
+
+        try {
+            Log.e(Constraints.TAG, "consignmentTrackListResponse: " + new GsonBuilder().create().toJson(consignmentTrackListResponse));
+            if (consignmentTrackListResponse != null) {
+                searchProgressBar.setVisibility(View.GONE);
+                if (consignmentTrackListResponse.getConsignment_list() != null) {
+                    String data = new Gson().toJson(consignmentTrackListResponse.getConsignment_list());
+                    Log.e("TAG", "saddLayoutCallBack: "+data );
+                    Intent intent = new Intent(WithoutLoginActivity.this, CNSTrackingActivity.class)
+                            .putExtra("CNS_data", data);
+                    startActivity(intent);
+                }
+            } else {
+
+                ELog.e(Constraints.TAG, "Exception in consignmentTrackListResponse" + consignmentTrackListResponse.getResponseCode());
+                Toast.makeText(WithoutLoginActivity.this, consignmentTrackListResponse.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        } catch (Exception e) {
+            ELog.e(Constraints.TAG, "Exception in appPermissionListResponse", e);
+        }
+
+    }
+
+    @Override
+    public void onDisplayMessage(String message, int callAPIId, int errorCode) {
+        super.onDisplayMessage(message, callAPIId, errorCode);
+        searchProgressBar.setVisibility(View.GONE);
+        Infrastructure.dismissProgressDialog();
+    }
+
+
+
 
 
     private void checkUpdate() {
@@ -223,6 +330,8 @@ public  class WithoutLoginActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
     @Override
     public void onBackPressed() {

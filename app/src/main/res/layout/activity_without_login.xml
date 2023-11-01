@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/blue_light"
     android:weightSum="1"
     android:orientation="vertical">
@@ -41,6 +42,8 @@
         android:layout_weight="1">
 
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,9 +54,53 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/liserch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_23sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:minHeight="52dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="1">
+
+                <AutoCompleteTextView
+                    android:id="@+id/atCnsSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTWXYZ1234567890"
+                    android:inputType="textCapSentences"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:drawableLeft="@drawable/search_24"
+                    android:hint="Enter Consignment Number" />
+
+                <ImageView
+                    android:id="@+id/ivCnsSearch"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:background="@drawable/search"
+                    tools:ignore="ContentDescription" />
+
+                <ProgressBar
+                    android:id="@+id/searchProgressBar"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_15sdp"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
@@ -138,9 +185,64 @@
 
 
             <RelativeLayout
+                android:id="@+id/rlBranchList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_30sdp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="5dp"
+                    android:minHeight="@dimen/_70sdp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_30sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Branch List"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/_12ssp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:text="View branch address, contact no etc ."
+                            android:textSize="@dimen/_10ssp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:elevation="13dp"
+                    android:src="@drawable/branch" />
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
                 android:id="@+id/rkTrackCNS"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="visible"
                 android:layout_marginBottom="@dimen/_10sdp">
 
                 <androidx.cardview.widget.CardView

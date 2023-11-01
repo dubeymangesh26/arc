@@ -16,7 +16,7 @@ import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.otherAndMain.MainActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.AddUpdatedAdminiExpResponse;
 import com.arcltd.staff.response.AdvEXPResponse;
 import com.arcltd.staff.utility.Constants;

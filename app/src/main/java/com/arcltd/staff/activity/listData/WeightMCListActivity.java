@@ -3,7 +3,6 @@ package com.arcltd.staff.activity.listData;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -21,12 +20,10 @@ import android.widget.Toast;
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
-import com.arcltd.staff.adapter.DivisionListAdapter;
 import com.arcltd.staff.adapter.WeightMchineListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
-import com.arcltd.staff.response.DivisionListResponse;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.WeightMachineListResponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;
@@ -34,7 +31,6 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
-import java.util.prefs.BackingStoreException;
 
 public class WeightMCListActivity extends BaseActivity {
     RecyclerView list;

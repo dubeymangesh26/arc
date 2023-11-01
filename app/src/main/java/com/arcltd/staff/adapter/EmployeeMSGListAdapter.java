@@ -43,7 +43,7 @@ public class EmployeeMSGListAdapter extends RecyclerView.Adapter<EmployeeMSGList
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view;
-        view = LayoutInflater.from(context).inflate(R.layout.item_emplst_list, parent, false);
+        view = LayoutInflater.from(context).inflate(R.layout.item_permission_list, parent, false);
         return new ViewHolder(view);
 
 

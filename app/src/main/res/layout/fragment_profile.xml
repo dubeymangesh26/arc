@@ -383,6 +383,41 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/listHolidays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/capsulsape"
+                    android:padding="@dimen/_5sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:background="@drawable/branchhome_24"
+                        android:clickable="false"
+                        android:contentDescription="@string/app_name" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:layout_gravity="center"
+                        android:padding="2dp"
+                        android:fontFamily="@font/proximanovaregular"
+                        android:text="Holidays"
+                        android:textColor="@color/primaryTextColor"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:id="@+id/regionManager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

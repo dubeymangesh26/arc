@@ -223,6 +223,11 @@ public class ProfileResponseResponse {
         private String emp_eqalification;
         private String emp_joining_date;
         private String emp_desig;
+        private String pf_number;
+        private String sal_basic;
+        private String sal_hra;
+        private String sal_tga;
+        private String sal_fleet;
         private String emp_salary;
         private String status;
         private String retirement_date;
@@ -231,6 +236,48 @@ public class ProfileResponseResponse {
         private String profilepic;
         private String updated_date;
         private String created_date;
+
+
+        public String getPf_number() {
+            return pf_number;
+        }
+
+        public void setPf_number(String pf_number) {
+            this.pf_number = pf_number;
+        }
+
+        public String getSal_basic() {
+            return sal_basic;
+        }
+
+        public void setSal_basic(String sal_basic) {
+            this.sal_basic = sal_basic;
+        }
+
+        public String getSal_hra() {
+            return sal_hra;
+        }
+
+        public void setSal_hra(String sal_hra) {
+            this.sal_hra = sal_hra;
+        }
+
+        public String getSal_tga() {
+            return sal_tga;
+        }
+
+        public void setSal_tga(String sal_tga) {
+            this.sal_tga = sal_tga;
+        }
+
+        public String getSal_fleet() {
+            return sal_fleet;
+        }
+
+        public void setSal_fleet(String sal_fleet) {
+            this.sal_fleet = sal_fleet;
+        }
+
 
         public String getRetirement_date() {
             return retirement_date;

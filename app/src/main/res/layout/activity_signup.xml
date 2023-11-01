@@ -126,7 +126,24 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:orientation="vertical"
-                                        android:visibility="gone">
+                                        android:visibility="visible">
+
+                                            <LinearLayout
+                                                android:layout_width="@dimen/_80sdp"
+                                                android:layout_height="@dimen/_80sdp"
+                                                android:gravity="center"
+                                                android:layout_gravity="center"
+                                                android:background="@drawable/person_24"
+                                                android:orientation="vertical">
+
+                                            <de.hdodenhof.circleimageview.CircleImageView
+                                                android:id="@+id/profilePicture"
+                                                android:layout_width="@dimen/_80sdp"
+                                                android:layout_height="@dimen/_80sdp"
+                                                android:layout_gravity="center_horizontal"
+                                                android:gravity="center" />
+                                            </LinearLayout>
+
 
                                         <com.google.android.material.textfield.TextInputLayout
                                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

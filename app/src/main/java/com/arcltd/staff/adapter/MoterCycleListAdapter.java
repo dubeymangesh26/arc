@@ -25,7 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddMoterCycleActivity;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.MoterCycleListResponse;
+import com.arcltd.staff.utility.Constants;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 
@@ -40,6 +42,7 @@ public class MoterCycleListAdapter extends RecyclerView.Adapter<MoterCycleListAd
     private MoterCycleListResponse wishList;
     private int deliveryPosition;
     private SoldVehicle soldVehicle;
+    Context mContext;
 
 
 
@@ -114,6 +117,8 @@ public class MoterCycleListAdapter extends RecyclerView.Adapter<MoterCycleListAd
                     tvstdKm = dialog.findViewById(R.id.tvStdKm);
                     tvInsNo = dialog.findViewById(R.id.tvInsNo);
                     tvUserName = dialog.findViewById(R.id.tvUserName);
+                    btnSold.setVisibility(View.GONE);
+                    edit.setVisibility(View.GONE);
 
                     if (list.get(position).getSold_status().equals("Y")){
                         btnSold.setVisibility(View.GONE);
@@ -148,7 +153,6 @@ public class MoterCycleListAdapter extends RecyclerView.Adapter<MoterCycleListAd
 
                         }
                     });
-
 
                     btnSold.setOnClickListener(new View.OnClickListener() {
                         @Override

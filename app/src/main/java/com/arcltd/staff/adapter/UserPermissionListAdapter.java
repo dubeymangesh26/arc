@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +48,7 @@ public class UserPermissionListAdapter extends RecyclerView.Adapter<UserPermissi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view;
-        view = LayoutInflater.from(context).inflate(R.layout.item_emplst_list, parent, false);
+        view = LayoutInflater.from(context).inflate(R.layout.item_permission_list, parent, false);
         return new ViewHolder(view);
 
 

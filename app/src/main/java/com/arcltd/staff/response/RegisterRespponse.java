@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegisterRespponse {
 
-
     @SerializedName("ResponseCode")
     private String responseCode;
     private String message;
@@ -48,7 +47,9 @@ public class RegisterRespponse {
         private String emp_code;
         private String design;
         private String status;
-        private Object mess_name;
+        private String mess_name;
+        private String vari_status;
+        private String profilepic;
 
         public String getName() {
             return name;
@@ -114,6 +115,14 @@ public class RegisterRespponse {
             this.branch_code = branch_code;
         }
 
+        public String getBranch_name() {
+            return branch_name;
+        }
+
+        public void setBranch_name(String branch_name) {
+            this.branch_name = branch_name;
+        }
+
         public String getDivision_name() {
             return division_name;
         }
@@ -146,20 +155,28 @@ public class RegisterRespponse {
             this.status = status;
         }
 
-        public Object getMess_name() {
+        public String getMess_name() {
             return mess_name;
         }
 
-        public void setMess_name(Object mess_name) {
+        public void setMess_name(String mess_name) {
             this.mess_name = mess_name;
         }
 
-        public String getBranch_name() {
-            return branch_name;
+        public String getVari_status() {
+            return vari_status;
         }
 
-        public void setBranch_name(String branch_name) {
-            this.branch_name = branch_name;
+        public void setVari_status(String vari_status) {
+            this.vari_status = vari_status;
+        }
+
+        public String getProfilepic() {
+            return profilepic;
+        }
+
+        public void setProfilepic(String profilepic) {
+            this.profilepic = profilepic;
         }
     }
 }

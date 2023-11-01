@@ -9,7 +9,7 @@ import android.util.Log;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.arcltd.staff.authentication.SplashScreenActivity;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.utility.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

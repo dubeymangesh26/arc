@@ -13,9 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.arcltd.staff.R;
-import com.arcltd.staff.activity.otherAndMain.CustomerOrEmployeeActivity;
 import com.arcltd.staff.activity.without_login.WithoutLoginActivity;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.utility.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -67,7 +66,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     //  overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
                     finish();
                 } else {
-                    startActivity(new Intent(SplashScreenActivity.this, CustomerOrEmployeeActivity.class));
+                    startActivity(new Intent(SplashScreenActivity.this, WithoutLoginActivity.class));
                 }
 
             }

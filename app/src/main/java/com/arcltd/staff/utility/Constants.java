@@ -62,6 +62,7 @@ public class Constants {
     public static final String BRANCH_CHECK ="BRANCH_CHECK";
     public static final String CUSTOMER_LOGIN = "CUSTOMER_LOGIN";
     public static final String BRANCH_NAME = "BRANCH_NAME";
+    public static final String FIRST_LAUNCH_KEY = "first_launch";
 
     public static class ResponseStatus {
         public static final String SUCCESS = "SUCCESS";
@@ -121,6 +122,9 @@ public class Constants {
         public static final int PERMISSION_LIST = 1047;
         public static final int BRANCH_LIST_PINCODE = 1048;
         public static final int CRASH_REPORT = 1049;
+        public static final int CNSTRACK = 1050;
+        public static final int CNSMOVEMENT = 1051;
+        public static final int HOLIDAYS = 1052;
     }
     public static final String CITY_NAME = "CITY_NAME";
     public static final String CITY_ID = "CITY_ID";

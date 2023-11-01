@@ -10,7 +10,7 @@ import com.arcltd.staff.networkhandler.errors.ErrorStatus;
 import com.arcltd.staff.networkhandler.networkCallBack.INetworkResult;
 import com.arcltd.staff.networkhandler.networkCallBack.IResultView;
 import com.arcltd.staff.networkhandler.networkCallBack.NetworkHandler;
-import com.arcltd.staff.networkhandler.remote.WebService;
+import com.arcltd.staff.remote.WebService;
 import com.arcltd.staff.utility.ELog;
 
 import java.net.UnknownHostException;
@@ -21,6 +21,7 @@ import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MultipartBody;
 import retrofit2.HttpException;
 
 public class ApiPresenter implements INetworkResult {
@@ -81,18 +82,22 @@ public class ApiPresenter implements INetworkResult {
      * user registration data @emits from the server
      */
 
-    public void userregistration(CompositeDisposable disposable, int requestCode, String name, String email,
+   /* public void userregistration(CompositeDisposable disposable, int requestCode, String name, String email,
                                  String password, String contactno, String login_type,
                                  String region_id, String region_name, String division_id,
-                                 String division_name, String branch_code,String branch_name, String emp_id, String design,
-                                 String status, String mess_name, String vari_status) {
+                                 String division_name, String branch_code, String branch_name, String emp_id, String design,
+                                 String status, String mess_name, String vari_status, MultipartBody.Part profilepic) {
         Log.e(TAG, "userRegister: " + " Name-" + name + " Email-" + email + " Password-" + password +
                 " Contact_No-" + contactno + " region_id-" + region_id + " region_name-" + region_name + " division_id-" + division_id
                 + " division_name-" + division_name + " branch_code-" + branch_code+ " branch_name-" + branch_name + " emp_id-"
-                + emp_id + " design-" + design + " vari_status-" + vari_status);
+                + emp_id + " design-" + design + " vari_status-" + vari_status+ "profile_pic=" + profilepic);
+
+
         disposable.add(
-                webService.signup(name, email, password, contactno, login_type, region_id, region_name, division_id
-                                , division_name, branch_code,branch_name, emp_id, design, status, mess_name, vari_status)
+                webService.signup(name, email, password, contactno, login_type,
+                                region_id, region_name, division_id, division_name,
+                                branch_code, branch_name, emp_id, design, status,
+                                mess_name, vari_status, profilepic))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -114,10 +119,10 @@ public class ApiPresenter implements INetworkResult {
                         })
         );
     }
-
+*/
     public void getCrashReport(CompositeDisposable disposable, final int requestCode, String request_data,
                                String type) {
-        Log.e(TAG, "getCrashReport: " + "  https://niharexpress.com/appApi/api?" +
+        Log.e(TAG, "getCrashReport: " +
                  "&request_data=" + request_data + "&type=" + type );
 
         disposable.add(
@@ -522,6 +527,88 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
+    public void list_booking(CompositeDisposable disposable, int requestCode,String branch_code, String division_id) {
+        Log.e(TAG, " " + " division_id-" + division_id + " branch_code-" + branch_code);
+        disposable.add(
+                webService.list_booking(branch_code,division_id)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
+    public void list_Holidays(CompositeDisposable disposable, int requestCode,String year) {
+        Log.e(TAG, "list_festHolidays " + " year-" + year);
+        disposable.add(
+                webService.list_festHolidays(year)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+    public void list_pdf(CompositeDisposable disposable, int requestCode,String year) {
+        Log.e(TAG, "list_festHolidays " + " year-" + year);
+        disposable.add(
+                webService.list_pdflst(year)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
+
+
     public void list_Incharge(CompositeDisposable disposable, int requestCode, String division_id) {
         Log.e(TAG, " " + " division_id-" + division_id);
         disposable.add(
@@ -680,6 +767,35 @@ public class ApiPresenter implements INetworkResult {
                         })
         );
     }
+
+    public void list_RateCard(CompositeDisposable disposable, int requestCode, String branch_code,
+                              String search) {
+        Log.e(TAG, " " + " branch_code_From-" + branch_code + " branch_code_To-" + search);
+        disposable.add(
+                webService.list_card(branch_code, search)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
 
 
     public void listBirth_employee(CompositeDisposable disposable, int requestCode, String region_id,
@@ -1216,10 +1332,10 @@ public class ApiPresenter implements INetworkResult {
     }
 
     public void motercycleList(CompositeDisposable disposable, int requestCode, String branch_code,
-                               String search, String status) {
-        Log.e(TAG, " " + " branch_code-" + branch_code + " status " + status);
+                               String search,String login_type, String status) {
+        Log.e(TAG, " " + " branch_code-" + branch_code + " login_type " + login_type+ " status " + status);
         disposable.add(
-                webService.motercycleList(branch_code, search, status)
+                webService.motercycleList(branch_code, search,login_type, status)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -1488,6 +1604,60 @@ public class ApiPresenter implements INetworkResult {
                         })
         );
     }
+
+    public void sendCNSNO(CompositeDisposable disposable, int requestCode, String cnsNoTrack) {
+        Log.e(TAG, " " + " cnsNoTrack-" + cnsNoTrack);
+        disposable.add(
+                webService.cnsTrack(cnsNoTrack)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
+    public void movedCNS(CompositeDisposable disposable, int requestCode, String cnsNoTrack) {
+        Log.e(TAG, " " + " movedCNS_no-" + cnsNoTrack);
+        disposable.add(
+                webService.cnsMovement(cnsNoTrack)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
 
     public void empTransHistory(CompositeDisposable disposable, int requestCode, String emp_code) {
         Log.e(TAG, " " + " emp_code-" + emp_code);

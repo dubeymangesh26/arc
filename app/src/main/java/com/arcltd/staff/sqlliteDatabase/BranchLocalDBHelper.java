@@ -150,4 +150,11 @@ public class BranchLocalDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void clearData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+        db.close();
+    }
+
+
 }

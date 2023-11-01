@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -27,7 +26,7 @@ import com.arcltd.staff.adapter.EmployeeBirthdayListAdapter;
 import com.arcltd.staff.adapter.EmployeeListAdapter;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.DeleteEmployeeResponse;
 import com.arcltd.staff.response.EmployeeListResponse;
 import com.arcltd.staff.utility.Constants;

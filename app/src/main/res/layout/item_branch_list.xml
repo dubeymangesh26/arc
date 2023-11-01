@@ -4,6 +4,7 @@
     android:id="@+id/listRegion"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:layout_marginStart="@dimen/_5sdp"
     android:orientation="vertical">
 
@@ -19,6 +20,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:orientation="vertical">
 
         <LinearLayout
@@ -26,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:weightSum="1"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:padding="@dimen/_5sdp">
 
@@ -60,6 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:weightSum="1"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:padding="@dimen/_5sdp">
         <Button

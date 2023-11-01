@@ -32,7 +32,7 @@ public class PrivacyPolicyWebViewActivity extends AppCompatActivity implements V
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_video_web_view);
 
-        url = "http://onlineformsolution.in/arcMessApi/arcPrivacypoclicy.php";
+        url = "https://arclimited.onarc.in/arcPrivacypoclicy.php";
       /*  webView.setInitialScale(1);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);

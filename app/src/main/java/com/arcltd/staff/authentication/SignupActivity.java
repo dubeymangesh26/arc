@@ -4,12 +4,17 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -25,15 +30,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
+import com.arcltd.staff.BuildConfig;
 import com.arcltd.staff.R;
+import com.arcltd.staff.Server.CameraUtils;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.base.BaseActivity;
+import com.arcltd.staff.networkhandler.WebConstants;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
+import com.arcltd.staff.remote.WebService;
 import com.arcltd.staff.response.EmployeeSignupDetailsResponse;
 import com.arcltd.staff.response.RegisterRespponse;
 import com.arcltd.staff.utility.Constants;
@@ -41,12 +53,28 @@ import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.arcltd.staff.web_view.PrivacyPolicyWebViewActivity;
 import com.arcltd.staff.web_view.TermAndConditionWebViewActivity;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.GsonBuilder;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.List;
-import java.util.UUID;
+import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignupActivity extends BaseActivity {
     TextInputEditText editTextName, editTextEmail, editTextMobile, editTextPassword, editTextCode;
@@ -57,22 +85,27 @@ public class SignupActivity extends BaseActivity {
     LinearLayout signData;
     TextView tvError;
     ProgressBar searchProgressBar;
-    String email;
+    CircleImageView profilePic;
+    String email_id,status="H",Mess_name="Pending",notvarify="Not Verified",loginType="EM",token;
     String region_ids, region_names, division_ids, division_names, branch_codes,branch_name,
             emp_Codes, emp_names, emp_deisigns;
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 101;
 
 
     private static final int STORAGE_PERMISSION_CODE = 4655;
-    private int PICK_IMAGE_REQUEST = 1;
-    private Uri filepath;
+    private final int PICK_IMAGE_REQUEST = 1;
+    private Uri selectedImage;
+    RequestBody glBody;
+    MultipartBody.Part glMulPart;
+    private File file;
+    int REQUEST_CODE;
+    String cPath;
     private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_signup);
-
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
 
@@ -90,6 +123,7 @@ public class SignupActivity extends BaseActivity {
         editTextCode = findViewById(R.id.editTextCode);
         signData = findViewById(R.id.signData);
         searchEmp = findViewById(R.id.searchEmp);
+        profilePic = findViewById(R.id.profilePicture);
 
         signData.setVisibility(View.GONE);
 
@@ -97,7 +131,181 @@ public class SignupActivity extends BaseActivity {
 
         //   Glide.with(this).load(R.drawable.eagle).into(image_logo);
 
+
+
+      askPermissions();
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(ContentValues.TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                         token = task.getResult();
+
+                        // Log and toast
+
+                        Log.d(ContentValues.TAG, token);
+                        RetrofitClient.saveUserPreference(SignupActivity.this, Constants.DEVICE_TOKEN, token);
+
+                    }
+                });
+
+
+
+            profilePic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectCameraOrGallery();
+                }
+            });
+
+
     }
+
+
+    private void askPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            if (ContextCompat.checkSelfPermission(SignupActivity.this,
+
+                    Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, 2);
+                // Permission is not granted
+                // Should we show an explanation?
+            } else if (ContextCompat.checkSelfPermission(SignupActivity.this,
+                    Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
+                // Permission is not granted
+                // Should we show an explanation?
+            }
+        }else {
+            if (ContextCompat.checkSelfPermission(SignupActivity.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+                // Permission is not granted
+                //
+            } else if (ContextCompat.checkSelfPermission(SignupActivity.this,
+                    Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
+                // Permission is not granted
+                // Should we show an explanation?
+            }
+
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 2) {// If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+
+                        askPermissions();
+
+                } else {
+                    // permission denied, boo! Disable the
+
+                        askPermissions();
+
+
+                    // functionality that depends on this permission.
+                }
+            }
+        }
+    }
+
+    private void getProfileImageBody() {
+
+        if (selectedImage == null) {
+            glBody = RequestBody.create(MediaType.parse("image/*"), "");
+            glMulPart = MultipartBody.Part.createFormData("profile_pic", "", glBody);
+        } else {
+            file = new File(getRealPathFromURI(selectedImage));
+            //creating request body for file
+            glBody = RequestBody.create(MediaType.parse("image/*"), file);
+            glMulPart = MultipartBody.Part.createFormData("profile_pic", file.getName(), glBody);
+        }
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+    private void selectCameraOrGallery() {
+        String[] selectIntents = {"\uD83D\uDCF7" + "   Camera", "\uD83C\uDF07" + "   Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select image from")
+                .setItems(selectIntents, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int position) {
+                        if (position == 1) {
+                            Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(Intent.createChooser(gallery, "Select Profile Pic"), 9);
+                        } else {
+                            dispatchTakePictureIntent();
+                        }
+                    }
+                });
+        builder.create();
+        builder.show();
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//Start intent with Action_Image_Capture
+        selectedImage = CameraUtils.getOutputMediaFileUri(getApplicationContext());//get fileUri from CameraUtils
+
+        File photoFile = null;
+        photoFile = CameraUtils.getOutputMediaFile(Objects.requireNonNull(getApplicationContext()));
+        cPath = photoFile.getAbsolutePath();
+        Uri uri = FileProvider.getUriForFile(getApplicationContext(), BuildConfig.APPLICATION_ID + ".provider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(intent, 101);
+        Log.e(TAG, "dispatchTakePictureIntent: " + REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 9 && data != null) {
+                selectedImage = data.getData();
+
+            } else if (requestCode == 101) {
+                Bitmap photo = BitmapFactory.decodeFile(cPath);
+                selectedImage = getImageUri(this,photo);
+
+            }
+            Glide.with(getApplicationContext()).load(selectedImage).override(200, 200).into(profilePic);
+        }
+    }
+
+    private Uri getImageUri(Context context, Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
+        return Uri.parse(path);
+    }
+
+
 
     public void onLoginClick(View view) {
         startActivity(new Intent(this, LoginActivity.class));
@@ -106,8 +314,11 @@ public class SignupActivity extends BaseActivity {
     }
 
     public void onClickSignUp(View view) {
+
         if (validate()) {
+            getProfileImageBody();
             signup(
+
                     editTextName.getText().toString().trim(),
                     editTextEmail.getText().toString().trim(),
                     editTextPassword.getText().toString().trim(),
@@ -136,12 +347,110 @@ public class SignupActivity extends BaseActivity {
     private void signup(String name, String email, String password, String contactno) {
         try {
             if (Infrastructure.isInternetPresent()) {
+
                 searchProgressBar.setVisibility(View.VISIBLE);
-                apiPresenter.userregistration(disposable, Constants.ApiRequestCode.USER_REGISTRATION,
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(WebConstants.baseURL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                WebService apiService = retrofit.create(WebService.class);
+
+                File imageFile = new File(selectedImage.getPath());
+                RequestBody imageRequestBody = glMulPart.body();
+                // Create a multipart request body part
+                MultipartBody.Part imagePart = MultipartBody.Part.createFormData("profile_image", imageFile.getName(), imageRequestBody);
+
+
+                RequestBody nameBody = RequestBody.create(MediaType.parse("text/plain"), name);
+                RequestBody emailBody = RequestBody.create(MediaType.parse("text/plain"), email);
+                RequestBody passwordBody = RequestBody.create(MediaType.parse("text/plain"), password);
+                RequestBody contactnoBody = RequestBody.create(MediaType.parse("text/plain"), contactno);
+                RequestBody loginTypeBody = RequestBody.create(MediaType.parse("text/plain"), loginType);
+                RequestBody region_idsBody = RequestBody.create(MediaType.parse("text/plain"), region_ids);
+                RequestBody region_namesBody = RequestBody.create(MediaType.parse("text/plain"), region_names);
+                RequestBody division_idsBody = RequestBody.create(MediaType.parse("text/plain"), division_ids);
+                RequestBody division_namesBody = RequestBody.create(MediaType.parse("text/plain"), division_names);
+                RequestBody branch_codesBody = RequestBody.create(MediaType.parse("text/plain"), branch_codes);
+                RequestBody branch_nameBody = RequestBody.create(MediaType.parse("text/plain"), branch_name);
+                RequestBody emp_CodesBody = RequestBody.create(MediaType.parse("text/plain"), emp_Codes);
+                RequestBody emp_deisignsBody = RequestBody.create(MediaType.parse("text/plain"), emp_deisigns);
+                RequestBody statusBody = RequestBody.create(MediaType.parse("text/plain"), status);
+                RequestBody Mess_nameBody = RequestBody.create(MediaType.parse("text/plain"), Mess_name);
+                RequestBody notvarifyBody = RequestBody.create(MediaType.parse("text/plain"), notvarify);
+                RequestBody tokenBody = RequestBody.create(MediaType.parse("text/plain"), token);
+
+
+                Call<RegisterRespponse> call = apiService.signup( nameBody, emailBody, passwordBody, contactnoBody, loginTypeBody, region_idsBody
+                        ,region_namesBody, division_idsBody, division_namesBody, branch_codesBody,branch_nameBody, emp_CodesBody, emp_deisignsBody,
+                        statusBody,Mess_nameBody,notvarifyBody,tokenBody, imagePart);
+                call.enqueue(new Callback<RegisterRespponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<RegisterRespponse> call, @NonNull Response<RegisterRespponse> registermlRespponse) {
+
+                            searchProgressBar.setVisibility(View.GONE);
+
+                        if (registermlRespponse.isSuccessful()) {
+                            RegisterRespponse registerRespponse = registermlRespponse.body();
+                            if (registerRespponse != null ) {
+
+                                email_id = registerRespponse.getData().getEmail();
+
+                                startActivity(new Intent(SignupActivity.this, OTPActivity.class)
+                                        .putExtra("me", email_id));
+                                finish();
+
+                                //RetrofitClient.saveUserPreference(SignupActivity.this, Constants.MEMBER_ID, registerRespponse.getData().getEmp_id());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.FIRSTNAME, registerRespponse.getData().getName());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.EMAIL_ID, registerRespponse.getData().getEmail());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.MOBILE_NO, registerRespponse.getData().getContactno());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.LOGIN_TYPE, registerRespponse.getData().getLogin_type());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.REGION_ID, registerRespponse.getData().getRegion_id());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.REGION_NAME, registerRespponse.getData().getRegion_name());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.DIVISION_ID, registerRespponse.getData().getDivision_id());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.DIVISION_NAME, registerRespponse.getData().getDivision_name());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.BRANCH_CODE, registerRespponse.getData().getBranch_code());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.BRANCH_NAME, registerRespponse.getData().getBranch_name());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.EMP_CODE, registerRespponse.getData().getEmp_code());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.DESIGN, registerRespponse.getData().getDesign());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.STATUS, registerRespponse.getData().getStatus());
+                                RetrofitClient.saveUserPreference(SignupActivity.this, Constants.PROFILE_PICTURE, registerRespponse.getData().getProfilepic());
+
+                                final Toast toast = new Toast(getApplicationContext());
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                View custom_view = getLayoutInflater().inflate(R.layout.success_tost, null);
+                                TextView message=custom_view.findViewById(R.id.message);
+                                message.setText(registerRespponse.getMessage());
+                                toast.setView(custom_view);
+                                toast.show();
+
+                            } else {
+                                // Signup failed, show an error message
+                                Toast.makeText(SignupActivity.this, "Signup failed, show an error message", Toast.LENGTH_LONG).show();
+                            }
+                        }else {
+                            // Signup failed, show an error message
+                            Toast.makeText(SignupActivity.this, "Something went Wrong", Toast.LENGTH_LONG).show();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<RegisterRespponse> call, Throwable t) {
+                        searchProgressBar.setVisibility(View.GONE);
+                        // Handle failure
+                        Toast.makeText(SignupActivity.this, "Error "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("TAG", "onFailure: "+t.getMessage().toString());
+                    }
+                });
+
+               /* apiPresenter.userregistration(disposable, Constants.ApiRequestCode.USER_REGISTRATION,
                         name, email, password, contactno, "EM", region_ids,region_names, division_ids
                         , division_names, branch_codes,branch_name, emp_Codes, emp_deisigns, "H",
-                        "","Not Verified");
-                Log.e("login_Rquest", "login_Rquest: " + apiPresenter);
+                        "","Not Verified", imagePart);
+                Log.e("login_Rquest", "login_Rquest: " + apiPresenter);*/
             } else {
                 new ErrorHandlerCode(SignupActivity.this, NO_INTERNET, getString(R.string.no_internet_connection_message));
             }
@@ -161,11 +470,11 @@ public class SignupActivity extends BaseActivity {
             getEmpResp(employeeListResponse);
         }
 
-        if (callAPIId == Constants.ApiRequestCode.USER_REGISTRATION) {
+       /* if (callAPIId == Constants.ApiRequestCode.USER_REGISTRATION) {
             // LoginResponse loginResponse = new Gson().fromJson(object, LoginResponse.class);
             RegisterRespponse registerRespponse = (RegisterRespponse) object;
             finallogin(registerRespponse);
-        }
+        }*/
     }
 
 
@@ -196,7 +505,7 @@ public class SignupActivity extends BaseActivity {
 
                 } else {
                     tvError.setVisibility(View.VISIBLE);
-                    tvError.setText("Please Enter Correct Employee Code");
+                    tvError.setText("Employee Code Not Found! Please contact your region.");
 
                     Toast.makeText(this, employeeListResponse.getMessage(), Toast.LENGTH_LONG).show();
 
@@ -215,7 +524,7 @@ public class SignupActivity extends BaseActivity {
     }
 
 
-    private void finallogin(RegisterRespponse registerRespponse) {
+   /* private void finallogin(RegisterRespponse registerRespponse) {
         try {
             Log.e("login", "login: " + new GsonBuilder().create().toJson(registerRespponse));
             switch (registerRespponse.getResponseCode()) {
@@ -241,6 +550,7 @@ public class SignupActivity extends BaseActivity {
                     RetrofitClient.saveUserPreference(SignupActivity.this, Constants.EMP_CODE, registerRespponse.getData().getEmp_code());
                     RetrofitClient.saveUserPreference(SignupActivity.this, Constants.DESIGN, registerRespponse.getData().getDesign());
                     RetrofitClient.saveUserPreference(SignupActivity.this, Constants.STATUS, registerRespponse.getData().getStatus());
+                    RetrofitClient.saveUserPreference(SignupActivity.this, Constants.PROFILE_PICTURE, registerRespponse.getData().getProfilepic());
 
                     final Toast toast = new Toast(getApplicationContext());
                     toast.setDuration(Toast.LENGTH_LONG);
@@ -316,7 +626,7 @@ public class SignupActivity extends BaseActivity {
         }
 
     }
-
+*/
     @Override
     public void onDisplayMessage(String message, int callAPIId, int errorCode) {
         Infrastructure.dismissProgressDialog();
@@ -336,13 +646,13 @@ public class SignupActivity extends BaseActivity {
 
 
     private boolean validate() {
-        if (TextUtils.isEmpty(editTextName.getText().toString())) {
+        if (TextUtils.isEmpty(Objects.requireNonNull(editTextName.getText()).toString())) {
             Toast.makeText(getApplicationContext(), "Enter  name!", Toast.LENGTH_SHORT).show();
             return false;
-        } else if (TextUtils.isEmpty(editTextEmail.getText().toString())) {
+        } else if (TextUtils.isEmpty(Objects.requireNonNull(editTextEmail.getText()).toString())) {
             Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
             return false;
-        } else if (TextUtils.isEmpty(editTextMobile.getText().toString())) {
+        } else if (TextUtils.isEmpty(Objects.requireNonNull(editTextMobile.getText()).toString())) {
             Toast.makeText(getApplicationContext(), "Enter mobile number!", Toast.LENGTH_SHORT).show();
             return false;
         } else if (editTextMobile.getText().length() < 10) {
@@ -351,11 +661,14 @@ public class SignupActivity extends BaseActivity {
         } else if (editTextMobile.getText().length() > 12) {
             Toast.makeText(SignupActivity.this, "Invalid Mobile Number.", Toast.LENGTH_LONG).show();
             return false;
-        } else if (TextUtils.isEmpty(editTextPassword.getText().toString())) {
+        } else if (TextUtils.isEmpty(Objects.requireNonNull(editTextPassword.getText()).toString())) {
             Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
             return false;
         } else if (editTextPassword.getText().toString().length() < 6) {
             Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (profilePic.getDrawable() == null) {
+            Toast.makeText(getApplicationContext(), "Please Select Profile Image.", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

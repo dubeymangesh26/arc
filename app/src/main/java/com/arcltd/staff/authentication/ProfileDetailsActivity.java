@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +34,7 @@ import com.arcltd.staff.activity.updateData.UpdateProfileActivity;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.WebConstants;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.ProfileResponseResponse;
 import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;
@@ -57,7 +59,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileDetailsActivity extends BaseActivity {
     TextView etBranchCode,etEmployeeId,etEmpName,etDisign,etEmailId,etMobile,etEduction,
-            etJoiningDate,etSalary,etRetirement, etESI, etUan;
+            etJoiningDate,etSalary,etRetirement, etESI, etUan,tvFleet,tvBasic,tvHra,tvTga,tvPFNo;
+    LinearLayout liEsi;
     String data,emp_code,profileImage;
     CircleImageView profilePicture;
     Bitmap bitmap;
@@ -87,6 +90,12 @@ public class ProfileDetailsActivity extends BaseActivity {
         etESI=findViewById(R.id.etESI);
         etUan=findViewById(R.id.etUan);
         profilePicture=findViewById(R.id.profilePicture);
+        tvFleet=findViewById(R.id.tvFleet);
+        tvBasic=findViewById(R.id.tvBasic);
+        tvHra=findViewById(R.id.tvHra);
+        tvTga=findViewById(R.id.tvTga);
+        tvPFNo=findViewById(R.id.tvPFNo);
+        liEsi=findViewById(R.id.liEsi);
 
         profileDetails();
         profilePicture.setOnClickListener(new View.OnClickListener() {
@@ -164,11 +173,22 @@ public class ProfileDetailsActivity extends BaseActivity {
                 etMobile.setText(profileResponseResponse.getUser().getContactno());
                 etEduction.setText(profileResponseResponse.getEmployee_details().getEmp_eqalification());
                 etJoiningDate.setText(profileResponseResponse.getEmployee_details().getEmp_joining_date());
+
+                if(profileResponseResponse.getEmployee_details().getEsi_no().equals("Pending")){
+                    liEsi.setVisibility(View.GONE);
+                }else {
+                    liEsi.setVisibility(View.VISIBLE);
+                }
                 etSalary.setText(profileResponseResponse.getEmployee_details().getEmp_salary());
                 etRetirement.setText(profileResponseResponse.getEmployee_details().getRetirement_date());
                 etESI.setText(profileResponseResponse.getEmployee_details().getEsi_no());
                 etUan.setText(profileResponseResponse.getEmployee_details().getUan_no());
                 data = new Gson().toJson(profileResponseResponse.getEmployee_details());
+                tvFleet.setText(profileResponseResponse.getEmployee_details().getSal_fleet());
+                tvBasic.setText(profileResponseResponse.getEmployee_details().getSal_basic());
+                tvHra.setText(profileResponseResponse.getEmployee_details().getSal_hra());
+                tvTga.setText(profileResponseResponse.getEmployee_details().getSal_tga());
+                tvPFNo.setText(profileResponseResponse.getEmployee_details().getPf_number());
                 Log.e("TAG", "EmpDetails: " + data);
 
             } else {
@@ -201,29 +221,54 @@ public class ProfileDetailsActivity extends BaseActivity {
     }
 
     private void getPicturefromGallery() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
 
-        Dexter.withActivity(ProfileDetailsActivity.this)
-                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response)
-                    {
-                        Intent intent=new Intent(Intent.ACTION_PICK);
-                        intent.setType("image/*");
-                        startActivityForResult(Intent.createChooser(intent,"Browse Image"),1);
-                    }
+            Dexter.withActivity(ProfileDetailsActivity.this)
+                    .withPermission(Manifest.permission.READ_MEDIA_IMAGES)
+                    .withListener(new PermissionListener() {
+                        @Override
+                        public void onPermissionGranted(PermissionGrantedResponse response) {
+                            Intent intent = new Intent(Intent.ACTION_PICK);
+                            intent.setType("image/*");
+                            startActivityForResult(Intent.createChooser(intent, "Browse Image"), 1);
+                        }
 
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        @Override
+                        public void onPermissionDenied(PermissionDeniedResponse response) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                            token.continuePermissionRequest();
+                        }
 
-                }).check();
+                    }).check();
+        }else{
+
+            Dexter.withActivity(ProfileDetailsActivity.this)
+                    .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .withListener(new PermissionListener() {
+                        @Override
+                        public void onPermissionGranted(PermissionGrantedResponse response) {
+                            Intent intent = new Intent(Intent.ACTION_PICK);
+                            intent.setType("image/*");
+                            startActivityForResult(Intent.createChooser(intent, "Browse Image"), 1);
+                        }
+
+                        @Override
+                        public void onPermissionDenied(PermissionDeniedResponse response) {
+
+                        }
+
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                            token.continuePermissionRequest();
+                        }
+
+                    }).check();
+
+        }
 
     }
 

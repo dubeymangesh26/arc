@@ -13,8 +13,8 @@ import com.arcltd.staff.R;
 import com.arcltd.staff.networkhandler.errors.ErrorStatus;
 import com.arcltd.staff.networkhandler.networkCallBack.IResultView;
 import com.arcltd.staff.networkhandler.presentor.ApiPresenter;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
-import com.arcltd.staff.networkhandler.remote.WebService;
+import com.arcltd.staff.remote.RetrofitClient;
+import com.arcltd.staff.remote.WebService;
 import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 

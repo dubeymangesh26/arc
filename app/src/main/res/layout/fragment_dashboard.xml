@@ -62,6 +62,7 @@
                     android:id="@+id/cvTarget"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:layout_marginBottom="@dimen/_10sdp">
 
                     <androidx.cardview.widget.CardView
@@ -138,7 +139,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="ARC Structure"
+                                android:text="Regional Details"
                                 android:textColor="@color/primaryTextColor"
                                 android:textSize="@dimen/_12ssp"
                                 android:textStyle="bold" />
@@ -334,7 +335,7 @@
 
                     <RelativeLayout
                         android:id="@+id/listBike"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="@dimen/_10sdp">

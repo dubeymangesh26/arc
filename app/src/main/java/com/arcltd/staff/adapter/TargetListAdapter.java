@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.addData.AddDailyBusinessAmountActivity;
 import com.arcltd.staff.activity.detailsData.TargetAchivementDetailsActivity;
-import com.arcltd.staff.networkhandler.remote.RetrofitClient;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.TargetResponseResponse;
 import com.arcltd.staff.utility.Constants;
 import com.google.gson.Gson;
