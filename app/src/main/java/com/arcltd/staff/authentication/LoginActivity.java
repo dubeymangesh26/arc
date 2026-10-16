@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,7 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
@@ -67,13 +70,9 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_login);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
-
-
-        if(getSupportActionBar()!=null)
-            getSupportActionBar().hide();
-// to make status bar transparent
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
 
 
@@ -86,6 +85,19 @@ public class LoginActivity extends BaseActivity {
         // loginButton = findViewById(R.id.loginButton);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         Glide.with(this).load(R.drawable.eagle).into(image_logo);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setMessage("Really Exit ??");
+                builder.setTitle(R.string.app_name);
+                builder.setCancelable(false);
+                builder.setPositiveButton("Ok", new MyListener());
+                builder.setNegativeButton("Cancel", null);
+                builder.show();
+            }
+        });
 
 
 
@@ -184,6 +196,11 @@ public class LoginActivity extends BaseActivity {
         startActivity(new Intent(this, SignupActivity.class));
         overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
     }
+    
+    public void onDeviceUnlockClick(View view) {
+        startActivity(new Intent(this, DeviceUnlockRequestActivity.class));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
+    }
 
     public void SignIn(View view) {
 
@@ -228,7 +245,8 @@ public class LoginActivity extends BaseActivity {
         try {
             if (Infrastructure.isInternetPresent()) {
                 Infrastructure.showProgressDialog(LoginActivity.this);
-                apiPresenter.userLogin(disposable, Constants.ApiRequestCode.USER_LOGIN, email, passward);
+                String deviceKey = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                apiPresenter.userLogin(disposable, Constants.ApiRequestCode.USER_LOGIN, email, passward, deviceKey);
                 Log.e("login_Rquest", "login_Rquest: " + apiPresenter);
             } else {
                 new ErrorHandlerCode(LoginActivity.this, NO_INTERNET, getString(R.string.no_internet_connection_message));
@@ -256,6 +274,7 @@ public class LoginActivity extends BaseActivity {
             Log.e("login", "login: " + new GsonBuilder().create().toJson(loginResponse));
             if (loginResponse.getResponsecode().equals("200")) {
 
+                RetrofitClient.saveUserPreference(LoginActivity.this, Constants.ID, loginResponse.getUser().getId());
                 RetrofitClient.saveUserPreference(LoginActivity.this, Constants.BRANCH_CODE, loginResponse.getUser().getBranch_code());
                 RetrofitClient.saveUserPreference(LoginActivity.this, Constants.BRANCH_NAME, loginResponse.getUser().getBranch_name());
                 RetrofitClient.saveUserPreference(LoginActivity.this, Constants.EMP_CODE, loginResponse.getUser().getEmp_code());
@@ -330,6 +349,39 @@ public class LoginActivity extends BaseActivity {
                 message.setText(loginResponse.getMessage());
                 toast.setView(custom_viewError);
                 toast.show();
+            } else if (loginResponse.getResponsecode().equals("406")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle("Login Alert");
+                
+                String alertMessage = loginResponse.getMessage();
+                if (alertMessage == null || alertMessage.isEmpty()) {
+                    alertMessage = "Device Changed! You are logging in from another device.";
+                }
+                
+                // Format the message to show in two lines
+                if (alertMessage.contains("! ")) {
+                    alertMessage = alertMessage.replace("! ", "!\n");
+                } else if (alertMessage.contains(". ")) {
+                    alertMessage = alertMessage.replace(". ", ".\n");
+                } else {
+                    alertMessage = "Device Changed!\nYou are logging in from another device.";
+                }
+                
+                builder.setMessage(alertMessage);
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(LoginActivity.this, DeviceUnlockRequestActivity.class));
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
             } else {
                 final Toast toast = new Toast(getApplicationContext());
                 toast.setDuration(Toast.LENGTH_LONG);
@@ -367,18 +419,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
-    }
-
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setMessage("Really Exit ??");
-        builder.setTitle(R.string.app_name);
-        builder.setCancelable(false);
-        builder.setPositiveButton("Ok", new MyListener());
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
-
     }
 
     public void onPrivacyPolicyClick(View view) {

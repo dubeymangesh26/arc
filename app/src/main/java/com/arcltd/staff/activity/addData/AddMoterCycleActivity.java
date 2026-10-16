@@ -26,7 +26,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
 
 public class AddMoterCycleActivity extends BaseActivity {
        TextInputEditText etPUCtpto,etInsuranceuptp,etVehicleNO,etRegistrationExp,etMake,etModel,
@@ -39,7 +38,9 @@ public class AddMoterCycleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_moter_cycle);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etVehicleNO =findViewById(R.id.etVehicleNO);
@@ -54,26 +55,31 @@ public class AddMoterCycleActivity extends BaseActivity {
       //  setDate fromDate = new setDate(etPUCtpto, this);
 
 
-        try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, MoterCycleListResponse.MoterCycle.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            try {
+                data = extras.getString("data");
+                dataBean = new Gson().fromJson(data, MoterCycleListResponse.MoterCycle.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
 
-        } catch (Exception e) {
-            Log.e("", "Data Listing error: " + e);
+            } catch (Exception e) {
+                Log.e("", "Data Listing error: " + e);
+            }
         }
 
         try {
-            etVehicleNO.setText(dataBean.getVehicle_no());
-            etRegistrationExp.setText(dataBean.getRegist_no());
-            etMake.setText(dataBean.getMake());
-            etModel.setText(dataBean.getModel());
-            etPUCtpto.setText(dataBean.getPuc_upto());
-            etInsuranceuptp.setText(dataBean.getIns_upto());
-            etStanderdKm.setText(dataBean.getStanderd_km());
-            etInsuranceNo.setText(dataBean.getInsurance_no());
-            etUsername.setText(dataBean.getUser_person());
-            Vehicle_id=dataBean.getV_id();
+            if (dataBean != null) {
+                etVehicleNO.setText(dataBean.getVehicle_no());
+                etRegistrationExp.setText(dataBean.getRegist_no());
+                etMake.setText(dataBean.getMake());
+                etModel.setText(dataBean.getModel());
+                etPUCtpto.setText(dataBean.getPuc_upto());
+                etInsuranceuptp.setText(dataBean.getIns_upto());
+                etStanderdKm.setText(dataBean.getStanderd_km());
+                etInsuranceNo.setText(dataBean.getInsurance_no());
+                etUsername.setText(dataBean.getUser_person());
+                Vehicle_id = dataBean.getV_id();
+            }
 
         } catch (Exception e) {
             Log.e("", "ListingDetail error: " + e);

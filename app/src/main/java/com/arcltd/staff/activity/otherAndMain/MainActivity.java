@@ -23,6 +23,7 @@ import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.InstallStatus;
 import com.google.android.play.core.install.model.UpdateAvailability;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -38,6 +39,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
@@ -50,6 +53,19 @@ public class MainActivity extends BaseActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Really Exit ??");
+                builder.setTitle(R.string.app_name);
+                builder.setCancelable(false);
+                builder.setPositiveButton("Ok", new MyListener());
+                builder.setNegativeButton("Cancel", null);
+                builder.show();
+            }
+        });
 
         appUpdateManager = AppUpdateManagerFactory.create(this);
         installStateUpdatedListener = state -> {
@@ -146,18 +162,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage("Really Exit ??");
-        builder.setTitle(R.string.app_name);
-        builder.setCancelable(false);
-        builder.setPositiveButton("Ok", new MyListener());
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
-
-    }
 
     private class MyListener implements DialogInterface.OnClickListener {
         @Override

@@ -5,23 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".activity.addData.AddUpdateEmployeeActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="Registration"
+            app:titleTextColor="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Registration"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/_14ssp"
-            android:textStyle="bold" />
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,31 +51,9 @@
                         android:orientation="vertical"
                         android:padding="@dimen/_10sdp">
 
-                        <!--    <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <TextView
-                                    style="@style/viewParent.headerText.NoMode"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_centerVertical="true"
-                                    android:text="ARC Staff"
-                                    android:textColor="@color/primaryTextColor" />
-
-                                <ImageView
-                                    android:id="@+id/image_logo"
-                                    android:layout_width="@dimen/_75sdp"
-                                    android:layout_height="@dimen/_75sdp"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_alignParentEnd="true"
-                                    android:contentDescription="TODO" />
-
-
-                            </RelativeLayout>-->
-
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -89,7 +71,7 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:layout_margin="10dp"
                                     android:layout_marginBottom="@dimen/_20sdp"
                                     android:orientation="vertical"
@@ -101,9 +83,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginHorizontal="@dimen/_8sdp"
                                         android:layout_marginVertical="@dimen/_8sdp"
-                                        android:minHeight="50dip"
                                         android:layout_marginTop="@dimen/_20sdp"
                                         android:background="@drawable/spinner_background"
+                                        android:minHeight="50dip"
                                         android:paddingStart="@dimen/_10sdp"
                                         android:paddingEnd="@dimen/_10sdp"
                                         android:spinnerMode="dialog" />
@@ -114,9 +96,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginHorizontal="@dimen/_8sdp"
                                         android:layout_marginVertical="@dimen/_8sdp"
-                                        android:minHeight="50dip"
                                         android:layout_marginTop="@dimen/_20sdp"
                                         android:background="@drawable/spinner_background"
+                                        android:minHeight="50dip"
                                         android:paddingStart="@dimen/_10sdp"
                                         android:paddingEnd="@dimen/_10sdp"
                                         android:spinnerMode="dialog" />
@@ -126,10 +108,10 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginHorizontal="@dimen/_8sdp"
-                                        android:minHeight="50dip"
                                         android:layout_marginVertical="@dimen/_8sdp"
                                         android:layout_marginTop="@dimen/_20sdp"
                                         android:background="@drawable/spinner_background"
+                                        android:minHeight="50dip"
                                         android:paddingStart="@dimen/_10sdp"
                                         android:paddingEnd="@dimen/_10sdp"
                                         android:spinnerMode="dialog" />
@@ -165,8 +147,8 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:digits="ATR0123456789"
-                                            android:maxLength="6"
                                             android:inputType="textCapCharacters"
+                                            android:maxLength="6"
                                             android:maxLines="1" />
                                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -288,7 +270,91 @@
                                         android:layout_marginEnd="10dp"
                                         android:layout_marginBottom="10dp"
                                         android:gravity="center"
-                                        android:hint="Salary"
+                                        android:hint="Basic"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editBasic"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:inputType="number"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="HRA"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editHra"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:inputType="number"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="Fleet"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/editfleet"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:inputType="number"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="TGA"
+                                        android:textColor="@android:color/black">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/edittga"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:inputType="number"
+                                            android:maxLines="1" />
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:gravity="center"
+                                        android:hint="Grand Total"
                                         android:textColor="@android:color/black">
 
                                         <com.google.android.material.textfield.TextInputEditText
@@ -298,6 +364,7 @@
                                             android:inputType="number"
                                             android:maxLines="1" />
                                     </com.google.android.material.textfield.TextInputLayout>
+
 
                                     <com.google.android.material.textfield.TextInputLayout
                                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

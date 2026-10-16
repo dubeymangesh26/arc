@@ -38,8 +38,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class CustomerDetailsActivity extends BaseActivity implements FeedbackListAdapter.SearchAddressCallBack,
 FeedbackListAdapter.AddRemark{
     RecyclerView list;
@@ -57,14 +55,20 @@ FeedbackListAdapter.AddRemark{
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, CustomerListResponse.CustomerList.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("data");
+            }
+            if (data != null) {
+                dataBean = new Gson().fromJson(data, CustomerListResponse.CustomerList.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
         }
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         list = findViewById(R.id.list);
         swiptoRefresh = findViewById(R.id.swiptoRefresh);

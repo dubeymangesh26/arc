@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/white"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F6F8"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_branch_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#111B21"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:text="Branch: MAIN OFFICE" />
+
+                    <TextView
+                        android:id="@+id/tv_branch_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="#667781"
+                        android:textSize="14sp"
+                        tools:text="Code: BR001" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="#E0E0E0" />
+
+                    <TextView
+                        android:id="@+id/tv_location_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        android:text="GPS Location: Not set" />
+
+                    <Button
+                        android:id="@+id/btn_get_current_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:textColor="@color/white"
+                        android:text="📍 Capture Current Office Location (GPS)" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="Allowed Geofence Radius (Meters):" />
+
+                    <EditText
+                        android:id="@+id/et_radius"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:inputType="number"
+                        android:hint="e.g. 100"
+                        android:text="100"
+                        android:padding="10dp"
+                        android:background="@drawable/edit_text_round" />
+
+                    <Button
+                        android:id="@+id/btn_generate_qr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="#25D366"
+                        android:textColor="@color/white"
+                        android:text="✨ Generate &amp; Save Office QR Code" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- QR Code Display -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_qr_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#111B21"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="OFFICE ATTENDANCE QR CODE" />
+
+                    <ImageView
+                        android:id="@+id/iv_qr_code"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:layout_marginTop="16dp"
+                        android:contentDescription="Branch QR Code" />
+
+                    <TextView
+                        android:id="@+id/tv_qr_key"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="#667781"
+                        android:textSize="12sp"
+                        tools:text="QR Key: ARC_BRANCH_BR001_abc123" />
+
+                    <Button
+                        android:id="@+id/btn_share_qr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:textColor="@color/white"
+                        android:text="📲 Share Branch QR Code" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Manage / Delete QR Button -->
+            <Button
+                android:id="@+id/btn_manage_all_qrs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#1B365D"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:text="📋 View &amp; Delete Branch QR Codes" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

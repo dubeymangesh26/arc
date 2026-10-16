@@ -29,7 +29,6 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
-import java.util.Objects;
 
 public class OTPActivity extends BaseActivity {
     ProgressBar searchProgressBar;
@@ -42,7 +41,9 @@ public class OTPActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_otpactivity);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
 
@@ -53,16 +54,21 @@ public class OTPActivity extends BaseActivity {
          etOtp = (EditText) findViewById(R.id.etOTP);
         searchProgressBar = findViewById(R.id.searchProgressBar);
 
-         if (getIntent().getExtras().getString("me").equals("No")){
-             tvErMessege.setVisibility(View.VISIBLE);
-             email=RetrofitClient.getStringUserPreference(this, Constants.EMAIL_ID);
-             getOTP(email);
-         }else {
-             email=getIntent().getExtras().getString("me");
-             getOTP(email);
-         }
+        if (getIntent().getExtras() != null) {
+            String me = getIntent().getExtras().getString("me");
+            if ("No".equals(me)) {
+                tvErMessege.setVisibility(View.VISIBLE);
+                email = RetrofitClient.getStringUserPreference(this, Constants.EMAIL_ID);
+                getOTP(email);
+            } else {
+                email = me;
+                getOTP(email);
+            }
+        }
         //  otpReceive = String.valueOf(loginResponse.getResponse().getData().getOtp());
-        di_mobilenoOrEmail.setText(email);
+        if (email != null) {
+            di_mobilenoOrEmail.setText(email);
+        }
 
 
 

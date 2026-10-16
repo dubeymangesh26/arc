@@ -69,8 +69,35 @@ public class EmployeeListResponse {
         private String emp_mob;
         private String profilepic;
 
+        private String last_message;
+        private String last_seen;
+        private int unread_count;
 
         private String gread;
+
+        public String getLast_message() {
+            return last_message;
+        }
+
+        public void setLast_message(String last_message) {
+            this.last_message = last_message;
+        }
+
+        public String getLast_seen() {
+            return last_seen;
+        }
+
+        public void setLast_seen(String last_seen) {
+            this.last_seen = last_seen;
+        }
+
+        public int getUnread_count() {
+            return unread_count;
+        }
+
+        public void setUnread_count(int unread_count) {
+            this.unread_count = unread_count;
+        }
 
         public String getPf_number() {
             return pf_number;

@@ -48,9 +48,13 @@ public class CNSTrackingActivity extends BaseActivity {
         setContentView(R.layout.activity_cnstracking);
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("CNS_data");
-            dataBean = new Gson().fromJson(data, ConsignmentTrackListResponse.ConsignmentList.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("CNS_data");
+            }
+            if (data != null) {
+                dataBean = new Gson().fromJson(data, ConsignmentTrackListResponse.ConsignmentList.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
@@ -96,13 +100,18 @@ public class CNSTrackingActivity extends BaseActivity {
             cnsPaymSide.setText(dataBean.getPayment_cust_name());
             branchCode.setText(dataBean.getBranch_code());
 
-            Glide.with(CNSTrackingActivity.this)
-                    .load(dataBean.getPod_ilnk()) // image url
-                    .placeholder(R.drawable.slide_one) // any placeholder to load at start
-                    .error(R.drawable.avatar_10)  // any image in case of error
-                    .override(200, 200) // resizing
-                    .centerCrop()
-                    .into(podsm);
+            String podUrl = dataBean.getPod_ilnk();
+            if (podUrl != null && !podUrl.isEmpty()) {
+                Glide.with(CNSTrackingActivity.this)
+                        .load(podUrl) // image url
+                        .placeholder(R.drawable.slide_one) // any placeholder to load at start
+                        .error(R.drawable.avatar_10)  // any image in case of error
+                        .override(200, 200) // resizing
+                        .centerCrop()
+                        .into(podsm);
+            } else {
+                podsm.setImageResource(R.drawable.slide_one);
+            }
 
             if (dataBean.getDelivery_status().equals("")) {
                 dlyStatus.setText("In transit");
@@ -137,10 +146,12 @@ public class CNSTrackingActivity extends BaseActivity {
                         podImageView = dialog.findViewById(R.id.podImageView);
                         close = dialog.findViewById(R.id.close);
 
-                        Glide.with(CNSTrackingActivity.this)
-                                .load(dataBean.getPod_ilnk()) // image url  // any image in case of error
-                                .centerCrop()
-                                .into(podImageView);
+                        if (podUrl != null && !podUrl.isEmpty()) {
+                            Glide.with(CNSTrackingActivity.this)
+                                    .load(podUrl) // image url  // any image in case of error
+                                    .centerCrop()
+                                    .into(podImageView);
+                        }
 
                         close.setOnClickListener(new View.OnClickListener() {
                             @Override

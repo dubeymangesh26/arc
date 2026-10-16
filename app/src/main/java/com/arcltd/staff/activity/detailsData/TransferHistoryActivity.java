@@ -25,8 +25,6 @@ import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class TransferHistoryActivity extends BaseActivity {
     RecyclerView list;
     SwipeRefreshLayout swiptoRefresh;
@@ -38,12 +36,16 @@ public class TransferHistoryActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_transfer_history);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list=findViewById(R.id.list);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);
-        emp_code=getIntent().getExtras().getString("emp_code");
+        if (getIntent().getExtras() != null) {
+            emp_code = getIntent().getExtras().getString("emp_code");
+        }
         historyList();
     }
 

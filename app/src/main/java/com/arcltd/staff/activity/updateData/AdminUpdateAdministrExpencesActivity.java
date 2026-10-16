@@ -26,8 +26,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class AdminUpdateAdministrExpencesActivity extends BaseActivity {
     TextInputEditText tvTelephone,tvPostageCourier,tvPrintStatinary,tvPetrolTwoWheeler,tvTwoWhMantatention,tvCarPetrol,
             tvCarMatatenance,tvConveyance,tvTravelling,tvStaffWelfare,tvMiscCharges,tvBisinessPramotion,tvOfficeMant,
@@ -45,7 +43,9 @@ public class AdminUpdateAdministrExpencesActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_admin_update_aminist_expences);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
 
@@ -82,52 +82,58 @@ public class AdminUpdateAdministrExpencesActivity extends BaseActivity {
 
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("res");
-            databeen = new Gson().fromJson(data,AdministrativEXPAdminResponse.BranchAdministrativeexpList.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(databeen));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("res");
+            }
+            if (data != null) {
+                databeen = new Gson().fromJson(data, AdministrativEXPAdminResponse.BranchAdministrativeexpList.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(databeen));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
         }
 
         try {
-        branch_code=databeen.getBranch_code();
-            division_id=databeen.getDivision_id();
-            region_id=databeen.getRegion_id();
-        tvTelephone.setText(databeen.getTelephone());
-        tvPostageCourier.setText(databeen.getPastge_courier());
-        tvPrintStatinary.setText(databeen.getPrint_stationery());
-        tvPetrolTwoWheeler.setText(databeen.getBike_petrol_exp());
-        tvTwoWhMantatention.setText(databeen.getBike_maitainance());
-        tvCarPetrol.setText(databeen.getCar_petrol_exp());
-        tvCarMatatenance.setText(databeen.getCar_maitainance());
-        tvConveyance.setText(databeen.getConveyance());
-        tvTravelling.setText(databeen.getTravelling());
-        tvStaffWelfare.setText(databeen.getStaff_welfare());
-        tvMiscCharges.setText(databeen.getMisc_charges());
-        tvBisinessPramotion.setText(databeen.getBusi_pramostion());
-        tvOfficeMant.setText(databeen.getOffice_maitanance());
-        tvOffEqpMaint.setText(databeen.getOffice_eqp_maintenance());
-        tvrepaireBuliders.setText(databeen.getRepare_buildings());
-        tvSalaryBoGarOther.setText(databeen.getSalary_bonas_gradu_other());
-        tvCoContPFESI.setText(databeen.getCocontribution_pf_esi());
-        tvRentPaid.setText(databeen.getRent_paid());
-        tvElectricity.setText(databeen.getElectricity());
-        tvBookPeriodicals.setText(databeen.getBooks_periodicals());
-        tvAdvertisement.setText(databeen.getAdvertisement());
-        tvRecruPlaceConfr.setText(databeen.getRecrument_place_conf());
-        tvInsurance.setText(databeen.getInsurance());
-        tvLegal.setText(databeen.getLegal());
-        tvSubscription.setText(databeen.getSubscription());
-        tvCharityDonation.setText(databeen.getCharity_donation());
-        tvAuditorConsultcy.setText(databeen.getAuditor_consultancy());
-        tvRateTaxes.setText(databeen.getRates_taxes());
-        tvBankCommission.setText(databeen.getBank_commission());
-        tvEmpChildrenAssit.setText(databeen.getEmp_children_education());
-        tvTotalBranchExpenses.setText(databeen.getTelephone());
-    } catch (Exception e) {
-        Log.e("", "ListingDetail error: " + e);
-    }
+            if (databeen != null) {
+                branch_code = databeen.getBranch_code();
+                division_id = databeen.getDivision_id();
+                region_id = databeen.getRegion_id();
+                tvTelephone.setText(databeen.getTelephone());
+                tvPostageCourier.setText(databeen.getPastge_courier());
+                tvPrintStatinary.setText(databeen.getPrint_stationery());
+                tvPetrolTwoWheeler.setText(databeen.getBike_petrol_exp());
+                tvTwoWhMantatention.setText(databeen.getBike_maitainance());
+                tvCarPetrol.setText(databeen.getCar_petrol_exp());
+                tvCarMatatenance.setText(databeen.getCar_maitainance());
+                tvConveyance.setText(databeen.getConveyance());
+                tvTravelling.setText(databeen.getTravelling());
+                tvStaffWelfare.setText(databeen.getStaff_welfare());
+                tvMiscCharges.setText(databeen.getMisc_charges());
+                tvBisinessPramotion.setText(databeen.getBusi_pramostion());
+                tvOfficeMant.setText(databeen.getOffice_maitanance());
+                tvOffEqpMaint.setText(databeen.getOffice_eqp_maintenance());
+                tvrepaireBuliders.setText(databeen.getRepare_buildings());
+                tvSalaryBoGarOther.setText(databeen.getSalary_bonas_gradu_other());
+                tvCoContPFESI.setText(databeen.getCocontribution_pf_esi());
+                tvRentPaid.setText(databeen.getRent_paid());
+                tvElectricity.setText(databeen.getElectricity());
+                tvBookPeriodicals.setText(databeen.getBooks_periodicals());
+                tvAdvertisement.setText(databeen.getAdvertisement());
+                tvRecruPlaceConfr.setText(databeen.getRecrument_place_conf());
+                tvInsurance.setText(databeen.getInsurance());
+                tvLegal.setText(databeen.getLegal());
+                tvSubscription.setText(databeen.getSubscription());
+                tvCharityDonation.setText(databeen.getCharity_donation());
+                tvAuditorConsultcy.setText(databeen.getAuditor_consultancy());
+                tvRateTaxes.setText(databeen.getRates_taxes());
+                tvBankCommission.setText(databeen.getBank_commission());
+                tvEmpChildrenAssit.setText(databeen.getEmp_children_education());
+                tvTotalBranchExpenses.setText(databeen.getTelephone());
+            }
+        } catch (Exception e) {
+            Log.e("", "ListingDetail error: " + e);
+        }
 
     }
 

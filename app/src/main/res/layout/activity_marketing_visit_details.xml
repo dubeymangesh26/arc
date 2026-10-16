@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/white" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F6F8"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Header Row: Company Name & Top-Right Small Close Button -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@id/btn_close_top"
+                            android:layout_marginEnd="8dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_company_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#111B21"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                tools:text="Tata Steel Ltd" />
+
+                            <TextView
+                                android:id="@+id/tv_visit_datetime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:textColor="#667781"
+                                android:textSize="13sp"
+                                tools:text="Date: 2025-02-18 14:30" />
+                        </LinearLayout>
+
+                        <!-- Small Close Button on Top-Right Corner -->
+                        <ImageView
+                            android:id="@+id/btn_close_top"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="4dp"
+                            android:src="@android:drawable/ic_menu_close_clear_cancel"
+                            app:tint="#FF3B30"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:contentDescription="Close" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Employee Details -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#111B21"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="Visited By Employee:" />
+
+                    <TextView
+                        android:id="@+id/tv_emp_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="John Doe (EMP001)" />
+
+                    <!-- Branch Info -->
+                    <TextView
+                        android:id="@+id/tv_branch_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="#333333"
+                        android:textSize="13sp"
+                        tools:text="Branch Code: HO01" />
+
+                    <!-- Purpose -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textColor="#111B21"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="Purpose of Visit:" />
+
+                    <TextView
+                        android:id="@+id/tv_purpose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:background="#F2F2F2"
+                        android:padding="12dp"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        tools:text="Client meeting for rate quotation and annual logistics contract." />
+
+                    <!-- Location / GPS -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textColor="#111B21"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="Location &amp; Coordinates:" />
+
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:textColor="#333333"
+                        android:textSize="14sp"
+                        tools:text="📍 Jamshedpur Office\nGPS: Lat 19.123456, Lng 72.876543" />
+
+                    <!-- Visit Photo -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textColor="#111B21"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:text="Visit Photo Proof:" />
+
+                    <ImageView
+                        android:id="@+id/iv_visit_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="8dp"
+                        android:scaleType="fitCenter"
+                        android:background="#E0E0E0"
+                        android:contentDescription="Visit Photo" />
+
+                    <!-- Close Window Button -->
+                    <Button
+                        android:id="@+id/btn_close_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="#FF3B30"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:text="❌ Close Details Window" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -29,8 +29,6 @@ import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class EmployeeConvenceListActivity extends BaseActivity {
     RecyclerView list;
     SwipeRefreshLayout swiptoRefresh;
@@ -45,8 +43,12 @@ public class EmployeeConvenceListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_convence_list);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list=findViewById(R.id.list);
@@ -54,10 +56,8 @@ public class EmployeeConvenceListActivity extends BaseActivity {
         searchProgressBar=findViewById(R.id.searchProgressBar);
         atSearch=findViewById(R.id.atSearch);
 
-        try {
-            branch_code = Objects.requireNonNull(getIntent().getExtras()).getString("branch_code");
-        }catch (Exception e){
-            Log.e(TAG, "onCreate: ",e );
+        if (getIntent().getExtras() != null) {
+            branch_code = getIntent().getExtras().getString("branch_code");
         }
 
         conenyanceMobileList();

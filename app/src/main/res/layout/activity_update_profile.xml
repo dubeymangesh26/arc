@@ -5,16 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".activity.updateData.UpdateProfileActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="Update Profile"
+            app:titleTextColor="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"
             android:orientation="vertical">
 
@@ -22,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:cardCornerRadius="6dp"
                 app:cardElevation="0dp">
 
@@ -140,7 +155,7 @@
                     android:id="@+id/etEmailId"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPersonName"
+                    android:inputType="textEmailAddress"
                     android:enabled="false"
                     android:focusable="false"
                     android:maxLines="1" />
@@ -162,7 +177,7 @@
                     android:id="@+id/etMobile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPersonName"
+                    android:inputType="phone"
                     android:enabled="false"
                     android:focusable="false"
                     android:maxLines="1" />
@@ -184,7 +199,7 @@
                     android:id="@+id/etEduction"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapSentences"
                     android:enabled="false"
                     android:focusable="false"
                     android:maxLines="1" />
@@ -206,7 +221,7 @@
                     android:id="@+id/etJoiningDate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPersonName"
+                    android:inputType="date"
                     android:enabled="false"
                     android:focusable="false"
                     android:maxLines="1" />
@@ -228,7 +243,7 @@
                     android:id="@+id/etSalary"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPersonName"
+                    android:inputType="number"
                     android:enabled="false"
                     android:focusable="false"
                     android:maxLines="1" />

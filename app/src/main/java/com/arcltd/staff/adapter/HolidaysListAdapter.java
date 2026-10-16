@@ -56,6 +56,7 @@ public class HolidaysListAdapter extends RecyclerView.Adapter<HolidaysListAdapte
 
 
         holder.tvFestvalName.setText(list.get(position).getFestval());
+        holder.tvFestDay.setText(list.get(position).getFst_day());
 
         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
@@ -99,7 +100,7 @@ public class HolidaysListAdapter extends RecyclerView.Adapter<HolidaysListAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvFestvalName,tvFestDate;
+        TextView tvFestvalName,tvFestDate,tvFestDay;
         LinearLayout listholidays;
 
 
@@ -107,6 +108,7 @@ public class HolidaysListAdapter extends RecyclerView.Adapter<HolidaysListAdapte
             super(itemView);
             tvFestvalName = itemView.findViewById(R.id.tvFestvalName);
             tvFestDate = itemView.findViewById(R.id.tvFestDate);
+            tvFestDay = itemView.findViewById(R.id.tvFestDay);
             listholidays = itemView.findViewById(R.id.listholidays);
 
 

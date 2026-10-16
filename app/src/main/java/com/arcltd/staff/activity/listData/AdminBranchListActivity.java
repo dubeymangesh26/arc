@@ -1,6 +1,5 @@
 package com.arcltd.staff.activity.listData;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
 import android.annotation.SuppressLint;
@@ -33,13 +32,13 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
 import java.util.Locale;
-import java.util.Objects;
 
 public class AdminBranchListActivity extends BaseActivity {
+    private static final String TAG = "AdminBranchListActivity";
     RecyclerView list;
     SwipeRefreshLayout swiptoRefresh;
     private AdminBranchListAdapter.RerfreshWishList chRerfreshWishList;
-    private String division_id, term="";;
+    private String division_id = "", term = "";
     BranchListResponse.BranchList dataBean;
     AdminBranchListAdapter listAdapter;
     AutoCompleteTextView atSearch;
@@ -51,8 +50,12 @@ public class AdminBranchListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_branch_list);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list=findViewById(R.id.list);
@@ -63,17 +66,17 @@ public class AdminBranchListActivity extends BaseActivity {
 
 
         try {
-            term = Objects.requireNonNull(getIntent().getExtras()).getString("A");
-            Log.e(TAG, "term: "+term );
-            if (term!=""){
-                division_id = Objects.requireNonNull(getIntent().getExtras()).getString("div_id");
-
-            }else {
-                division_id="";
+            if (getIntent().getExtras() != null) {
+                term = getIntent().getExtras().getString("A");
+                Log.e(TAG, "term: " + term);
+                if (term != null && !term.isEmpty()) {
+                    division_id = getIntent().getExtras().getString("div_id");
+                } else {
+                    division_id = "";
+                }
             }
-
         } catch (Exception e) {
-            Log.e("", "Data Listing error: " + e);
+            Log.e(TAG, "Data Listing error: " + e);
         }
 
         branchList();

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:fitsSystemWindows="true"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".activity.otherAndMain.PdfViewerReaderActivity">
@@ -16,8 +17,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.github.barteksc.pdfviewer.PDFView
-            android:id="@+id/pdfView"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/pdfViewContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

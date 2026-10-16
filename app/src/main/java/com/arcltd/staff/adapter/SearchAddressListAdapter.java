@@ -40,7 +40,7 @@ public class SearchAddressListAdapter extends RecyclerView.Adapter<SearchAddress
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
-        holder.tvAddress.setText(list.get(position).getBranch_name());
+        holder.tvAddress.setText(list.get(position).getBranchName());
 
         holder.liAddressSearch.setOnClickListener(new View.OnClickListener() {
             @Override

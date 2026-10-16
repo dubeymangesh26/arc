@@ -1,6 +1,5 @@
 package com.arcltd.staff.activity.listData;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
 import android.Manifest;
@@ -28,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,7 +48,6 @@ import com.arcltd.staff.utility.Constants;
 import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +55,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class BranchListActivity extends BaseActivity {
+    private static final String TAG = "BranchListActivity";
     RecyclerView list;
     SwipeRefreshLayout swiptoRefresh;
     private BranchLocalListAdapter.RerfreshWishList chRerfreshWishList;
@@ -75,8 +75,12 @@ public class BranchListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_branch_list);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list = findViewById(R.id.list);
@@ -86,69 +90,85 @@ public class BranchListActivity extends BaseActivity {
         responselist = new ArrayList<>();
         DB = new BranchLocalDBHelper(this);
 
-        micButton = findViewById(R.id.ivMicAudio);
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+                micButton = findViewById(R.id.ivMicAudio);
+        try {
+            if (SpeechRecognizer.isRecognitionAvailable(this)) {
+                speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            }
+        } catch (Exception e) {
+            ELog.e(TAG, "Exception in SpeechRecognizer.createSpeechRecognizer", e);
+        }
         final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
-        speechRecognizer.setRecognitionListener(new RecognitionListener() {
-            @Override
-            public void onReadyForSpeech(Bundle bundle) {
+        if (speechRecognizer != null) {
+            speechRecognizer.setRecognitionListener(new RecognitionListener() {
+                @Override
+                public void onReadyForSpeech(Bundle bundle) {
 
-            }
+                }
 
-            @Override
-            public void onBeginningOfSpeech() {
-                atSearch.setText("");
-                atSearch.setHint("Listening...");
-            }
+                @Override
+                public void onBeginningOfSpeech() {
+                    atSearch.setText("");
+                    atSearch.setHint("Listening...");
+                }
 
-            @Override
-            public void onRmsChanged(float v) {
+                @Override
+                public void onRmsChanged(float v) {
 
-            }
+                }
 
-            @Override
-            public void onBufferReceived(byte[] bytes) {
+                @Override
+                public void onBufferReceived(byte[] bytes) {
 
-            }
+                }
 
-            @Override
-            public void onEndOfSpeech() {
+                @Override
+                public void onEndOfSpeech() {
 
-            }
+                }
 
-            @Override
-            public void onError(int i) {
+                @Override
+                public void onError(int i) {
 
-            }
+                }
 
-            @Override
-            public void onResults(Bundle bundle) {
-                micButton.setImageResource(R.drawable.ic_mic_24);
-                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                atSearch.setText(data.get(0));
-            }
+                @Override
+                public void onResults(Bundle bundle) {
+                    micButton.setImageResource(R.drawable.ic_mic_24);
+                    ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                    if (data != null && !data.isEmpty()) {
+                        atSearch.setText(data.get(0));
+                    }
+                }
 
-            @Override
-            public void onPartialResults(Bundle bundle) {
+                @Override
+                public void onPartialResults(Bundle bundle) {
 
-            }
+                }
 
-            @Override
-            public void onEvent(int i, Bundle bundle) {
+                @Override
+                public void onEvent(int i, Bundle bundle) {
 
-            }
-        });
+                }
+            });
+        }
 
         micButton.setOnTouchListener((view, motionEvent) -> {
-            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                speechRecognizer.stopListening();
-            }
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                // micButton.setImageResource(R.drawable.ic_mic_24);
-                speechRecognizer.startListening(speechRecognizerIntent);
+            if (speechRecognizer != null) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    speechRecognizer.stopListening();
+                }
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    // micButton.setImageResource(R.drawable.ic_mic_24);
+                    speechRecognizer.startListening(speechRecognizerIntent);
+                }
+            } else {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    Toast.makeText(this, "Speech recognition not available", Toast.LENGTH_SHORT).show();
+                }
             }
             return false;
         });
@@ -165,7 +185,9 @@ public class BranchListActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                listAdapter.getFilter().filter(editable.toString());
+                if (listAdapter != null) {
+                    listAdapter.getFilter().filter(editable.toString());
+                }
             }
         });
 
@@ -236,11 +258,16 @@ public class BranchListActivity extends BaseActivity {
     }
 
     private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(BranchListActivity.this,
-                Arrays.toString(permissions)) != PackageManager.PERMISSION_GRANTED) {
+        boolean allGranted = true;
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allGranted = false;
+                break;
+            }
+        }
+        if (!allGranted) {
             askPermissions();
         }
-
     }
 
 
@@ -262,41 +289,44 @@ public class BranchListActivity extends BaseActivity {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissionsList[],
-                                           int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissionsList,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissionsList, grantResults);
         if (requestCode == MULTIPLE_PERMISSIONS) {
             if (grantResults.length > 0) {
-                StringBuilder permissionsDenied = new StringBuilder();
-                for (String per : permissionsList) {
-                    if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                        permissionsDenied.append("\n").append(per);
-
-                        //  Toast.makeText(SplashScreenActivity.this, "permission not granted", Toast.LENGTH_SHORT).show();
-                        androidx.appcompat.app.AlertDialog.Builder builder = new
-                                androidx.appcompat.app.AlertDialog.Builder(BranchListActivity.this);
-                        builder.setMessage("Please Provide Permission Or Remaining Permission ")
-                                .setCancelable(false)
-                                .setPositiveButton("Allow Permission", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        recreate();
-                                    }
-                                })
-                                .setNegativeButton("Exit From App", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        BranchListActivity.super.finish();
-                                        dialog.cancel();
-                                    }
-                                });
-                        androidx.appcompat.app.AlertDialog alert = builder.create();
-                        alert.show();
-                        Button pbutton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
-                        pbutton.setTextColor(Color.rgb(30, 144, 255));
-                        Button nbutton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
-                        nbutton.setTextColor(Color.rgb(30, 144, 255));
-
+                boolean somePermissionDenied = false;
+                for (int result : grantResults) {
+                    if (result == PackageManager.PERMISSION_DENIED) {
+                        somePermissionDenied = true;
+                        break;
                     }
+                }
+
+                if (somePermissionDenied) {
+                    //  Toast.makeText(SplashScreenActivity.this, "permission not granted", Toast.LENGTH_SHORT).show();
+                    androidx.appcompat.app.AlertDialog.Builder builder = new
+                            androidx.appcompat.app.AlertDialog.Builder(BranchListActivity.this);
+                    builder.setMessage("Please Provide Permission Or Remaining Permission ")
+                            .setCancelable(false)
+                            .setPositiveButton("Allow Permission", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    recreate();
+                                }
+                            })
+                            .setNegativeButton("Exit From App", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    BranchListActivity.super.finish();
+                                    dialog.cancel();
+                                }
+                            });
+                    androidx.appcompat.app.AlertDialog alert = builder.create();
+                    alert.show();
+                    Button pbutton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                    pbutton.setTextColor(Color.rgb(30, 144, 255));
+                    Button nbutton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                    nbutton.setTextColor(Color.rgb(30, 144, 255));
+
                 }
 
             }
@@ -349,24 +379,24 @@ public class BranchListActivity extends BaseActivity {
                   DB.clearData();
                     for (int i = 0; i < branchListResponse.getBranchList().size(); i++) {
                         DB.addNewList(
-                                branchListResponse.getBranchList().get(i).getBranch_id(),
-                                branchListResponse.getBranchList().get(i).getBranch_name(),
-                                branchListResponse.getBranchList().get(i).getBranch_code(),
-                                branchListResponse.getBranchList().get(i).getRegion_id(),
-                                branchListResponse.getBranchList().get(i).getRegion_name(),
-                                branchListResponse.getBranchList().get(i).getDivision_id(),
-                                branchListResponse.getBranchList().get(i).getDivision_name(),
-                                branchListResponse.getBranchList().get(i).getAc_branch(),
-                                branchListResponse.getBranchList().get(i).getBranch_address(),
-                                branchListResponse.getBranchList().get(i).getBranch_mngr_mob(),
-                                branchListResponse.getBranchList().get(i).getStd_code(),
-                                branchListResponse.getBranchList().get(i).getPhone_number(),
-                                branchListResponse.getBranchList().get(i).getBranch_mobileno(),
-                                branchListResponse.getBranchList().get(i).getEmail_id(),
-                                branchListResponse.getBranchList().get(i).getUpdated_date());
+                                branchListResponse.getBranchList().get(i).getBranchId(),
+                                branchListResponse.getBranchList().get(i).getBranchName(),
+                                branchListResponse.getBranchList().get(i).getBranchCode(),
+                                branchListResponse.getBranchList().get(i).getRegionId(),
+                                branchListResponse.getBranchList().get(i).getRegionName(),
+                                branchListResponse.getBranchList().get(i).getDivisionId(),
+                                branchListResponse.getBranchList().get(i).getDivisionName(),
+                                branchListResponse.getBranchList().get(i).getAcBranch(),
+                                branchListResponse.getBranchList().get(i).getBranchAddress(),
+                                branchListResponse.getBranchList().get(i).getBranchMngrMob(),
+                                branchListResponse.getBranchList().get(i).getStdCode(),
+                                branchListResponse.getBranchList().get(i).getPhoneNumber(),
+                                branchListResponse.getBranchList().get(i).getBranchMobileno(),
+                                branchListResponse.getBranchList().get(i).getEmailId(),
+                                branchListResponse.getBranchList().get(i).getUpdatedDate());
 
                     }
-                    RetrofitClient.saveUserPreference(BranchListActivity.this, Constants.BRANCH_CHECK, branchListResponse.getBranchList().get(0).getBranch_code());
+                    RetrofitClient.saveUserPreference(BranchListActivity.this, Constants.BRANCH_CHECK, branchListResponse.getBranchList().get(0).getBranchCode());
                     Infrastructure.dismissProgressDialog();
                     showBranch();
 
@@ -411,7 +441,9 @@ public class BranchListActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        speechRecognizer.destroy();
+        if (speechRecognizer != null) {
+            speechRecognizer.destroy();
+        }
     }
 
 

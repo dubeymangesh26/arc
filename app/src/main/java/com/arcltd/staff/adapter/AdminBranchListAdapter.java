@@ -59,8 +59,8 @@ public class AdminBranchListAdapter extends RecyclerView.Adapter<AdminBranchList
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
 
-        holder.tvBranchName.setText(list.get(position).getBranch_name());
-        String number=list.get(position).getBranch_mngr_mob();
+        holder.tvBranchName.setText(list.get(position).getBranchCode());
+        String number=list.get(position).getBranchMobileno();
 
         holder.btnViewDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,10 +102,10 @@ public class AdminBranchListAdapter extends RecyclerView.Adapter<AdminBranchList
                 } else {
                     ArrayList<BranchListResponse.BranchList> filteredList = new ArrayList<>();
                     for (BranchListResponse.BranchList data : beanList) {
-                        if (data.getBranch_name().toLowerCase().contains(charString) ||
-                                data.getBranch_name().toUpperCase().contains(charString) ||
-                                data.getBranch_code().toUpperCase().contains(charString) ||
-                                data.getBranch_address().toUpperCase().contains(charString)) {
+                        if (data.getBranchName().toLowerCase().contains(charString) ||
+                                data.getBranchName().toUpperCase().contains(charString) ||
+                                data.getBranchCode().toUpperCase().contains(charString) ||
+                                data.getBranchAddress().toUpperCase().contains(charString)) {
                             filteredList.add(data);
                         }
                     }

@@ -57,11 +57,17 @@ public class WebViewActiviry extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_video_web_view);
-        webViewUrl = getIntent().getExtras().getString("url");
+        if (getIntent().getExtras() != null) {
+            webViewUrl = getIntent().getExtras().getString("url");
+        }
 
-        initViews();
-        setUpWebView();
-        setListeners();
+        if (webViewUrl != null) {
+            initViews();
+            setUpWebView();
+            setListeners();
+        } else {
+            finish();
+        }
 
     }
 
@@ -93,25 +99,21 @@ public class WebViewActiviry extends AppCompatActivity implements View.OnClickLi
             close.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.webviewBack:
-                    isWebViewCanGoBack();
-                    break;
-                case R.id.webviewForward:
-                    if (webView.canGoForward())
-                        webView.goForward();
-                    break;
-                case R.id.webviewReload:
-                    String url = webView.getUrl();
-                    LoadWebViewUrl(url);
-                    break;
-                case R.id.webviewClose:
-                    finish();
-                    break;
-            }
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.webviewBack) {
+            isWebViewCanGoBack();
+        } else if (id == R.id.webviewForward) {
+            if (webView.canGoForward())
+                webView.goForward();
+        } else if (id == R.id.webviewReload) {
+            String url = webView.getUrl();
+            LoadWebViewUrl(url);
+        } else if (id == R.id.webviewClose) {
+            finish();
         }
+    }
 
 
         private class MyWebViewClient extends WebViewClient {

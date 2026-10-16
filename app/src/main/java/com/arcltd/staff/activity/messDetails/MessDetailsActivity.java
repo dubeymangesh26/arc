@@ -5,6 +5,7 @@ import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,8 +29,6 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class MessDetailsActivity extends BaseActivity {
     TextView tvDivision,tvMessName,tvOwnRented,tvCookAvl,tvCookSalary,tvNoOfEmp,tvResAddress,
             tvDescription,tvTelevision,tvRefrigerator,tvBedOccupied,tvBedCapacity,
@@ -44,12 +43,21 @@ public class MessDetailsActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_mess_details);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("dataDetails");
-            dataBean = new Gson().fromJson(data, MessListResponse.MessList.class);
-            Log.e("", "Mess List: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("dataDetails");
+            }
+            if (data != null) {
+                dataBean = new Gson().fromJson(data, MessListResponse.MessList.class);
+                Log.e("", "Mess List: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
@@ -144,8 +152,7 @@ public class MessDetailsActivity extends BaseActivity {
                 }
             } else {
                 Infrastructure.dismissProgressDialog();
-                ELog.e(TAG, "Exception in messEmpListResponse" + messEmpListResponse.getResponseCode());
-                Toast.makeText(this, messEmpListResponse.getMessage(), Toast.LENGTH_LONG).show();
+                ELog.e(TAG, "Exception in messEmpListResponse: response is null");
 
             }
         } catch (Exception e) {

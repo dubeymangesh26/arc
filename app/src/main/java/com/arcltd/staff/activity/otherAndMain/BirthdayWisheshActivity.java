@@ -50,7 +50,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class BirthdayWisheshActivity extends AppCompatActivity {
     TextInputEditText etEmpCode,etEmpName,etMessage,etEmpMobile;
@@ -85,21 +84,29 @@ public class BirthdayWisheshActivity extends AppCompatActivity {
         imageView=findViewById(R.id.imageView);
         etEmpMobile=findViewById(R.id.etEmpMobile);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, EmployeeListResponse.EmployeeList.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("data");
+            }
+            if (data != null) {
+                dataBean = new Gson().fromJson(data, EmployeeListResponse.EmployeeList.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
         }
 
         try {
-            empNamedilog=dataBean.getEmp_name();
-            etEmpCode.setText(dataBean.getEmp_code());
-            etEmpName.setText(dataBean.getEmp_name());
-            etEmpMobile.setText(dataBean.getEmp_mob());
+            if (dataBean != null) {
+                empNamedilog = dataBean.getEmp_name();
+                etEmpCode.setText(dataBean.getEmp_code());
+                etEmpName.setText(dataBean.getEmp_name());
+                etEmpMobile.setText(dataBean.getEmp_mob());
+            }
 
         } catch (Exception e) {
             Log.e("", "ListingDetail error: " + e);
@@ -139,7 +146,7 @@ public class BirthdayWisheshActivity extends AppCompatActivity {
 
     public void submitSharen(View view) {
         phonestr="+91"+etEmpMobile.getText().toString();
-        messagestr="Hi,"+"\n"+dataBean.getEmp_name()+"\n"+"\uD83C\uDF82Happy Birthday!\uD83C\uDF82"+"\n\n"
+        messagestr="Hi,"+"\n"+(dataBean != null ? dataBean.getEmp_name() : "")+"\n"+"\uD83C\uDF82Happy Birthday!\uD83C\uDF82"+"\n\n"
                 +etMessage.getText().toString() +"\n\n"+
                 "From "+"\n"+"ARC Family"+
                 "\n"+"Mumbai ";
@@ -156,7 +163,7 @@ public class BirthdayWisheshActivity extends AppCompatActivity {
     }
     public void submitShareMessage(View view) {
         phonestr="+91"+etEmpMobile.getText().toString();
-        messagestr="Hi,"+"\n"+dataBean.getEmp_name()+"\n"+"\uD83C\uDF82Happy Birthday!\uD83C\uDF82"+"\n\n"
+        messagestr="Hi,"+"\n"+(dataBean != null ? dataBean.getEmp_name() : "")+"\n"+"\uD83C\uDF82Happy Birthday!\uD83C\uDF82"+"\n\n"
                 +etMessage.getText().toString() +"\n\n"+
                 "From"+"\n"+ "ARC Family"+
                 "\n"+"Mumbai ";
@@ -225,7 +232,7 @@ public class BirthdayWisheshActivity extends AppCompatActivity {
         lp.gravity = Gravity.CENTER;
         dialog.getWindow()
                 .setLayout(
-                        ViewGroup.LayoutParams.FILL_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
         try {
             TextView tvCardName;

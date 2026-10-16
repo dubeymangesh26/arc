@@ -27,6 +27,7 @@ import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.firebase.FcmNotificationsSender;
 import com.arcltd.staff.firebase.MyMessagingService;
 import com.arcltd.staff.networkhandler.errors.ErrorHandlerCode;
+import com.arcltd.staff.remote.RetrofitClient;
 import com.arcltd.staff.response.AddMessageResponse;
 import com.arcltd.staff.response.EmployeeListResponse;
 import com.arcltd.staff.utility.Constants;
@@ -36,8 +37,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class EmployeeMessageActivity extends BaseActivity implements
         EmployeeMSGListAdapter.SearchAddressCallBack {
     LinearLayout liSendEmp;
@@ -46,7 +45,7 @@ public class EmployeeMessageActivity extends BaseActivity implements
     AutoCompleteTextView searchEmp;
     RecyclerView list;
     ProgressBar searchProgressBar;
-    String DeviceToken;
+    String DeviceToken,empLogType;
     MyMessagingService myMessagingService;
 
     @Override
@@ -54,8 +53,12 @@ public class EmployeeMessageActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_message);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         liSendEmp = findViewById(R.id.liSendEmp);
@@ -67,7 +70,7 @@ public class EmployeeMessageActivity extends BaseActivity implements
         list = findViewById(R.id.list);
         etEmpCode = findViewById(R.id.etEmpCode);
         searchProgressBar = findViewById(R.id.searchProgressBar);
-
+        empLogType= RetrofitClient.getStringUserPreference(this,Constants.LOGIN_TYPE);
 
         FirebaseMessaging.getInstance().subscribeToTopic("all");
 
@@ -173,7 +176,7 @@ public class EmployeeMessageActivity extends BaseActivity implements
             if (Infrastructure.isInternetPresent()) {
                 searchProgressBar.setVisibility(View.VISIBLE);
                 apiPresenter.list_employee(disposable, Constants.ApiRequestCode.EMPLOYEE,
-                        "", searchEmp.getText().toString());
+                        "", searchEmp.getText().toString(),"",empLogType);
 
             } else {
                 new ErrorHandlerCode(this, NO_INTERNET, getString(R.string.no_internet_connection_message));

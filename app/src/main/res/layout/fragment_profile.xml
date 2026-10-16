@@ -176,6 +176,236 @@
                 </LinearLayout>
 
 
+                <LinearLayout
+                    android:id="@+id/liChat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/capsulsape"
+                    android:padding="@dimen/_5sdp"
+                    android:visibility="gone"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:background="@drawable/profile_circle_appcolour_24dp"
+                        android:clickable="false"
+                        android:contentDescription="@string/app_name" />
+
+                    <LinearLayout
+                        android:id="@+id/chatli"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:fontFamily="@font/proximanovaregular"
+                            android:gravity="center"
+                            android:padding="2dp"
+                            android:text="Chat With Employee"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/_10ssp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Attendance: Scan QR Code -->
+                <LinearLayout
+                    android:id="@+id/liScanAttendance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/capsulsape"
+                    android:padding="@dimen/_5sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@android:drawable/ic_menu_camera"
+                        app:tint="@color/colorPrimary"
+                        android:clickable="false"
+                        android:contentDescription="@string/app_name" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:fontFamily="@font/proximanovaregular"
+                            android:gravity="center"
+                            android:padding="2dp"
+                            android:text="📷 Scan QR Attendance"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/_10ssp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Attendance: Generate Branch QR Code -->
+                <LinearLayout
+                    android:id="@+id/liBranchQr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/capsulsape"
+                    android:padding="@dimen/_5sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@android:drawable/ic_menu_view"
+                        app:tint="@color/colorPrimary"
+                        android:clickable="false"
+                        android:contentDescription="@string/app_name" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:fontFamily="@font/proximanovaregular"
+                            android:gravity="center"
+                            android:padding="2dp"
+                            android:text="📍 Branch Office QR Code"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/_10ssp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Attendance: View Attendance Reports -->
+                <LinearLayout
+                    android:id="@+id/liAttendanceReport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/capsulsape"
+                    android:padding="@dimen/_5sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@android:drawable/ic_menu_agenda"
+                        app:tint="@color/colorPrimary"
+                        android:clickable="false"
+                        android:contentDescription="@string/app_name" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:fontFamily="@font/proximanovaregular"
+                            android:gravity="center"
+                            android:padding="2dp"
+                            android:text="📊 Attendance Reports"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/_10ssp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Attendance: Manage / Delete Branch QRs -->
+                <LinearLayout
+                    android:id="@+id/liManageBranchQr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/capsulsape"
+                    android:padding="@dimen/_5sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@android:drawable/ic_menu_delete"
+                        app:tint="#FF3B30"
+                        android:clickable="false"
+                        android:contentDescription="@string/app_name" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:fontFamily="@font/proximanovaregular"
+                            android:gravity="center"
+                            android:padding="2dp"
+                            android:text="🗑 Manage &amp; Delete Branch QRs"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/_10ssp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
                <!-- <LinearLayout
                     android:id="@+id/liNotification"
                     android:layout_width="match_parent"
@@ -293,6 +523,53 @@
                             android:gravity="center"
                             android:padding="2dp"
                             android:text="Update Password"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/_10ssp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/leaveApplication"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="gone"
+                    android:background="@drawable/capsulsape"
+                    android:padding="@dimen/_5sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:background="@drawable/profile_circle_appcolour_24dp"
+                        android:clickable="false"
+                        android:contentDescription="@string/app_name" />
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:clickable="false"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:fontFamily="@font/proximanovaregular"
+                            android:gravity="center"
+                            android:padding="2dp"
+                            android:text="Leave Application"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="@dimen/_10ssp"
                             android:textStyle="bold" />
@@ -525,8 +802,40 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/liAdd_Emp"
+                      <LinearLayout
+                          android:id="@+id/deviceUnlockRequests"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="10dp"
+                          android:layout_marginBottom="10dp"
+                          android:background="@drawable/capsulsape"
+                          android:padding="@dimen/_5sdp"
+                          android:gravity="center"
+                          android:orientation="horizontal"
+                          android:weightSum="1">
+
+                          <ImageView
+                              android:layout_width="@dimen/_20sdp"
+                              android:layout_height="@dimen/_20sdp"
+                              android:background="@drawable/add_mess_24"
+                              android:contentDescription="@string/app_name" />
+
+                          <TextView
+                              android:layout_width="0dp"
+                              android:layout_height="wrap_content"
+                              android:layout_marginStart="@dimen/_5sdp"
+                              android:layout_weight="1"
+                              android:fontFamily="@font/proximanovaregular"
+                              android:padding="2dp"
+                              android:text="Device Unlock Requests"
+                              android:textColor="@color/primaryTextColor"
+                              android:textSize="@dimen/_10ssp"
+                              android:textStyle="bold" />
+
+                      </LinearLayout>
+
+                      <LinearLayout
+                      android:id="@+id/liAdd_Emp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -733,7 +1042,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_50sdp"
         android:orientation="horizontal">
 
         <TextView

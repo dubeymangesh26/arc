@@ -63,6 +63,7 @@ public class Constants {
     public static final String CUSTOMER_LOGIN = "CUSTOMER_LOGIN";
     public static final String BRANCH_NAME = "BRANCH_NAME";
     public static final String FIRST_LAUNCH_KEY = "first_launch";
+    public static final String ID = "USER_ID";
 
     public static class ResponseStatus {
         public static final String SUCCESS = "SUCCESS";
@@ -125,6 +126,28 @@ public class Constants {
         public static final int CNSTRACK = 1050;
         public static final int CNSMOVEMENT = 1051;
         public static final int HOLIDAYS = 1052;
+        public static final int LINK_LIST = 1053;
+        public static final int VEHICLE_PLACED = 1054;
+        public static final int VEHICLE_LIST_ITEM = 1055;
+        public static final int VEHICLE_LIST = 1056;
+        public static final int VEHICLE_NO = 1057;
+        public static final int LEAVEAPPLICATION = 1058;
+        public static final int SEND_CHAT = 1059;
+        public static final int GET_CHAT = 1060;
+        public static final int REQUEST_DEVICE_UNLOCK = 1061;
+        public static final int LIST_DEVICE_UNLOCK_REQUESTS = 1062;
+        public static final int APPROVE_DEVICE_UNLOCK = 1063;
+        public static final int MARK_CHAT_SEEN = 1072;
+        public static final int DELETE_CHAT = 1073;
+        public static final int CLEAR_CHAT = 1074;
+        public static final int BRANCH_LOCATION = 1064;
+        public static final int MARK_ATTENDANCE = 1065;
+        public static final int ATTENDANCE_REPORT = 1066;
+        public static final int ADD_MARKETING_VISIT = 1067;
+        public static final int MARKETING_VISIT_LIST = 1068;
+        public static final int EMP_MONTHLY_ATTENDANCE = 1069;
+        public static final int GET_ALL_BRANCH_QRS = 1070;
+        public static final int DELETE_BRANCH_QR = 1071;
     }
     public static final String CITY_NAME = "CITY_NAME";
     public static final String CITY_ID = "CITY_ID";

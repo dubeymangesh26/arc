@@ -50,14 +50,20 @@ public class DetailsActivity extends BaseActivity {
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, BranchListResponse.BranchList.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("data");
+            }
+            if (data != null) {
+                dataBean = new Gson().fromJson(data, BranchListResponse.BranchList.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
         }
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 
         tvRegion = findViewById(R.id.tvRegion);
@@ -90,10 +96,10 @@ public class DetailsActivity extends BaseActivity {
         tvMessAvailable = findViewById(R.id.tvMessAvailable);
 
         try {
-            AdBranch_Code=dataBean.getBranch_code();
-            branch_code=dataBean.getBranch_code();
-            div_id=dataBean.getDivision_id();
-            tvBranchAddress.setText(dataBean.getBranch_address());
+            AdBranch_Code=dataBean.getBranchCode();
+            branch_code=dataBean.getBranchCode();
+            div_id=dataBean.getDivisionId();
+            tvBranchAddress.setText(dataBean.getBranchAddress());
 
 
         } catch (Exception e) {
@@ -229,43 +235,43 @@ public class DetailsActivity extends BaseActivity {
 
     public void btnAdministrati(View view) {
         startActivity(new Intent(this, AdministativeExpensesDetailsActivity.class)
-                .putExtra("branch_code", dataBean.getBranch_code()));
+                .putExtra("branch_code", dataBean.getBranchCode()));
     }
 
     public void editOnClick(View view) {
         startActivity(new Intent(this, LandLordListActivity.class)
-                .putExtra("branch_code", dataBean.getBranch_code()));
+                .putExtra("branch_code", dataBean.getBranchCode()));
 
     }
 
     public void WeighrMachineView(View view) {
         startActivity(new Intent(this, WeightMCListActivity.class)
-                .putExtra("branch_code", dataBean.getBranch_code()));
+                .putExtra("branch_code", dataBean.getBranchCode()));
     }
 
     public void MotercycleView(View view) {
         startActivity(new Intent(this, MoterCycleListActivity.class)
-                .putExtra("branch_code", dataBean.getBranch_code())
+                .putExtra("branch_code", dataBean.getBranchCode())
                 .putExtra("status", "B"));
     }
 
     public void onViewPeon(View view) {
         startActivity(new Intent(this, PeonSweeperListActivity.class)
-                .putExtra("branch_code", dataBean.getBranch_code())
+                .putExtra("branch_code", dataBean.getBranchCode())
                 .putExtra("type", "P"));
 
     }
 
     public void onViewSweeper(View view) {
         startActivity(new Intent(this, PeonSweeperListActivity.class)
-                .putExtra("branch_code", dataBean.getBranch_code())
+                .putExtra("branch_code", dataBean.getBranchCode())
                 .putExtra("type", "S"));
 
     }
 
     public void onViewEmp(View view) {
         startActivity(new Intent(this, EmployeeListActivity.class)
-                .putExtra("branch_code", dataBean.getBranch_code()));
+                .putExtra("branch_code", dataBean.getBranchCode()));
 
 
     }
@@ -273,13 +279,13 @@ public class DetailsActivity extends BaseActivity {
 
     public void onViewConveyance(View view) {
         startActivity(new Intent(this, EmployeeConvenceListActivity.class)
-                .putExtra("branch_code", dataBean.getBranch_code()));
+                .putExtra("branch_code", dataBean.getBranchCode()));
 
     }
 
     public void teeeditOnClick(View view) {
         startActivity(new Intent(this, AddBranchExpencessActivity.class)
-                .putExtra("branch_code", dataBean.getBranch_code()));
+                .putExtra("branch_code", dataBean.getBranchCode()));
 
     }
 

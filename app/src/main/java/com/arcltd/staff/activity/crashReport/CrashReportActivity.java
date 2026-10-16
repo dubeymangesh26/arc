@@ -2,7 +2,6 @@ package com.arcltd.staff.activity.crashReport;
 
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,11 +24,9 @@ import com.arcltd.staff.remote.RetrofitClient;
 import java.util.Objects;
 
 public class CrashReportActivity extends BaseActivity {
-    private TextView _report;
-    private Button _btnclose,appclose;
     String deviceInfo="Device Info:",crashReport="",customerID="";
-    private ProgressDialog pDialog;
-    private String TAG=CrashReportActivity.class.getSimpleName();
+
+    private final String TAG=CrashReportActivity.class.getSimpleName();
     private String report;
 
     @Override
@@ -37,17 +34,18 @@ public class CrashReportActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crash_report);
 
-        Intent intent  = getIntent();
-        _report = (TextView) findViewById(R.id.report);
-        _report.setText(intent.getStringExtra("stackTrace"));
-        _btnclose = (Button) findViewById(R.id.btnclose);
-        appclose = (Button) findViewById(R.id.appclose);
-        crashReport=intent.getStringExtra("stackTrace");
+        Intent intent = getIntent();
+        TextView _report = (TextView) findViewById(R.id.report);
+        String stackTrace = intent != null ? intent.getStringExtra("stackTrace") : null;
+        if (stackTrace != null) {
+            _report.setText(stackTrace);
+            crashReport = stackTrace;
+            Log.e(TAG, stackTrace);
+        }
+        Button _btnclose = (Button) findViewById(R.id.btnclose);
+        Button appclose = (Button) findViewById(R.id.appclose);
 
-        Log.e(TAG, Objects.requireNonNull(intent.getStringExtra("stackTrace")));
-
-        if (RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.CUSTOMER_ID) != null && !
-                RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.CUSTOMER_ID).equals("")) {
+        if (RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.CUSTOMER_ID) != null && !RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.CUSTOMER_ID).isEmpty()) {
             customerID = RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.CUSTOMER_ID);
         } else {
             customerID = "";

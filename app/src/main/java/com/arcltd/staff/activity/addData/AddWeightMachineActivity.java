@@ -28,8 +28,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class AddWeightMachineActivity extends BaseActivity {
     TextInputEditText etRenueUpTo, etWetMcNo, etMake, etModel;
     String WeightMC_id = "", data;
@@ -41,7 +39,9 @@ public class AddWeightMachineActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_ewight_machine);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
 
@@ -51,20 +51,26 @@ public class AddWeightMachineActivity extends BaseActivity {
         etModel = findViewById(R.id.etModel);
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, WeightMachineListResponse.WeightMachine.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("data");
+            }
+            if (data != null) {
+                dataBean = new Gson().fromJson(data, WeightMachineListResponse.WeightMachine.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
         }
 
         try {
-            etRenueUpTo.setText(dataBean.getRenew_upto());
-            etWetMcNo.setText(dataBean.getWeightMc_No());
-            etMake.setText(dataBean.getMake());
-            etModel.setText(dataBean.getModel());
-            WeightMC_id=dataBean.getW_id();
+            if (dataBean != null) {
+                etRenueUpTo.setText(dataBean.getRenew_upto());
+                etWetMcNo.setText(dataBean.getWeightMc_No());
+                etMake.setText(dataBean.getMake());
+                etModel.setText(dataBean.getModel());
+                WeightMC_id = dataBean.getW_id();
+            }
         } catch (Exception e) {
             Log.e("", "ListingDetail error: " + e);
         }

@@ -41,6 +41,7 @@ public class WebViewpoppupActivity extends Activity {
     private ValueCallback<Uri[]> mFilePathCallback;
     private String mCameraPhotoPath;
     private static final String TAG = WebViewpoppupActivity.class.getSimpleName();
+    String url,doc;
 
 
     @Override
@@ -103,28 +104,39 @@ public class WebViewpoppupActivity extends Activity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_popup_webview);
-        progressDialog=new ProgressDialog(this);
-        progressDialog.setCancelable(false) ;
-        progressDialog.setMessage("Please Wait.....");
-        mywebview = (WebView) findViewById(R.id.webView);
-        WebSettings webSettings = mywebview.getSettings();
-        // mywebview.loadUrl("https://online.arclimited.com/OnlineReps/OnlineReps.aspx");
-        mywebview.loadUrl("https://online.arclimited.com/Custcare/Logins/Logins");
-        mywebview.setWebViewClient(new myWebClient());
-        mywebview.setWebChromeClient(new ChromeClient());
-        webSettings.setJavaScriptEnabled(true);
-        mywebview.setInitialScale(1);
-        mywebview.getSettings().setUseWideViewPort(true);
-        mywebview.getSettings().setLoadWithOverviewMode(true);
-        mywebview.setScrollContainer(false);
-        mywebview.getSettings().setBuiltInZoomControls(true);
-        mywebview.getSettings().setDisplayZoomControls(false);
 
-        if (Build.VERSION.SDK_INT >= 19) {
-            mywebview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
+        if (getIntent().getExtras() != null) {
+            url = getIntent().getExtras().getString("link");
         }
-        else if(Build.VERSION.SDK_INT >=11 && Build.VERSION.SDK_INT < 19) {
-            mywebview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        Log.e("onCreateLink: ", "" + url);
+
+        if (url != null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Please Wait.....");
+            mywebview = (WebView) findViewById(R.id.webView);
+            WebSettings webSettings = mywebview.getSettings();
+            // mywebview.loadUrl("https://online.arclimited.com/OnlineReps/OnlineReps.aspx");
+            // mywebview.loadUrl("https://online.arclimited.com/Custcare/Logins/Logins");
+            mywebview.loadUrl(url);
+            mywebview.setWebViewClient(new myWebClient());
+            mywebview.setWebChromeClient(new ChromeClient());
+            webSettings.setJavaScriptEnabled(true);
+            mywebview.setInitialScale(1);
+            mywebview.getSettings().setUseWideViewPort(true);
+            mywebview.getSettings().setLoadWithOverviewMode(true);
+            mywebview.setScrollContainer(false);
+            mywebview.getSettings().setBuiltInZoomControls(true);
+            mywebview.getSettings().setDisplayZoomControls(false);
+
+            if (Build.VERSION.SDK_INT >= 19) {
+                mywebview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            } else if (Build.VERSION.SDK_INT >= 11 && Build.VERSION.SDK_INT < 19) {
+                mywebview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            }
+        } else {
+            finish();
         }
 
 

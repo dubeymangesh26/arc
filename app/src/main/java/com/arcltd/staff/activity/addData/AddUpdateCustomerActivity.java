@@ -36,7 +36,6 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class AddUpdateCustomerActivity extends BaseActivity implements View.OnClickListener {
     TextInputEditText editComName, editCustName, editTextEmail, editTextMobile, editCustDesig, feedback, etDate;
@@ -58,14 +57,20 @@ public class AddUpdateCustomerActivity extends BaseActivity implements View.OnCl
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, CustomerListResponse.CustomerList.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("data");
+            }
+            if (data != null) {
+                dataBean = new Gson().fromJson(data, CustomerListResponse.CustomerList.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
         }
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         editComName = findViewById(R.id.editComName);
         editCustName = findViewById(R.id.editCustName);
@@ -76,32 +81,31 @@ public class AddUpdateCustomerActivity extends BaseActivity implements View.OnCl
         etDate = findViewById(R.id.etDate);
         spCustType = findViewById(R.id.spCustType);
         etDate.setOnClickListener(this);
-        try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, CustomerListResponse.CustomerList.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
-
-        } catch (Exception e) {
-            Log.e("", "Data Listing error: " + e);
-        }
 
         try {
-            repeated_cust= Integer.parseInt(dataBean.getNoof_visit());
-            Log.e(TAG, "repeated_cust: "+repeated_cust );
+            if (dataBean != null) {
+                String noOfVisit = dataBean.getNoof_visit();
+                if (noOfVisit != null && !noOfVisit.isEmpty()) {
+                    repeated_cust = Integer.parseInt(noOfVisit);
+                }
+                Log.e(TAG, "repeated_cust: " + repeated_cust);
 
-                custNo= repeated_cust+1;
-            Log.e(TAG, "TOTAL VISIT: "+custNo );
-            cust_id= Integer.valueOf(dataBean.getCust_id());
-            editComName.setText(dataBean.getCompany_name());
-            editCustName.setText(dataBean.getCust_name());
-            editTextEmail.setText(dataBean.getCust_email());
-            editTextMobile.setText(dataBean.getCust_mobile());
-            editCustDesig.setText(dataBean.getCust_design());
+                custNo = repeated_cust + 1;
+                Log.e(TAG, "TOTAL VISIT: " + custNo);
+                if (dataBean.getCust_id() != null) {
+                    cust_id = Integer.valueOf(dataBean.getCust_id());
+                }
+                editComName.setText(dataBean.getCompany_name());
+                editCustName.setText(dataBean.getCust_name());
+                editTextEmail.setText(dataBean.getCust_email());
+                editTextMobile.setText(dataBean.getCust_mobile());
+                editCustDesig.setText(dataBean.getCust_design());
 
-            if (!dataBean.getCompany_name().equals("")){
-                editComName.setEnabled(false);
-            }else {
-                editComName.setEnabled(true);
+                if (dataBean.getCompany_name() != null && !dataBean.getCompany_name().equals("")) {
+                    editComName.setEnabled(false);
+                } else {
+                    editComName.setEnabled(true);
+                }
             }
 
         } catch (Exception e) {

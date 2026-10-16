@@ -55,7 +55,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_10sdp"
             android:elevation="13dp"
-            android:src="@drawable/structure" />
+            android:src="@drawable/link_24" />
     </RelativeLayout>
 
 

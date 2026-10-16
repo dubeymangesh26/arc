@@ -2,13 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -22,11 +22,20 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
+        android:extractNativeLibs="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -35,10 +44,51 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Arcltdstaff"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="33">
+
+
+
+        <activity
+            android:name=".activity.crashReport.CrashReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.addData.BranchEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.employee.LeaveListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.addData.LeaveApplication"
+            android:exported="false"
+            android:label="Leave Application"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.BranchVehicleListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:label="Branch Vehicles"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.PlacedVehicleListActivity"
+            android:exported="false"
+            android:label="Placed Vehicles"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.addData.AddPlacedVehicleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:label="Add Placed Vehicle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.listData.LinkListActivity"
+            android:exported="false"
+            android:label="Report List"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.listData.ArcStructurePDFListActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="PDF"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.listData.HolidaysListActivity"
             android:exported="false"
@@ -152,7 +202,7 @@
 
         <service
             android:name=".firebase.MyMessagingService"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -169,14 +219,14 @@
             android:name=".firebase.MessageReadReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.arcmessstaff.firebase.ACTION_MESSAGE_READ" />
+                <action android:name="com.arcltd.staff.firebase.ACTION_MESSAGE_READ" />
             </intent-filter>
         </receiver>
         <receiver
             android:name=".firebase.MessageReplyReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.arcmessstaff.firebase.ACTION_MESSAGE_REPLY" />
+                <action android:name="com.arcltd.staff.firebase.ACTION_MESSAGE_REPLY" />
             </intent-filter>
         </receiver>
 
@@ -210,11 +260,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddVehiclePlaceFaildActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Failed Place Vehicle"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddUpdateEmployeeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Add Employee"
             android:screenOrientation="portrait" />
@@ -240,6 +292,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddUpdateCustomerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Add Customer"
             android:screenOrientation="portrait" />
@@ -250,6 +303,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddDailyBusinessAmountActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Add Booking"
             android:screenOrientation="portrait" />
@@ -275,7 +329,48 @@
             android:label="Transfer Employee To Other Branch"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.attendance.GenerateBranchQrActivity"
+            android:exported="false"
+            android:label="Branch Office QR Code"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.attendance.ScanQrAttendanceActivity"
+            android:exported="false"
+            android:label="Scan Office QR Attendance"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.attendance.AttendanceReportActivity"
+            android:exported="false"
+            android:label="Attendance Reports"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.attendance.AddMarketingVisitActivity"
+            android:exported="false"
+            android:label="Record Marketing Visit"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.attendance.MarketingVisitListActivity"
+            android:exported="false"
+            android:label="Marketing Visits Log"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.attendance.MarketingVisitDetailsActivity"
+            android:exported="false"
+            android:label="Visit Details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.attendance.EmpAttendanceMonthlyActivity"
+            android:exported="false"
+            android:label="Monthly Attendance &amp; Salary"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.attendance.ManageBranchQrActivity"
+            android:exported="false"
+            android:label="Manage Branch QR Codes"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.addData.AddConveyanceMobileActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Conveyance/Mobile"
             android:screenOrientation="portrait" />
@@ -286,6 +381,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddSweeperPeonActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Sweeper/Peon"
             android:screenOrientation="portrait" />
@@ -369,16 +465,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddBranchExpencessActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Add Expenses"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddWeightMachineActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Add/Update Deatails"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddMoterCycleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Add/Update Details"
             android:screenOrientation="portrait" />
@@ -408,16 +507,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddMessActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Add New Mess"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.addData.AddOfficeGodownActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Add New Mess/Office/Godown"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.messDetails.MessListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:label="Mess List"
             android:screenOrientation="portrait" />
@@ -434,11 +536,19 @@
         <activity
             android:name=".activity.otherAndMain.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".authentication.LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.DeviceUnlockRequestActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.DeviceUnlockListActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -446,6 +556,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".authentication.SignupActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
@@ -500,6 +611,24 @@
             android:name=".web_view.WebViewpoppupActivity"
             android:configChanges="orientation|screenSize"
             android:resizeableActivity="true" />
+        <activity
+            android:name=".activity.chat.ChatActivity"
+            android:exported="false"
+            android:label="Chat"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.chat.ChatUserListActivity"
+            android:exported="false"
+            android:label="Chats"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.chat.FullScreenImageActivity"
+            android:exported="false"
+            android:label="Image Preview"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.detailsData.BranchPicodeDetailsActivity"
             android:exported="true"

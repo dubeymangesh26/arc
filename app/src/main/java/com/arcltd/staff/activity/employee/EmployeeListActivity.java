@@ -3,6 +3,7 @@ package com.arcltd.staff.activity.employee;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -58,8 +59,7 @@ public class EmployeeListActivity extends BaseActivity {
     RecyclerView list;
     SwipeRefreshLayout swiptoRefresh;
     LinearLayout liDeleteUpdate;
-    private EmployeeListAdapter.RerfreshWishList activeRerfreshWishList;
-    String branch_code = "", delete, url = "";
+    String branch_code = "", delete;
     AutoCompleteTextView atSearch;
     ProgressBar searchProgressBar;
     public static final int MULTIPLE_PERMISSIONS = 10;
@@ -67,15 +67,20 @@ public class EmployeeListActivity extends BaseActivity {
     SpeechRecognizer speechRecognizer;
     ImageView micButton;
 
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_employee_list);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         list = findViewById(R.id.list);
         swiptoRefresh = findViewById(R.id.swiptoRefresh);
         searchProgressBar = findViewById(R.id.searchProgressBar);
@@ -124,7 +129,9 @@ public class EmployeeListActivity extends BaseActivity {
             public void onResults(Bundle bundle) {
                 micButton.setImageResource(R.drawable.ic_mic_24);
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                atSearch.setText(data.get(0));
+                if (data != null && !data.isEmpty()) {
+                    atSearch.setText(data.get(0));
+                }
             }
 
             @Override
@@ -168,8 +175,12 @@ public class EmployeeListActivity extends BaseActivity {
         });
 
 
-        delete = getIntent().getExtras().getString("D");
-        branch_code = Objects.requireNonNull(getIntent().getExtras()).getString("branch_code");
+        if (getIntent().getExtras() != null) {
+            delete = getIntent().getExtras().getString("D");
+            if (getIntent().getExtras().containsKey("branch_code")) {
+                branch_code = Objects.requireNonNull(getIntent().getExtras()).getString("branch_code");
+            }
+        }
 
         if (delete != null) {
             liDeleteUpdate.setVisibility(View.GONE);
@@ -431,6 +442,4 @@ public class EmployeeListActivity extends BaseActivity {
         super.onDestroy();
         speechRecognizer.destroy();
     }
-
-
 }

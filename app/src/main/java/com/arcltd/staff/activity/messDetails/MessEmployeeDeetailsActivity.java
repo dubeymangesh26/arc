@@ -6,6 +6,7 @@ import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ActionBar;
 import android.os.Bundle;
@@ -26,8 +27,6 @@ import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class MessEmployeeDeetailsActivity extends BaseActivity {
     RecyclerView list;
     String mess_id;
@@ -38,13 +37,20 @@ public class MessEmployeeDeetailsActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_mess_employee_deetails);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
        // ((AppCompatActivity)this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         list=findViewById(R.id.list);
-        mess_id = Objects.requireNonNull(getIntent().getExtras()).getString("me_id");
+        if (getIntent().getExtras() != null) {
+            mess_id = getIntent().getExtras().getString("me_id");
+        }
         messEmpList();
     }
 
@@ -106,8 +112,7 @@ public class MessEmployeeDeetailsActivity extends BaseActivity {
                 }
             } else {
                 Infrastructure.dismissProgressDialog();
-                ELog.e(TAG, "Exception in messEmpListResponse" + messEmpListResponse.getResponseCode());
-                Toast.makeText(this, messEmpListResponse.getMessage(), Toast.LENGTH_LONG).show();
+                ELog.e(TAG, "Exception in messEmpListResponse: response is null");
 
             }
         } catch (Exception e) {

@@ -67,6 +67,8 @@ public class AddConveyanceMobileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_conveyance_mobile);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
@@ -157,7 +159,7 @@ public class AddConveyanceMobileActivity extends BaseActivity {
             if (Infrastructure.isInternetPresent()) {
                 Infrastructure.showProgressDialog(this);
                 apiPresenter.list_employee(disposable, Constants.ApiRequestCode.EMPLOYEE,
-                        acType.getText().toString(),"");
+                        acType.getText().toString(),"","","");
 
             } else {
                 new ErrorHandlerCode(this, NO_INTERNET, getString(R.string.no_internet_connection_message));
@@ -274,12 +276,12 @@ public class AddConveyanceMobileActivity extends BaseActivity {
 
                     Infrastructure.dismissProgressDialog();
 
-                    if (branchListResponse.getBranchList().size() > 0) {
+                    if (!branchListResponse.getBranchList().isEmpty()) {
                         branch_codearray.clear();
                         branch_codearray.add("Select Branch");
                         for (int i = 0; i < branchListResponse.getBranchList().size(); i++) {
-                            branch_codearray.add(branchListResponse.getBranchList().get(i).getBranch_code());
-                            branch_code_ID.add(branchListResponse.getBranchList().get(i).getBranch_code());
+                            branch_codearray.add(branchListResponse.getBranchList().get(i).getBranchCode());
+                            branch_code_ID.add(branchListResponse.getBranchList().get(i).getBranchCode());
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, branch_codearray);
                         adapter.setDropDownViewResource(R.layout.spinner_textview);

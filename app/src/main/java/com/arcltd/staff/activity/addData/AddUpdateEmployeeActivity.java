@@ -36,8 +36,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class AddUpdateEmployeeActivity extends BaseActivity {
-    TextInputEditText editEmpCode,editTextName,etDateofBirth, editqualification,editTextDesign,
-            etJoiningDate,editTextSalary,editTextUanNo;
+    TextInputEditText editEmpCode,editTextName,etDateofBirth, editqualification,
+            editTextDesign, etJoiningDate,editBasic,editHra,editfleet,edittga,
+            editTextSalary,editTextUanNo;
     Spinner spdivision,spBranch,spActiveRetire;
     AutoCompleteTextView acType;
 
@@ -54,8 +55,12 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_update_employee);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         editEmpCode=findViewById(R.id.editEmpCode);
@@ -64,6 +69,10 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
         editqualification=findViewById(R.id.editqualification);
         editTextDesign=findViewById(R.id.editTextDesign);
         etJoiningDate=findViewById(R.id.etJoiningDate);
+        editBasic=findViewById(R.id.editBasic);
+        editHra=findViewById(R.id.editHra);
+        editfleet=findViewById(R.id.editfleet);
+        edittga=findViewById(R.id.edittga);
         editTextSalary=findViewById(R.id.editTextSalary);
         spdivision=findViewById(R.id.spdivision);
         spBranch=findViewById(R.id.spBranch);
@@ -160,20 +169,26 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
 
         if (validate()) {
             addEmp(
-                    editEmpCode.getText().toString().trim(),
-                    editTextName.getText().toString().trim(),
-                    etDateofBirth.getText().toString().trim(),
-                    editqualification.getText().toString().trim(),
-                    editTextDesign.getText().toString().trim(),
-                    etJoiningDate.getText().toString().trim(),
-                    editTextSalary.getText().toString().trim(),
+                    Objects.requireNonNull(editEmpCode.getText()).toString().trim(),
+                    Objects.requireNonNull(editTextName.getText()).toString().trim(),
+                    Objects.requireNonNull(etDateofBirth.getText()).toString().trim(),
+                    Objects.requireNonNull(editqualification.getText()).toString().trim(),
+                    Objects.requireNonNull(editTextDesign.getText()).toString().trim(),
+                    Objects.requireNonNull(etJoiningDate.getText()).toString().trim(),
+                    Objects.requireNonNull(editBasic.getText()).toString().trim(),
+                    Objects.requireNonNull(editHra.getText()).toString().trim(),
+                    Objects.requireNonNull(editfleet.getText()).toString().trim(),
+                    Objects.requireNonNull(edittga.getText()).toString().trim(),
+                    Objects.requireNonNull(editTextSalary.getText()).toString().trim(),
                     acType.getText().toString().trim());
 
         }
     }
 
     private void addEmp(String editEmpCode, String editTextName, String etDateofBirth, String editqualification,
-                        String editTextDesign,String etJoiningDate, String editTextSalary, String acType) {
+                        String editTextDesign, String etJoiningDate, String editBasic, String editHra,
+                        String editfleet, String edittga,
+                        String editTextSalary,String acType) {
 
         try {
             if (Infrastructure.isInternetPresent()) {
@@ -181,9 +196,11 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
                 apiPresenter.addEmployee(disposable, Constants.ApiRequestCode.USER_REGISTRATION,
                         RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.REGION_NAME),
                         RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.REGION_ID),
-                        divisionselected_Name,divisionselected_id,branch_code,branchName,activeRetireStaus,
-                        editEmpCode,editTextName,editqualification,etJoiningDate,editTextDesign,editTextSalary,
-                        "A",etDateofBirth,editTextUanNo.getText().toString());
+                        divisionselected_Name, divisionselected_id, branch_code, branchName, activeRetireStaus,
+                        editEmpCode, editTextName, editqualification, etJoiningDate, editTextDesign,
+                        editBasic, editHra, editfleet, edittga, editTextSalary,
+                        "A", etDateofBirth, "", "", "", "", "", "", "", "",
+                        Objects.requireNonNull(editTextUanNo.getText()).toString());
                 Log.e("addEmpRequest", "addEmpRequest: " + apiPresenter);
             } else {
                 new ErrorHandlerCode(this, NO_INTERNET, getString(R.string.no_internet_connection_message));
@@ -234,7 +251,9 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
 
             }
         } catch (Exception e) {
+            Infrastructure.dismissProgressDialog();
             ELog.e(TAG, "Exception in checkLoginResponse", e);
+
         }
 
     }
@@ -280,6 +299,7 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
 
 
                 }else {
+                    Infrastructure.dismissProgressDialog();
                //     Toast.makeText(this, divisionListResponse.getMessage(), Toast.LENGTH_LONG).show();
 
                 }
@@ -290,6 +310,7 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
 
             }
         } catch (Exception e) {
+            Infrastructure.dismissProgressDialog();
             ELog.e(TAG, "Exception in checkLoginResponse", e);
         }
     }
@@ -302,14 +323,14 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
 
                     Infrastructure.dismissProgressDialog();
 
-                    if (branchListResponse.getBranchList().size() > 0) {
+                    if (!branchListResponse.getBranchList().isEmpty()) {
                         branch_code_ID.clear();
                         branch_name.clear();
                         branch_code_ID.add("Select Branch");
                         branch_name.add("Select Branch");
                         for (int i = 0; i < branchListResponse.getBranchList().size(); i++) {
-                            branch_name.add(branchListResponse.getBranchList().get(i).getBranch_name());
-                            branch_code_ID.add(branchListResponse.getBranchList().get(i).getBranch_code());
+                            branch_name.add(branchListResponse.getBranchList().get(i).getBranchCode());
+                            branch_code_ID.add(branchListResponse.getBranchList().get(i).getBranchCode());
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, branch_name);
                         adapter.setDropDownViewResource(R.layout.spinner_textview);
@@ -339,6 +360,7 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
 
 
                 }else {
+                    Infrastructure.dismissProgressDialog();
                     Toast.makeText(this, branchListResponse.getMessage(), Toast.LENGTH_LONG).show();
 
                 }
@@ -349,6 +371,7 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
 
             }
         } catch (Exception e) {
+            Infrastructure.dismissProgressDialog();
             ELog.e(TAG, "Exception in checkLoginResponse", e);
         }
     }
@@ -393,5 +416,10 @@ public class AddUpdateEmployeeActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onDisplayMessage(String message, int callAPIId, int errorCode) {
+        super.onDisplayMessage(message, callAPIId, errorCode);
+        Infrastructure.dismissProgressDialog();
     }
 }

@@ -7,6 +7,7 @@ import static android.content.ContentValues.TAG;
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,15 +34,20 @@ import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.addData.AddPlacedVehicleActivity;
 import com.arcltd.staff.activity.addData.AddVehiclePlaceFaildActivity;
+import com.arcltd.staff.activity.attendance.ScanQrAttendanceActivity;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.detailsData.AdministativeExpensesDetailsActivity;
+import com.arcltd.staff.activity.attendance.AddMarketingVisitActivity;
+import com.arcltd.staff.activity.attendance.MarketingVisitListActivity;
 import com.arcltd.staff.activity.detailsData.ViewExcelActivity;
 import com.arcltd.staff.activity.listData.BranchListActivity;
 import com.arcltd.staff.activity.listData.BranchListPincodeWiseActivity;
 import com.arcltd.staff.activity.listData.CustomerListActivity;
 import com.arcltd.staff.activity.listData.DivisionListActivity;
+import com.arcltd.staff.activity.listData.PlacedVehicleListActivity;
 import com.arcltd.staff.activity.listData.RateCardListActivity;
 import com.arcltd.staff.activity.listData.VehiclePlaceFaildListActivity;
 import com.arcltd.staff.activity.messDetails.MessDivisionListActivity;
@@ -70,6 +76,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 
 
@@ -77,7 +84,8 @@ public class HomeFragment extends BaseFragment {
     CardView cvBranchList, cvTrackBNS;
     AutoCompleteTextView atCnsSearch;
     RelativeLayout rlBranchList,rkTrackCNS, divMess, div, cvAdvExpences, cvOtherExpences, cvSendProfiel,
-            cvARC, cvAdvCustomer, cvAddFaieldList, cvAddFaield, incharge,rkRateCard;
+            cvARC, cvAdvCustomer, cvAddFaieldList, cvAddFaield, incharge,rkRateCard,rlPlacedVehicle,
+            rlListPlacedVehicle,rkITMS;
     ProgressBar searchProgressBar;
     ImageView ivCnsSearch;
     LinearLayout liHR, liBM;
@@ -86,6 +94,8 @@ public class HomeFragment extends BaseFragment {
     TabLayout tabLayout;
     String corp_profile = "https://arclimited.com/corporate-profile.php";
     String cnsTrack = "https://online.arclimited.com/cnstrk/cnstrk.aspx";
+    String cnsTrackEmp = "https://online.arclimited.com/Custcare/Logins/Logins";
+    String cnsITMS = "https://online.arclimited.com/iTMS/";
     // String cnsTrack="http://onlineformsolution.in/arcMessApi/update_employee.php";
     UserSessionManager session;
     String uriString, path, folderPath;
@@ -142,10 +152,33 @@ public class HomeFragment extends BaseFragment {
         page = view.findViewById(R.id.my_pager);
         tabLayout = view.findViewById(R.id.my_tablayout);
         rkTrackCNS = view.findViewById(R.id.rkTrackCNS);
+        rkITMS = view.findViewById(R.id.rkITMS);
         ivCnsSearch = view.findViewById(R.id.ivCnsSearch);
         atCnsSearch = view.findViewById(R.id.atCnsSearch);
         rkRateCard = view.findViewById(R.id.rkRateCard);
+        rlPlacedVehicle = view.findViewById(R.id.rlPlacedVehicle);
+        rlListPlacedVehicle = view.findViewById(R.id.rlListPlacedVehicle);
         searchProgressBar = view.findViewById(R.id.searchProgressBar);
+
+        // Hide Placed Vehicle options
+        if (rlPlacedVehicle != null) rlPlacedVehicle.setVisibility(View.GONE);
+        if (rlListPlacedVehicle != null) rlListPlacedVehicle.setVisibility(View.GONE);
+
+        View rlScanQrAttendance = view.findViewById(R.id.rlScanQrAttendance);
+        View rlAddMarketingVisit = view.findViewById(R.id.rlAddMarketingVisit);
+        View rlMarketingVisitList = view.findViewById(R.id.rlMarketingVisitList);
+
+        if (rlScanQrAttendance != null) {
+            rlScanQrAttendance.setOnClickListener(v -> startActivity(new Intent(getActivity(), ScanQrAttendanceActivity.class)));
+        }
+
+        if (rlAddMarketingVisit != null) {
+            rlAddMarketingVisit.setOnClickListener(v -> startActivity(new Intent(getActivity(), AddMarketingVisitActivity.class)));
+        }
+
+        if (rlMarketingVisitList != null) {
+            rlMarketingVisitList.setOnClickListener(v -> startActivity(new Intent(getActivity(), MarketingVisitListActivity.class)));
+        }
 
 
         listItems = new ArrayList<>();
@@ -159,7 +192,7 @@ public class HomeFragment extends BaseFragment {
         page.setAdapter(itemsPager_adapter);
 
         // The_slide_timer
-        java.util.Timer timer = new java.util.Timer();
+        Timer timer = new Timer();
         timer.scheduleAtFixedRate(new The_slide_timer(), 2000, 3000);
         tabLayout.setupWithViewPager(page, true);
 
@@ -214,6 +247,20 @@ public class HomeFragment extends BaseFragment {
                 startActivity(intent);
             }
         });
+        rlPlacedVehicle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddPlacedVehicleActivity.class);
+                startActivity(intent);
+            }
+        });
+        rlListPlacedVehicle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), PlacedVehicleListActivity.class);
+                startActivity(intent);
+            }
+        });
 
         incharge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,10 +302,20 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), WebViewpoppupActivity.class)
-                        .putExtra("url", cnsTrack);
+                        .putExtra("link", cnsTrackEmp);
                 startActivity(intent);
             }
         });
+
+        rkITMS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WebViewpoppupActivity.class)
+                        .putExtra("link", cnsITMS);
+                startActivity(intent);
+            }
+        });
+
         cvARC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -375,7 +432,7 @@ public class HomeFragment extends BaseFragment {
                         "\n");
                 try {
                     startActivity(Intent.createChooser(i, "Send mail..."));
-                } catch (android.content.ActivityNotFoundException ex) {
+                } catch (ActivityNotFoundException ex) {
                     Toast.makeText(getActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                 }
             }

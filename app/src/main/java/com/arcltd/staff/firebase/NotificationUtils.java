@@ -81,7 +81,7 @@ NotificationUtils {
             if (URL.equals(action)) {
                 Intent notificationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(destination));
 
-                resultPendingIntent = PendingIntent.getActivity(mContext, 0, notificationIntent, 0);
+                resultPendingIntent = PendingIntent.getActivity(mContext, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
             } else if (ACTIVITY.equals(action) && activityMap.containsKey(destination)) {
                 resultIntent = new Intent(mContext, activityMap.get(destination));
 

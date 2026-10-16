@@ -27,8 +27,6 @@ import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class DivisionListActivity extends BaseActivity {
 
     RecyclerView list;
@@ -40,8 +38,12 @@ public class DivisionListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_division_list);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list=findViewById(R.id.list);
@@ -93,7 +95,7 @@ public class DivisionListActivity extends BaseActivity {
                         Infrastructure.dismissProgressDialog();
 
                         list.setLayoutManager(new LinearLayoutManager(
-                                this, RecyclerView.VERTICAL, true));
+                                this, RecyclerView.VERTICAL, false));
                         DivisionListAdapter listAdapter = new DivisionListAdapter(this, divisionListResponse.getDivision_list()
                                 , list, divisionListResponse);
                         list.setAdapter(listAdapter);
@@ -107,8 +109,7 @@ public class DivisionListActivity extends BaseActivity {
                     }
                 } else {
                     Infrastructure.dismissProgressDialog();
-                    ELog.e(TAG, "Exception in checkLoginResponse" + divisionListResponse.getResponseCode());
-                    Toast.makeText(this, divisionListResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    ELog.e(TAG, "Exception in checkLoginResponse: response is null");
 
                 }
             } catch (Exception e) {

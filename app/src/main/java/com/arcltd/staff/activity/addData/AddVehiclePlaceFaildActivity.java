@@ -27,7 +27,6 @@ import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.GsonBuilder;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -73,7 +72,9 @@ public class AddVehiclePlaceFaildActivity extends BaseActivity implements Adapte
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_addvehicle_place_faild);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etDate=findViewById(R.id.etDate);

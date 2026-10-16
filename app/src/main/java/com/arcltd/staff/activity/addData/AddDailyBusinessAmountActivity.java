@@ -31,11 +31,9 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class AddDailyBusinessAmountActivity extends BaseActivity implements View.OnClickListener {
     TextInputEditText etParcel,etPart,etFtl,etTotal,etDate;
-    private int mYear, mMonth, mDay, mHour, mMinute;
+    private int mYear, mMonth, mDay;
     String month,years;
 
     @Override
@@ -44,7 +42,9 @@ public class AddDailyBusinessAmountActivity extends BaseActivity implements View
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_daily_business_amount);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etParcel = findViewById(R.id.etParcel);
@@ -70,21 +70,20 @@ public class AddDailyBusinessAmountActivity extends BaseActivity implements View
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             try {
-            if (!TextUtils.isEmpty(Objects.requireNonNull(etParcel.getText()).toString().trim())
-                    || !TextUtils.isEmpty(Objects.requireNonNull(etPart.getText()).toString().trim())
-                    || !TextUtils.isEmpty(Objects.requireNonNull(etFtl.getText()).toString().trim()))
-            {
+                String parcelStr = etParcel.getText() != null ? etParcel.getText().toString().trim() : "";
+                String partStr = etPart.getText() != null ? etPart.getText().toString().trim() : "";
+                String ftlStr = etFtl.getText() != null ? etFtl.getText().toString().trim() : "";
 
-                    int answer = Integer.parseInt(etParcel.getText().toString().trim()) +
-                            Integer.parseInt(Objects.requireNonNull(etPart.getText()).toString().trim()) +
-                            Integer.parseInt(Objects.requireNonNull(etFtl.getText()).toString().trim());
+            if (!TextUtils.isEmpty(parcelStr) || !TextUtils.isEmpty(partStr) || !TextUtils.isEmpty(ftlStr))
+            {
+                    int parcel = TextUtils.isEmpty(parcelStr) ? 0 : Integer.parseInt(parcelStr);
+                    int part = TextUtils.isEmpty(partStr) ? 0 : Integer.parseInt(partStr);
+                    int ftl = TextUtils.isEmpty(ftlStr) ? 0 : Integer.parseInt(ftlStr);
+
+                    int answer = parcel + part + ftl;
 
                     Log.e("RESULT", String.valueOf(answer));
                     etTotal.setText(String.valueOf(answer));
-
-
-
-
             }else {
                 etTotal.setText("");
             }
@@ -103,11 +102,11 @@ public class AddDailyBusinessAmountActivity extends BaseActivity implements View
     public void submitBusinessDetails(View view) {
         if (validate()) {
             addDailyBusiness(
-                    etParcel.getText().toString().trim(),
-                    etPart.getText().toString().trim(),
-                    etFtl.getText().toString().trim(),
-                    etTotal.getText().toString().trim(),
-                    etDate.getText().toString().trim());
+                    etParcel.getText() != null ? etParcel.getText().toString().trim() : "",
+                    etPart.getText() != null ? etPart.getText().toString().trim() : "",
+                    etFtl.getText() != null ? etFtl.getText().toString().trim() : "",
+                    etTotal.getText() != null ? etTotal.getText().toString().trim() : "",
+                    etDate.getText() != null ? etDate.getText().toString().trim() : "");
 
         }
     }
@@ -203,19 +202,19 @@ public class AddDailyBusinessAmountActivity extends BaseActivity implements View
 
     }
     private boolean validate() {
-        if (TextUtils.isEmpty(etParcel.getText().toString())) {
+        if (TextUtils.isEmpty(etParcel.getText() != null ? etParcel.getText().toString() : "")) {
             Toast.makeText(getApplicationContext(), "Enter  Parcel Amount!", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (TextUtils.isEmpty(etPart.getText().toString())) {
+        }else if (TextUtils.isEmpty(etPart.getText() != null ? etPart.getText().toString() : "")) {
             Toast.makeText(getApplicationContext(), "Enter Part Load Amount!", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (TextUtils.isEmpty(etFtl.getText().toString())) {
+        }else if (TextUtils.isEmpty(etFtl.getText() != null ? etFtl.getText().toString() : "")) {
             Toast.makeText(getApplicationContext(), "Enter Full Load Amount!", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (TextUtils.isEmpty(etDate.getText().toString())) {
+        }else if (TextUtils.isEmpty(etDate.getText() != null ? etDate.getText().toString() : "")) {
             Toast.makeText(getApplicationContext(), "Select Date!", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (TextUtils.isEmpty(etTotal.getText().toString())) {
+        }else if (TextUtils.isEmpty(etTotal.getText() != null ? etTotal.getText().toString() : "")) {
             Toast.makeText(getApplicationContext(), "Enter Total Amount!", Toast.LENGTH_SHORT).show();
             return false;
         }

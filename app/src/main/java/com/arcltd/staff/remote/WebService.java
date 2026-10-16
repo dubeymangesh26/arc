@@ -1,11 +1,13 @@
 package com.arcltd.staff.remote;
 
 
+import com.arcltd.staff.activity.chat.MarkSeenResponse;
 import com.arcltd.staff.response.AddConveyanceMobileResponse;
 import com.arcltd.staff.response.AddCustomerDeatilsResponse;
 import com.arcltd.staff.response.AddFaildVehicleResponse;
 import com.arcltd.staff.response.AddMessResponse;
 import com.arcltd.staff.response.AddMessageResponse;
+import com.arcltd.staff.response.AddPlacedVehicleResponse;
 import com.arcltd.staff.response.AddRemarkResponse;
 import com.arcltd.staff.response.AddSweeperPeonResponse;
 import com.arcltd.staff.response.AddTeeElectricityResponse;
@@ -17,7 +19,9 @@ import com.arcltd.staff.response.AddUpdatedAdminiExpResponse;
 import com.arcltd.staff.response.AdministrativEXPAdminResponse;
 import com.arcltd.staff.response.AdvEXPResponse;
 import com.arcltd.staff.response.AppPermissionListResponse;
+import com.arcltd.staff.response.AttendanceReportResponse;
 import com.arcltd.staff.response.BookingListResponse;
+import com.arcltd.staff.response.BranchLocationResponse;
 import com.arcltd.staff.response.BranchListPiccodeResponse;
 import com.arcltd.staff.response.BranchListResponse;
 import com.arcltd.staff.response.CheckStatusResponse;
@@ -43,12 +47,22 @@ import com.arcltd.staff.response.ForgotPassResponse;
 import com.arcltd.staff.response.GetOTPResponseResponse;
 import com.arcltd.staff.response.HolidaysResponse;
 import com.arcltd.staff.response.InchargeListResponse;
+import com.arcltd.staff.response.AddMarketingVisitResponse;
+import com.arcltd.staff.response.BranchQrListResponse;
+import com.arcltd.staff.response.DeleteBranchQrResponse;
+import com.arcltd.staff.response.EmpMonthlyAttendanceResponse;
+import com.arcltd.staff.response.MarketingVisitListResponse;
 import com.arcltd.staff.response.InsAmoutResponse;
 import com.arcltd.staff.response.InsCompanyResponse;
 import com.arcltd.staff.response.LandlordGodownListResponse;
 import com.arcltd.staff.response.LandlordUpdateResponse;
+import com.arcltd.staff.response.LinkListResponse;
+import com.arcltd.staff.response.LeaveApplicationResponse;
 import com.arcltd.staff.response.LoginRespponse;
+import com.arcltd.staff.response.MarkAttendanceResponse;
 import com.arcltd.staff.response.MessEmpListResponse;
+import com.arcltd.staff.response.GenericResponse;
+import com.arcltd.staff.response.UnlockRequestListResponse;
 import com.arcltd.staff.response.MessListResponse;
 import com.arcltd.staff.response.MoterCycleListResponse;
 import com.arcltd.staff.response.OfficeGodownMessListResponse;
@@ -66,10 +80,15 @@ import com.arcltd.staff.response.TargetResponseResponse;
 import com.arcltd.staff.response.TransferEmployeeResponse;
 import com.arcltd.staff.response.UpdatePassResponse;
 import com.arcltd.staff.response.UpdatePermissionResponse;
-import com.arcltd.staff.response.UserListResponse;
+import com.arcltd.staff.response.UserChatListResponse;
 import com.arcltd.staff.response.VehicleFailListResponse;
+import com.arcltd.staff.response.VehiclePlacedItemListResponse;
+import com.arcltd.staff.response.VehiclePlacedListResponse;
 import com.arcltd.staff.response.WeightMachineListResponse;
 
+import com.arcltd.staff.response.GetChatHistoryUsersResponse;
+import com.arcltd.staff.response.GetChatResponse;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -81,7 +100,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface WebService {
 
@@ -89,15 +107,15 @@ public interface WebService {
     @FormUrlEncoded
     @POST("user_login.php")
     Single<LoginRespponse> login(@Field(value = "email", encoded = true) String email,
-                                 @Field(value = "password", encoded = true) String password);
+                                 @Field(value = "password", encoded = true) String password,
+                                 @Field(value = "device_key", encoded = true) String device_key);
 
     @FormUrlEncoded
     @POST("updatePassword.php")
     Single<UpdatePassResponse> resetPass(@Field(value = "email", encoded = true) String email,
                                          @Field(value = "current", encoded = true) String current,
                                          @Field(value = "new", encoded = true) String newPass);
-   /* @FormUrlEncoded
-    @Multipart
+    @FormUrlEncoded
     @POST("user_registration.php")
     Single<RegisterRespponse> signup(
             @Field(value = "name", encoded = true) String name,
@@ -116,7 +134,7 @@ public interface WebService {
             @Field(value = "status", encoded = true) String status,
             @Field(value = "mess_name", encoded = true) String mess_name,
             @Field(value = "vari_status", encoded = true) String vari_status,
-            @Part MultipartBody.Part upload);*/
+            @Field(value = "device_key", encoded = true) String device_key);
 
    /* @Multipart
     @POST("user_registration.php")
@@ -139,7 +157,7 @@ public interface WebService {
             @Part("vari_status") String vari_status,
             @Part MultipartBody.Part upload);*/
 
-    @Multipart
+    /*@Multipart
     @POST("user_registration.php")
     Call<RegisterRespponse> signup(
             @Part("name") RequestBody name,
@@ -159,14 +177,22 @@ public interface WebService {
             @Part("mess_name") RequestBody mess_name,
             @Part("vari_status") RequestBody vari_status,
             @Part("token") RequestBody token,
-            @Part MultipartBody.Part imagePart);
+            @Part MultipartBody.Part imagePart);*/
 
+
+
+
+    @FormUrlEncoded
+    @POST("updateProfilePicture.php")
+    Single<String> updateProfilePicture(
+            @Field(value = "t1") String t1,
+            @Field(value = "upload") String upload);
 
 
     @FormUrlEncoded
     @POST("app_PermissionList.php")
     Single<AppPermissionListResponse> list_userPermission(@Field(value = "region_id", encoded = true) String region_id,
-                                       @Field(value = "search", encoded = true) String search);
+                                                          @Field(value = "search", encoded = true) String search);
 
     @FormUrlEncoded
     @POST("crash_reportList.php")
@@ -204,7 +230,6 @@ public interface WebService {
             @Field(value = "add_sweeperPeon", encoded = true) String add_sweeperPeon,
             @Field(value = "transfer_emp", encoded = true) String transfer_emp,
             @Field(value = "active_deactiveEmp", encoded = true) String active_deactiveEmp);
-
 
 
     @Multipart
@@ -251,9 +276,21 @@ public interface WebService {
             @Field(value = "emp_eqalification", encoded = true) String emp_eqalification,
             @Field(value = "emp_joining_date", encoded = true) String emp_joining_date,
             @Field(value = "emp_desig", encoded = true) String emp_desig,
+            @Field(value = "sal_basic", encoded = true) String sal_basic,
+            @Field(value = "sal_hra", encoded = true) String sal_hra,
+            @Field(value = "sal_fleet", encoded = true) String sal_fleet,
+            @Field(value = "sal_tga", encoded = true) String sal_tga,
             @Field(value = "emp_salary", encoded = true) String emp_salary,
             @Field(value = "status", encoded = true) String status,
             @Field(value = "dat_of_birth", encoded = true) String dat_of_birth,
+            @Field(value = "esi_no", encoded = true) String esi_no,
+            @Field(value = "ac_branch", encoded = true) String ac_branch,
+            @Field(value = "pf_number", encoded = true) String pf_number,
+            @Field(value = "gread", encoded = true) String gread,
+            @Field(value = "email", encoded = true) String email,
+            @Field(value = "emp_mob", encoded = true) String emp_mob,
+            @Field(value = "profilepic", encoded = true) String profilepic,
+            @Field(value = "token", encoded = true) String token,
             @Field(value = "uan_no", encoded = true) String uan_no);
 
     @FormUrlEncoded
@@ -272,7 +309,7 @@ public interface WebService {
     @POST("daily_booking_list.php")
     Single<BookingListResponse> list_booking
             (@Field(value = "branch_code", encoded = true) String branch_code,
-            @Field(value = "division_id", encoded = true) String division_id
+             @Field(value = "division_id", encoded = true) String division_id
             );
 
     @FormUrlEncoded
@@ -283,6 +320,11 @@ public interface WebService {
     @FormUrlEncoded
     @POST("pdf_allList.php")
     Single<PDFListResponse> list_pdflst
+            (@Field(value = "year", encoded = true) String year);
+
+    @FormUrlEncoded
+    @POST("link_all_List.php")
+    Single<LinkListResponse> list_lnk
             (@Field(value = "year", encoded = true) String year);
 
 
@@ -312,6 +354,13 @@ public interface WebService {
     @POST("employee_list.php")
     Single<EmployeeListResponse> list_emp(
             @Field(value = "branch_code", encoded = true) String branch_code,
+            @Field(value = "search", encoded = true) String search,
+            @Field(value = "division_name", encoded = true) String division_name,
+            @Field(value = "login_type", encoded = true) String login_type);
+
+    @FormUrlEncoded
+    @POST("user_list.php")
+    Single<UserChatListResponse> list_chat_emp(
             @Field(value = "search", encoded = true) String search);
 
     @FormUrlEncoded
@@ -324,7 +373,10 @@ public interface WebService {
     @POST("todayEmployeeBirthdayList.php")
     Single<EmployeeListResponse> listBirth_emp(
             @Field(value = "region_id", encoded = true) String region_id,
-            @Field(value = "search", encoded = true) String search);
+            @Field(value = "search", encoded = true) String search,
+            @Field(value = "branch_code", encoded = true) String branch_code,
+            @Field(value = "division_id", encoded = true) String division_id,
+            @Field(value = "login_type", encoded = true) String login_type);
 
     @FormUrlEncoded
     @POST("retireEmployeeList.php")
@@ -359,7 +411,7 @@ public interface WebService {
     @POST("branchlist_pincode.php")
     Single<BranchListPiccodeResponse>
     list_branchPincodeWise(@Field(value = "branch_code", encoded = true) String branch_code,
-                @Field(value = "division_id", encoded = true) String division_id);
+                           @Field(value = "division_id", encoded = true) String division_id);
 
     @FormUrlEncoded
     @POST("addMess.php")
@@ -571,12 +623,14 @@ public interface WebService {
             @Field(value = "branch_code", encoded = true) String branch_code,
             @Field(value = "search", encoded = true) String search,
             @Field(value = "login_type", encoded = true) String login_type,
+            @Field(value = "division_name", encoded = true) String division_name,
             @Field(value = "status", encoded = true) String status);
 
     @FormUrlEncoded
     @POST("moterCycle_soldout.php")
     Single<SoldMoterCycleResponse> motercycleSold(
             @Field(value = "vehicle_no", encoded = true) String vehicle_no,
+            @Field(value = "division_name", encoded = true) String division_name,
             @Field(value = "sold_status", encoded = true) String sold_status);
 
 
@@ -584,6 +638,8 @@ public interface WebService {
     @POST("weight_mc_list.php")
     Single<WeightMachineListResponse> weightMachineList(
             @Field(value = "branch_code", encoded = true) String branch_code,
+            @Field(value = "login_type", encoded = true) String login_type,
+            @Field(value = "division_name", encoded = true) String division_name,
             @Field(value = "search", encoded = true) String search);
 
     @FormUrlEncoded
@@ -595,6 +651,25 @@ public interface WebService {
             @Field(value = "emp_name", encoded = true) String emp_name,
             @Field(value = "conveyance", encoded = true) String conveyance,
             @Field(value = "mobile", encoded = true) String mobile);
+
+    @FormUrlEncoded
+    @POST("addLeaveApplication.php")
+    Single<LeaveApplicationResponse> addLeaveapp(
+            @Field(value = "lv_id ", encoded = true) String lv_id ,
+            @Field(value = "region_id", encoded = true) String region_id,
+            @Field(value = "division_id", encoded = true) String division_id,
+            @Field(value = "division_name", encoded = true) String division_name,
+            @Field(value = "branch_code", encoded = true) String branch_code,
+            @Field(value = "branch_name", encoded = true) String branch_name,
+            @Field(value = "emp_code", encoded = true) String emp_code,
+            @Field(value = "emp_name", encoded = true) String emp_name,
+            @Field(value = "leave_from", encoded = true) String leave_from,
+            @Field(value = "leave_upto", encoded = true) String leave_upto,
+            @Field(value = "leave_days", encoded = true) String leave_days,
+            @Field(value = "cnf_leave_from", encoded = true) String cnf_leave_from,
+            @Field(value = "cnf_leave_upto", encoded = true) String cnf_leave_upto,
+            @Field(value = "cnf_leave_days", encoded = true) String cnf_leave_days,
+            @Field(value = "leave_reason", encoded = true) String leave_reason);
 
 
     @FormUrlEncoded
@@ -632,7 +707,7 @@ public interface WebService {
 
     @FormUrlEncoded
     @POST("uaseActiveInactive.php")
-    Single<CheckStatusResponse>
+    Single<String>
     statusCheck(@Field(value = "emp_code", encoded = true) String emp_code);
 
     @FormUrlEncoded
@@ -670,9 +745,9 @@ public interface WebService {
 
     @FormUrlEncoded
     @POST("updateUserStatus.php")
-    Single<EmployeeActive_InctiveResponse>
-    actInactive(@Field(value = "emp_code", encoded = true) String emp_code,
-                @Field(value = "status", encoded = true) String status);
+    Single<String>
+    actInactive(@Field("emp_code") String emp_code,
+                @Field("status") String status);
 
     @FormUrlEncoded
     @POST("teeElectricity.php")
@@ -757,6 +832,38 @@ public interface WebService {
 
 
     @FormUrlEncoded
+    @POST("placedVehicleList.php")
+    Single<VehiclePlacedListResponse> listVehicle(
+            @Field(value = "region_name", encoded = true) String region_name,
+            @Field(value = "division_name", encoded = true) String division_name,
+            @Field(value = "branch_code", encoded = true) String branch_code,
+            @Field(value = "login_type", encoded = true) String login_type);
+
+    @FormUrlEncoded
+    @POST("placedVehicleItem.php")
+    Single<VehiclePlacedItemListResponse> itemVehicle(
+            @Field(value = "branch_code", encoded = true) String branch_code,
+            @Field(value = "current_date", encoded = true) String current_date);
+
+
+    @FormUrlEncoded
+    @POST("addPlacedVehicle.php")
+    Single<AddPlacedVehicleResponse> addVehicle(
+            @Field(value = "region_name", encoded = true) String region_name,
+            @Field(value = "division_name", encoded = true) String division_name,
+            @Field(value = "branch_code", encoded = true) String branch_code,
+            @Field(value = "branch_name", encoded = true) String branch_name,
+            @Field(value = "emp_code", encoded = true) String emp_code,
+            @Field(value = "emp_name", encoded = true) String emp_name,
+            @Field(value = "vehicle_type", encoded = true) String vehicle_type,
+            @Field(value = "date", encoded = true) String date,
+            @Field(value = "noOfVehicle", encoded = true) String noOfVehicle,
+            @Field(value = "etDestination", encoded = true) String etDestination,
+            @Field(value = "month", encoded = true) String month,
+            @Field(value = "year", encoded = true) String year);
+
+
+    @FormUrlEncoded
     @POST("addVehiclePlacwFaild.php")
     Single<AddFaildVehicleResponse> addFaildVehicle(
             @Field(value = "region_id", encoded = true) String region_id,
@@ -774,11 +881,124 @@ public interface WebService {
 
     @FormUrlEncoded
     @POST("addEmpMessage.php")
-    Single<AddMessageResponse> senMessage(
+    Single<String> senMessage(
             @Field(value = "emp_code", encoded = true) String emp_code,
             @Field(value = "emp_name", encoded = true) String emp_name,
             @Field(value = "emp_branch", encoded = true) String emp_branch,
             @Field(value = "message", encoded = true) String message);
+
+
+    // =========================================================
+// CHAT
+// =========================================================
+
+    @FormUrlEncoded
+    @POST("send_chat.php")
+    Single<String> sendChat(
+            @Field("sender_emp_code") String sender_emp_code,
+            @Field("my_emp_code") String my_emp_code,
+            @Field("emp_code") String emp_code,
+            @Field("receiver_emp_code") String receiver_emp_code,
+            @Field("target_emp_code") String target_emp_code,
+            @Field("message") String message
+    );
+
+    @Multipart
+    @POST("send_chat.php")
+    Single<String> sendChatWithFile(
+            @Part("sender_emp_code") RequestBody sender_emp_code,
+            @Part("my_emp_code") RequestBody my_emp_code,
+            @Part("receiver_emp_code") RequestBody receiver_emp_code,
+            @Part("target_emp_code") RequestBody target_emp_code,
+            @Part("message") RequestBody message,
+            @Part MultipartBody.Part image
+    );
+
+
+    @FormUrlEncoded
+    @POST("get_chat.php")
+    Single<GetChatResponse> getChat(
+            @Field("my_emp_code") String my_emp_code,
+            @Field("sender_emp_code") String sender_emp_code,
+            @Field("emp_code") String emp_code,
+            @Field("target_emp_code") String target_emp_code,
+            @Field("receiver_emp_code") String receiver_emp_code
+    );
+
+
+    @FormUrlEncoded
+    @POST("mark_chat_seen.php")
+    Single<String> markChatSeen(
+            @Field("sender_emp_code") String sender_emp_code,
+            @Field("my_emp_code") String my_emp_code,
+            @Field("emp_code") String emp_code,
+            @Field("receiver_emp_code") String receiver_emp_code,
+            @Field("target_emp_code") String target_emp_code
+    );
+
+    @FormUrlEncoded
+    @POST("delete_chat.php")
+    Single<String> deleteChat(
+            @Field("m_id") String m_id,
+            @Field("id") String id
+    );
+
+    @FormUrlEncoded
+    @POST("clear_chat.php")
+    Single<String> clearChat(
+            @Field("my_emp_code") String my_emp_code,
+            @Field("target_emp_code") String target_emp_code,
+            @Field("sender_emp_code") String sender_emp_code,
+            @Field("receiver_emp_code") String receiver_emp_code
+    );
+
+    @FormUrlEncoded
+    @POST("update_branch_location.php")
+    Single<BranchLocationResponse> updateBranchLocation(
+            @Field("branch_code") String branchCode,
+            @Field("lat") String lat,
+            @Field("lng") String lng,
+            @Field("allowed_radius_meters") int allowedRadiusMeters,
+            @Field("login_type") String loginType
+    );
+
+    @FormUrlEncoded
+    @POST("get_branch_qr.php")
+    Single<BranchLocationResponse> getBranchQr(
+            @Field("branch_code") String branchCode
+    );
+
+    @FormUrlEncoded
+    @POST("mark_qr_attendance.php")
+    Single<MarkAttendanceResponse> markQrAttendance(
+            @Field("emp_code") String empCode,
+            @Field("qr_code") String qrCode,
+            @Field("lat") String lat,
+            @Field("lng") String lng
+    );
+
+    @FormUrlEncoded
+    @POST("get_attendance_report.php")
+    Single<AttendanceReportResponse> getAttendanceReport(
+            @Field("branch_code") String branchCode,
+            @Field("emp_code") String empCode,
+            @Field("date") String date,
+            @Field("login_type") String loginType,
+            @Field("division_id") String divisionId,
+            @Field("region_id") String regionId
+    );
+
+
+    @FormUrlEncoded
+    @POST("getChatHistoryUsers.php")
+    Single<GetChatHistoryUsersResponse> getChatHistoryUsers(
+            @Field("my_emp_code") String myEmpCode,
+            @Field("search") String search,
+            @Field("branch_code") String branchCode,
+            @Field("division_name") String divisionName
+    );
+
+
 
 
     @FormUrlEncoded
@@ -789,4 +1009,74 @@ public interface WebService {
     @FormUrlEncoded
     @POST("insidentalAmountList.php")
     Single<InsAmoutResponse> insAmtList(@Field(value = "company_code", encoded = true) String region_id);
+
+    @Multipart
+    @POST("add_marketing_visit.php")
+    Single<AddMarketingVisitResponse> addMarketingVisit(
+            @Part("emp_code") RequestBody empCode,
+            @Part("emp_name") RequestBody empName,
+            @Part("region_id") RequestBody regionId,
+            @Part("division_id") RequestBody divisionId,
+            @Part("branch_code") RequestBody branchCode,
+            @Part("company_name") RequestBody companyName,
+            @Part("purpose") RequestBody purpose,
+            @Part("location_name") RequestBody locationName,
+            @Part("latitude") RequestBody latitude,
+            @Part("longitude") RequestBody longitude,
+            @Part MultipartBody.Part visitImage
+    );
+
+    @FormUrlEncoded
+    @POST("get_marketing_visits.php")
+    Single<MarketingVisitListResponse> getMarketingVisits(
+            @Field("emp_code") String empCode,
+            @Field("branch_code") String branchCode,
+            @Field("division_id") String divisionId,
+            @Field("region_id") String regionId,
+            @Field("login_type") String loginType,
+            @Field("date") String date
+    );
+
+    @FormUrlEncoded
+    @POST("get_emp_monthly_attendance.php")
+    Single<EmpMonthlyAttendanceResponse> getEmpMonthlyAttendance(
+            @Field("emp_code") String empCode,
+            @Field("year") int year,
+            @Field("month") int month
+    );
+
+    @FormUrlEncoded
+    @POST("get_all_branch_qrs.php")
+    Single<BranchQrListResponse> getAllBranchQrs(
+            @Field("emp_code") String empCode,
+            @Field("login_type") String loginType
+    );
+
+    @FormUrlEncoded
+    @POST("delete_branch_qr.php")
+    Single<DeleteBranchQrResponse> deleteBranchQr(
+            @Field("branch_code") String branchCode,
+            @Field("emp_code") String empCode,
+            @Field("login_type") String loginType
+    );
+
+    @FormUrlEncoded
+    @POST("request_device_unlock.php")
+    Single<GenericResponse> requestDeviceUnlock(
+            @Field("emp_code") String empCode,
+            @Field("device_key") String deviceKey
+    );
+
+    @FormUrlEncoded
+    @POST("list_device_unlock_requests.php")
+    Single<UnlockRequestListResponse> listDeviceUnlockRequests(
+            @Field("region_id") String regionId
+    );
+
+    @FormUrlEncoded
+    @POST("approve_device_unlock.php")
+    Single<GenericResponse> approveDeviceUnlock(
+            @Field("id") String requestId,
+            @Field("emp_code") String empCode
+    );
 }

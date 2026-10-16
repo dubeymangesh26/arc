@@ -37,7 +37,6 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
 
 public class MoterCycleListActivity extends BaseActivity implements MoterCycleListAdapter.SoldVehicle {
     RecyclerView list;
@@ -58,7 +57,9 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_moter_cycle_list);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list=findViewById(R.id.list);
@@ -69,7 +70,8 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
         addMoterCycle=findViewById(R.id.addMoterCycle);
         liSearch=findViewById(R.id.liSearch);
 
-        if (RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.LOGIN_TYPE).equals("BM")){
+        String loginTypePref = RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.LOGIN_TYPE);
+        if (loginTypePref != null && loginTypePref.equals("BM")){
             addMoterCycle.setVisibility(View.VISIBLE);
         }else {
             addMoterCycle.setVisibility(View.GONE);
@@ -149,10 +151,14 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
         });*/
 
 
-        branch_code = getIntent().getExtras().getString("branch_code");
-        loginType = getIntent().getExtras().getString("loginType");
-        status = getIntent().getExtras().getString("status");
-        if (!loginType.equals("RG")){
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            branch_code = extras.getString("branch_code");
+            loginType = extras.getString("loginType");
+            status = extras.getString("status");
+        }
+
+        if (loginType != null && !loginType.equals("RG")){
             liSearch.setVisibility(View.GONE);
         }else {
             liSearch.setVisibility(View.VISIBLE);
@@ -210,7 +216,9 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
             if (Infrastructure.isInternetPresent()) {
                 searchProgressBar.setVisibility(View.VISIBLE);
                 apiPresenter.motercycleList(disposable, Constants.ApiRequestCode.MOTERCYCLELIST,
-                        branch_code,atSearch.getText().toString(),loginType,status);
+                        branch_code,atSearch.getText().toString(),loginType,
+                        RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.DIVISION_NAME),
+                        status);
 
             } else {
                 new ErrorHandlerCode(this, NO_INTERNET, getString(R.string.no_internet_connection_message));
@@ -225,7 +233,7 @@ public class MoterCycleListActivity extends BaseActivity implements MoterCycleLi
             if (Infrastructure.isInternetPresent()) {
                 searchProgressBar.setVisibility(View.VISIBLE);
                 apiPresenter.motercyclesld(disposable, Constants.ApiRequestCode.MOTERCYCLE_SOLD,
-                        vehicle_no,"Y");
+                        vehicle_no,RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.DIVISION_NAME),"Y");
 
             } else {
                 new ErrorHandlerCode(this, NO_INTERNET, getString(R.string.no_internet_connection_message));

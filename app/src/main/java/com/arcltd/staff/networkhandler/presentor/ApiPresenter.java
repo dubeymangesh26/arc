@@ -1,28 +1,58 @@
 package com.arcltd.staff.networkhandler.presentor;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.chat.MarkSeenResponse;
 import com.arcltd.staff.base.BaseActivity;
 import com.arcltd.staff.networkhandler.errors.ErrorStatus;
 import com.arcltd.staff.networkhandler.networkCallBack.INetworkResult;
 import com.arcltd.staff.networkhandler.networkCallBack.IResultView;
 import com.arcltd.staff.networkhandler.networkCallBack.NetworkHandler;
 import com.arcltd.staff.remote.WebService;
+import com.arcltd.staff.response.AddMarketingVisitResponse;
+import com.arcltd.staff.response.BranchQrListResponse;
+import com.arcltd.staff.response.DeleteBranchQrResponse;
+import com.arcltd.staff.response.EmpMonthlyAttendanceResponse;
+import com.arcltd.staff.response.MarketingVisitListResponse;
+import com.arcltd.staff.response.AddMessageResponse;
+import com.arcltd.staff.response.AttendanceReportResponse;
+import com.arcltd.staff.response.BranchLocationResponse;
+import com.arcltd.staff.response.CheckStatusResponse;
+import com.arcltd.staff.response.EmpMessageListResponse;
+import com.arcltd.staff.response.EmployeeActive_InctiveResponse;
+import com.arcltd.staff.response.GetChatHistoryUsersResponse;
+import com.arcltd.staff.response.GetChatResponse;
+import com.arcltd.staff.response.MarkAttendanceResponse;
 import com.arcltd.staff.utility.ELog;
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonParseException;
+import com.arcltd.staff.remote.RetrofitClient;
+import com.arcltd.staff.utility.Constants;
+import com.google.gson.JsonSyntaxException;
 
+import java.io.EOFException;
+import java.io.IOException;
 import java.net.UnknownHostException;
 
+import java.io.File;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.HttpException;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
 public class ApiPresenter implements INetworkResult {
     private static final String TAG = ApiPresenter.class.getSimpleName();
@@ -40,6 +70,8 @@ public class ApiPresenter implements INetworkResult {
     }
 
 
+
+
     @Override
     public void onSuccess(String responseBody, int responseType) {
         iResultViewListener.showResult(responseBody, responseType);
@@ -51,6 +83,7 @@ public class ApiPresenter implements INetworkResult {
     }
 
     private void returnErrorMessage(Throwable throwable, int reqCode) {
+        ELog.e(TAG, "Network Error for API [" + reqCode + "]", throwable);
         try {
             if (throwable instanceof HttpException) {
                 HttpException exception = (HttpException) throwable;
@@ -58,19 +91,20 @@ public class ApiPresenter implements INetworkResult {
             } else if (throwable instanceof OnErrorNotImplementedException) {
                 OnErrorNotImplementedException exception = (OnErrorNotImplementedException) throwable;
                 iResultViewListener.onDisplayMessage(throwable.getMessage(), reqCode, ErrorStatus.PAGE_NOT_FOUND);
-            } else if (throwable instanceof IllegalStateException) {
-                IllegalStateException exception = (IllegalStateException) throwable;
-                iResultViewListener.onDisplayMessage(throwable.getMessage(), reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
+            } else if (throwable instanceof IllegalStateException || throwable instanceof JsonParseException) {
+                iResultViewListener.onDisplayMessage("Data Format Error: " + throwable.getMessage(), reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
+            } else if (throwable instanceof EOFException) {
+                iResultViewListener.onDisplayMessage("Server returned empty response", reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
             } else if (throwable instanceof UnknownHostException) {
-                UnknownHostException exception = (UnknownHostException) throwable;
-                iResultViewListener.onDisplayMessage(throwable.getMessage(), reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
-            } else if (throwable instanceof Exception) {
-                Exception exception = (Exception) throwable;
-                iResultViewListener.onDisplayMessage(throwable.getMessage(), reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
+                iResultViewListener.onDisplayMessage("No Internet Connection", reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
+            } else if (throwable instanceof IOException) {
+                iResultViewListener.onDisplayMessage("Network Error: " + throwable.getMessage(), reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
+            } else {
+                iResultViewListener.onDisplayMessage(throwable.getMessage() != null ? throwable.getMessage() : "Unknown Error", reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
             }
         } catch (Exception e) {
             ELog.e(TAG, "Exception in returnErrorMessage", e);
-            if (throwable.getMessage() != null) {
+            if (throwable != null && throwable.getMessage() != null) {
                 iResultViewListener.onDisplayMessage(throwable.getMessage(), reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
             } else {
                 iResultViewListener.onDisplayMessage(mContext.getString(R.string.server_error_message), reqCode, ErrorStatus.INTERNAL_SERVER_ERROR);
@@ -82,22 +116,21 @@ public class ApiPresenter implements INetworkResult {
      * user registration data @emits from the server
      */
 
-   /* public void userregistration(CompositeDisposable disposable, int requestCode, String name, String email,
+   public void userregistration(CompositeDisposable disposable, int requestCode, String name, String email,
                                  String password, String contactno, String login_type,
                                  String region_id, String region_name, String division_id,
                                  String division_name, String branch_code, String branch_name, String emp_id, String design,
-                                 String status, String mess_name, String vari_status, MultipartBody.Part profilepic) {
+                                 String status, String mess_name, String vari_status, String device_key) {
         Log.e(TAG, "userRegister: " + " Name-" + name + " Email-" + email + " Password-" + password +
                 " Contact_No-" + contactno + " region_id-" + region_id + " region_name-" + region_name + " division_id-" + division_id
                 + " division_name-" + division_name + " branch_code-" + branch_code+ " branch_name-" + branch_name + " emp_id-"
-                + emp_id + " design-" + design + " vari_status-" + vari_status+ "profile_pic=" + profilepic);
+                + emp_id + " design-" + design + " vari_status-" + vari_status);
 
 
-        disposable.add(
-                webService.signup(name, email, password, contactno, login_type,
+        disposable.add(webService.signup(name, email, password, contactno, login_type,
                                 region_id, region_name, division_id, division_name,
                                 branch_code, branch_name, emp_id, design, status,
-                                mess_name, vari_status, profilepic))
+                                mess_name, vari_status, device_key)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -119,7 +152,426 @@ public class ApiPresenter implements INetworkResult {
                         })
         );
     }
-*/
+
+    // =========================================================
+// SEND CHAT
+// =========================================================
+
+    public void sendChat(
+            CompositeDisposable disposable,
+            int requestCode,
+            String senderCode,
+            String receiverCode,
+            String message) {
+
+        Log.d(
+                TAG,
+                "sendChat sender=" + senderCode +
+                        " receiver=" + receiverCode +
+                        " message=" + message
+        );
+
+        disposable.add(
+
+                webService.sendChat(
+                                senderCode,
+                                senderCode,
+                                senderCode,
+                                receiverCode,
+                                receiverCode,
+                                message
+                        )
+
+                        .subscribeOn(
+                                Schedulers.io()
+                        )
+
+                        .observeOn(
+                                AndroidSchedulers.mainThread()
+                        )
+
+                        .subscribeWith(
+                                new DisposableSingleObserver<String>() {
+
+                                    @Override
+                                    public void onSuccess(
+                                            String responseString) {
+
+                                        try {
+
+                                            Log.d(
+                                                    TAG,
+                                                    "sendChat response="
+                                                            + responseString
+                                            );
+
+                                            if (responseString != null &&
+                                                    responseString
+                                                            .trim()
+                                                            .startsWith("{")) {
+
+                                                AddMessageResponse response =
+                                                        new Gson()
+                                                                .fromJson(
+                                                                        responseString,
+                                                                        AddMessageResponse.class
+                                                                );
+
+                                                iResultViewListener
+                                                        .showResult(
+                                                                response,
+                                                                requestCode
+                                                        );
+
+                                            } else {
+
+                                                AddMessageResponse response =
+                                                        new AddMessageResponse();
+
+                                                response.setResponseCode(
+                                                        "200"
+                                                );
+
+                                                response.setMessage(
+                                                        "Sent"
+                                                );
+
+                                                iResultViewListener
+                                                        .showResult(
+                                                                response,
+                                                                requestCode
+                                                        );
+                                            }
+
+                                        } catch (Exception e) {
+
+                                            Log.e(
+                                                    TAG,
+                                                    "sendChat parse error",
+                                                    e
+                                            );
+
+                                            iResultViewListener
+                                                    .showResult(
+                                                            null,
+                                                            requestCode
+                                                    );
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(
+                                            Throwable throwable) {
+
+                                        returnErrorMessage(
+                                                throwable,
+                                                requestCode
+                                        );
+                                    }
+                                }
+                        )
+        );
+    }
+
+    public void sendChatWithFile(
+            CompositeDisposable disposable,
+            int requestCode,
+            String senderCode,
+            String receiverCode,
+            String messageText,
+            File file) {
+
+        Log.d(TAG, "sendChatWithFile sender=" + senderCode + " receiver=" + receiverCode + " file=" + (file != null ? file.getAbsolutePath() : "null"));
+
+        if (file == null || !file.exists()) {
+            sendChat(disposable, requestCode, senderCode, receiverCode, messageText);
+            return;
+        }
+
+        RequestBody senderPart = RequestBody.create(MediaType.parse("text/plain"), senderCode);
+        RequestBody receiverPart = RequestBody.create(MediaType.parse("text/plain"), receiverCode);
+        RequestBody messagePart = RequestBody.create(MediaType.parse("text/plain"), messageText != null ? messageText : "");
+
+        String mimeType = getMimeTypeFromFile(file);
+        RequestBody fileBody = RequestBody.create(MediaType.parse(mimeType), file);
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", file.getName(), fileBody);
+
+        disposable.add(
+                webService.sendChatWithFile(senderPart, senderPart, receiverPart, receiverPart, messagePart, imagePart)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<String>() {
+                            @Override
+                            public void onSuccess(String responseString) {
+                                try {
+                                    Log.d(TAG, "sendChatWithFile response: " + responseString);
+                                    if (iResultViewListener != null) {
+                                        iResultViewListener.showResult(responseString, requestCode);
+                                    }
+                                } catch (Exception e) {
+                                    Log.e(TAG, "sendChatWithFile error", e);
+                                    if (iResultViewListener != null) {
+                                        iResultViewListener.showResult(null, requestCode);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+    private String getMimeTypeFromFile(File file) {
+        if (file == null) return "*/*";
+        String name = file.getName().toLowerCase();
+        if (name.endsWith(".jpg") || name.endsWith(".jpeg")) return "image/jpeg";
+        if (name.endsWith(".png")) return "image/png";
+        if (name.endsWith(".gif")) return "image/gif";
+        if (name.endsWith(".webp")) return "image/webp";
+        if (name.endsWith(".pdf")) return "application/pdf";
+        if (name.endsWith(".doc") || name.endsWith(".docx")) return "application/msword";
+        if (name.endsWith(".mp4") || name.endsWith(".3gp") || name.endsWith(".mkv")) return "video/mp4";
+        if (name.endsWith(".mp3") || name.endsWith(".m4a") || name.endsWith(".aac") || name.endsWith(".wav")) return "audio/mpeg";
+        return "*/*";
+    }
+
+
+// =========================================================
+// GET CHAT
+// =========================================================
+
+    public void getChat(
+            CompositeDisposable disposable,
+            int requestCode,
+            String myEmpCode,
+            String targetEmpCode) {
+
+        Log.d(
+                TAG,
+                "getChat my=" + myEmpCode +
+                        " target=" + targetEmpCode
+        );
+
+        disposable.add(
+
+                webService.getChat(
+                                myEmpCode,
+                                myEmpCode,
+                                myEmpCode,
+                                targetEmpCode,
+                                targetEmpCode
+                        )
+
+                        .subscribeOn(
+                                Schedulers.io()
+                        )
+
+                        .observeOn(
+                                AndroidSchedulers.mainThread()
+                        )
+
+                        .subscribeWith(
+                                new DisposableSingleObserver<GetChatResponse>() {
+
+                                    @Override
+                                    public void onSuccess(
+                                            GetChatResponse response) {
+
+                                        Log.d(
+                                                TAG,
+                                                "getChat response=" +
+                                                        new Gson()
+                                                                .toJson(response)
+                                        );
+
+                                        iResultViewListener
+                                                .showResult(
+                                                        response,
+                                                        requestCode
+                                                );
+                                    }
+
+                                    @Override
+                                    public void onError(
+                                            Throwable throwable) {
+
+                                        returnErrorMessage(
+                                                throwable,
+                                                requestCode
+                                        );
+                                    }
+                                }
+                        )
+        );
+    }
+
+
+// =========================================================
+// DELETE CHAT & CLEAR CHAT
+// =========================================================
+
+    public void deleteChat(
+            CompositeDisposable disposable,
+            int requestCode,
+            String messageId) {
+
+        if (TextUtils.isEmpty(messageId)) return;
+
+        disposable.add(
+                webService.deleteChat(messageId, messageId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<String>() {
+                            @Override
+                            public void onSuccess(String responseString) {
+                                Log.d(TAG, "deleteChat response: " + responseString);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                Log.e(TAG, "deleteChat error", throwable);
+                            }
+                        })
+        );
+    }
+
+    public void clearChat(
+            CompositeDisposable disposable,
+            int requestCode,
+            String myEmpCode,
+            String targetEmpCode) {
+
+        if (TextUtils.isEmpty(myEmpCode) || TextUtils.isEmpty(targetEmpCode)) return;
+
+        disposable.add(
+                webService.clearChat(myEmpCode, targetEmpCode, myEmpCode, targetEmpCode)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<String>() {
+                            @Override
+                            public void onSuccess(String responseString) {
+                                Log.d(TAG, "clearChat response: " + responseString);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                Log.e(TAG, "clearChat error", throwable);
+                            }
+                        })
+        );
+    }
+
+// =========================================================
+// MARK CHAT SEEN
+// =========================================================
+
+    public void markChatSeen(
+            CompositeDisposable disposable,
+            int requestCode,
+            String targetEmpCode,
+            String myEmpCode) {
+
+        Log.d(
+                TAG,
+                "markChatSeen target=" +
+                        targetEmpCode +
+                        " my=" +
+                        myEmpCode
+        );
+
+        disposable.add(
+
+                webService.markChatSeen(
+                                targetEmpCode,
+                                myEmpCode,
+                                myEmpCode,
+                                myEmpCode,
+                                targetEmpCode
+                        )
+
+                        .subscribeOn(
+                                Schedulers.io()
+                        )
+
+                        .observeOn(
+                                AndroidSchedulers.mainThread()
+                        )
+
+                        .subscribeWith(
+                                new DisposableSingleObserver<String>() {
+
+                                    @Override
+                                    public void onSuccess(
+                                            String responseString) {
+
+                                        try {
+
+                                            Log.d(
+                                                    TAG,
+                                                    "markSeen response="
+                                                            + responseString
+                                            );
+
+                                            if (responseString != null &&
+                                                    responseString
+                                                            .trim()
+                                                            .startsWith("{")) {
+
+                                                MarkSeenResponse response =
+                                                        new Gson()
+                                                                .fromJson(
+                                                                        responseString,
+                                                                        MarkSeenResponse.class
+                                                                );
+
+                                                iResultViewListener
+                                                        .showResult(
+                                                                response,
+                                                                requestCode
+                                                        );
+
+                                            } else {
+
+                                                iResultViewListener
+                                                        .showResult(
+                                                                null,
+                                                                requestCode
+                                                        );
+                                            }
+
+                                        } catch (Exception e) {
+
+                                            Log.e(
+                                                    TAG,
+                                                    "markSeen parse error",
+                                                    e
+                                            );
+
+                                            iResultViewListener
+                                                    .showResult(
+                                                            null,
+                                                            requestCode
+                                                    );
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(
+                                            Throwable throwable) {
+
+                                        returnErrorMessage(
+                                                throwable,
+                                                requestCode
+                                        );
+                                    }
+                                }
+                        )
+        );
+    }
+
     public void getCrashReport(CompositeDisposable disposable, final int requestCode, String request_data,
                                String type) {
         Log.e(TAG, "getCrashReport: " +
@@ -178,6 +630,32 @@ public class ApiPresenter implements INetworkResult {
 
 
 
+
+    public void updateProfilePicture(CompositeDisposable disposable, int requestCode, String emp_code, String upload) {
+        Log.e(TAG, "updateProfilePicture: " + " emp_code-" + emp_code);
+        disposable.add(
+                webService.updateProfilePicture(emp_code, upload)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
 
     public void getUserPermissionList(CompositeDisposable disposable, int requestCode, String region_id,String search) {
         Log.e(TAG, "getUserList   " + " region_id-" + region_id+ " search-" + search);
@@ -387,7 +865,10 @@ public class ApiPresenter implements INetworkResult {
                             String region_name, String region_id, String division_name, String division_id,
                             String branch_code, String branch_name, String emp_act_retire,
                             String emp_code, String emp_name, String emp_eqalification, String emp_joining_date,
-                            String emp_desig, String emp_salary, String status, String dat_of_birth, String uan_no) {
+                            String emp_desig, String emp_basic, String emp_hra, String emp_fleet, String emp_tga,
+                            String emp_salary, String status, String dat_of_birth,
+                            String esi_no, String ac_branch, String pf_number, String gread,
+                            String email, String emp_mob, String profilepic, String token, String uan_no) {
         Log.e(TAG, "Add Employee/Update : " + " region_name-" + region_name + " region_id-" + region_id +
                 " division_name-" + division_name + " division_id-" + division_id + " branch_code-" + branch_code +
                 " branch_name-" + branch_name + " emp_act_retire-" + emp_act_retire + " emp_code-" + emp_code +
@@ -397,7 +878,8 @@ public class ApiPresenter implements INetworkResult {
         disposable.add(
                 webService.addEmployee(region_name, region_id, division_name, division_id
                                 , branch_code, branch_name, emp_act_retire, emp_code, emp_name, emp_eqalification,
-                                emp_joining_date, emp_desig, emp_salary, status, dat_of_birth, uan_no)
+                                emp_joining_date, emp_desig, emp_basic, emp_hra, emp_fleet, emp_tga, emp_salary, status,
+                                dat_of_birth, esi_no, ac_branch, pf_number, gread, email, emp_mob, profilepic, token, uan_no)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -421,10 +903,10 @@ public class ApiPresenter implements INetworkResult {
     }
 
 
-    public void userLogin(CompositeDisposable disposable, int requestCode, String email, String password) {
+    public void userLogin(CompositeDisposable disposable, int requestCode, String email, String password, String device_key) {
         Log.e(TAG, " " + " Email-" + email + " Passwprd-" + password);
         disposable.add(
-                webService.login(email, password)
+                webService.login(email, password, device_key)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -606,6 +1088,32 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
+    public void list_link(CompositeDisposable disposable, int requestCode,String year) {
+        Log.e(TAG, "list_festHolidays " + " year-" + year);
+        disposable.add(
+                webService.list_lnk(year)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
 
 
 
@@ -635,6 +1143,24 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
+
+    public void getChatHistoryUsers(CompositeDisposable disposable, int requestCode, String myEmpCode, String search, String branchCode, String divisionName) {
+        disposable.add(webService.getChatHistoryUsers(myEmpCode, search, branchCode, divisionName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<GetChatHistoryUsersResponse>() {
+                    @Override
+                    public void onSuccess(GetChatHistoryUsersResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
 
     public void messageList(CompositeDisposable disposable, int requestCode, String emp_code) {
         Log.e(TAG, " " + " emp_code-" + emp_code);
@@ -741,11 +1267,180 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
+    public void updateBranchLocation(CompositeDisposable disposable, int requestCode, String branchCode, String lat, String lng, int allowedRadiusMeters, String loginType) {
+        disposable.add(webService.updateBranchLocation(branchCode, lat, lng, allowedRadiusMeters, loginType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BranchLocationResponse>() {
+                    @Override
+                    public void onSuccess(BranchLocationResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
+
+    public void getBranchQr(CompositeDisposable disposable, int requestCode, String branchCode) {
+        disposable.add(webService.getBranchQr(branchCode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BranchLocationResponse>() {
+                    @Override
+                    public void onSuccess(BranchLocationResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
+
+    public void markQrAttendance(CompositeDisposable disposable, int requestCode, String empCode, String qrCode, String lat, String lng) {
+        disposable.add(webService.markQrAttendance(empCode, qrCode, lat, lng)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<MarkAttendanceResponse>() {
+                    @Override
+                    public void onSuccess(MarkAttendanceResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
+
+    public void getAttendanceReport(CompositeDisposable disposable, int requestCode, String branchCode, String empCode, String date, String loginType, String divisionId, String regionId) {
+        disposable.add(webService.getAttendanceReport(branchCode, empCode, date, loginType, divisionId, regionId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<AttendanceReportResponse>() {
+                    @Override
+                    public void onSuccess(AttendanceReportResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
+
+    public void addMarketingVisit(CompositeDisposable disposable, int requestCode, RequestBody empCode, RequestBody empName, RequestBody regionId, RequestBody divisionId, RequestBody branchCode, RequestBody companyName, RequestBody purpose, RequestBody locationName, RequestBody latitude, RequestBody longitude, MultipartBody.Part visitImage) {
+        disposable.add(webService.addMarketingVisit(empCode, empName, regionId, divisionId, branchCode, companyName, purpose, locationName, latitude, longitude, visitImage)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<AddMarketingVisitResponse>() {
+                    @Override
+                    public void onSuccess(AddMarketingVisitResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
+
+    public void getMarketingVisits(CompositeDisposable disposable, int requestCode, String empCode, String branchCode, String divisionId, String regionId, String loginType, String date) {
+        disposable.add(webService.getMarketingVisits(empCode, branchCode, divisionId, regionId, loginType, date)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<MarketingVisitListResponse>() {
+                    @Override
+                    public void onSuccess(MarketingVisitListResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
+
+    public void getEmpMonthlyAttendance(CompositeDisposable disposable, int requestCode, String empCode, int year, int month) {
+        disposable.add(webService.getEmpMonthlyAttendance(empCode, year, month)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<EmpMonthlyAttendanceResponse>() {
+                    @Override
+                    public void onSuccess(EmpMonthlyAttendanceResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
+
+    public void getAllBranchQrs(CompositeDisposable disposable, int requestCode, String empCode, String loginType) {
+        disposable.add(webService.getAllBranchQrs(empCode, loginType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<BranchQrListResponse>() {
+                    @Override
+                    public void onSuccess(BranchQrListResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
+
+    public void deleteBranchQr(CompositeDisposable disposable, int requestCode, String branchCode, String empCode, String loginType) {
+        disposable.add(webService.deleteBranchQr(branchCode, empCode, loginType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<DeleteBranchQrResponse>() {
+                    @Override
+                    public void onSuccess(DeleteBranchQrResponse response) {
+                        iResultViewListener.showResult(response, requestCode);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        returnErrorMessage(throwable, requestCode);
+                    }
+                })
+        );
+    }
+
+    public void list_employee(CompositeDisposable disposable, int requestCode, String branch_code, String search) {
+        String loginType = mContext != null ? RetrofitClient.getStringUserPreference(mContext, Constants.LOGIN_TYPE) : "";
+        String divName = mContext != null ? RetrofitClient.getStringUserPreference(mContext, Constants.DIVISION_NAME) : "";
+        list_employee(disposable, requestCode, branch_code, search, divName, loginType);
+    }
+
     public void list_employee(CompositeDisposable disposable, int requestCode, String branch_code,
-                              String search) {
-        Log.e(TAG, " " + " branch_code-" + branch_code + " search-" + search);
+                              String search,String division_name,String login_type) {
+        Log.e(TAG, " " + " branch_code-" + branch_code + " search-" + search + " division_name-" + division_name
+                + " login_type-" + login_type);
         disposable.add(
-                webService.list_emp(branch_code, search)
+                webService.list_emp(branch_code, search,division_name,login_type)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -767,6 +1462,36 @@ public class ApiPresenter implements INetworkResult {
                         })
         );
     }
+
+    public void list_chat_employee(CompositeDisposable disposable, int requestCode,
+                              String search) {
+        Log.e(TAG, " " +" search-" + search);
+        disposable.add(
+                webService.list_chat_emp(search)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
+
 
     public void list_RateCard(CompositeDisposable disposable, int requestCode, String branch_code,
                               String search) {
@@ -799,10 +1524,10 @@ public class ApiPresenter implements INetworkResult {
 
 
     public void listBirth_employee(CompositeDisposable disposable, int requestCode, String region_id,
-                                   String search) {
+                                   String search,String branch_code,String division_id,String login_type) {
         Log.e(TAG, " " + " region_id-" + region_id + " search-" + search);
         disposable.add(
-                webService.listBirth_emp(region_id, search)
+                webService.listBirth_emp(region_id, search,branch_code,division_id,login_type)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -1332,10 +2057,10 @@ public class ApiPresenter implements INetworkResult {
     }
 
     public void motercycleList(CompositeDisposable disposable, int requestCode, String branch_code,
-                               String search,String login_type, String status) {
+                               String search,String login_type,String division_name, String status) {
         Log.e(TAG, " " + " branch_code-" + branch_code + " login_type " + login_type+ " status " + status);
         disposable.add(
-                webService.motercycleList(branch_code, search,login_type, status)
+                webService.motercycleList(branch_code, search,login_type,division_name, status)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -1358,10 +2083,10 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
-    public void motercyclesld(CompositeDisposable disposable, int requestCode, String vehicle_no, String sold_status) {
+    public void motercyclesld(CompositeDisposable disposable, int requestCode, String vehicle_no,String division_name, String sold_status) {
         Log.e(TAG, " " + " vehicle_no-" + vehicle_no + "  sold_status" + sold_status);
         disposable.add(
-                webService.motercycleSold(vehicle_no, sold_status)
+                webService.motercycleSold(vehicle_no,division_name, sold_status)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -1384,10 +2109,10 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
-    public void weightMc(CompositeDisposable disposable, int requestCode, String branch_code, String search) {
+    public void weightMc(CompositeDisposable disposable, int requestCode, String branch_code,String login_type, String division_name, String search) {
         Log.e(TAG, " " + " branch_code-" + branch_code);
         disposable.add(
-                webService.weightMachineList(branch_code, search)
+                webService.weightMachineList(branch_code,login_type,division_name, search)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(new Function<Object, Object>() {
@@ -1439,6 +2164,48 @@ public class ApiPresenter implements INetworkResult {
                         })
         );
     }
+
+    public void addLeave(CompositeDisposable disposable, int requestCode, String lv_id ,String region_id,
+                         String division_id ,String division_name,
+                         String branch_code,String branch_name, String emp_code, String emp_name,
+                         String fromDate, String ToDate, String tvDays, String cnf_leave_from,
+                         String cnf_leave_upto, String cnf_leave_days, String etMessage)
+    {
+        Log.e(TAG, "Leave Application: " + " lv_id-" + lv_id + " region_id-" + region_id +
+                " division_id-" + division_id + " division_name-" + division_name +
+                " branch_code-" + branch_code + " branch_code-" + branch_name +
+                " emp_code-" + emp_code + " emp_name-" + emp_name +
+                " fromDate-" + fromDate + "ToDate-" + ToDate +
+                " tvDays-" + tvDays + " cnf_leave_from-" + cnf_leave_from +
+                " cnf_leave_upto-" + cnf_leave_upto + " cnf_leave_days-" + cnf_leave_days + " etMessage-" + etMessage);
+        
+        disposable.add(
+                webService.addLeaveapp(lv_id, region_id,division_id,division_name,branch_code,branch_name,
+                                emp_code, emp_name, fromDate, ToDate,tvDays,cnf_leave_from,cnf_leave_upto,
+                                cnf_leave_days,etMessage)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
 
     public void addSweeperPeon(CompositeDisposable disposable, int requestCode, String sp_id,
                                String branch_code, String emp_code, String emp_name,
@@ -1559,16 +2326,26 @@ public class ApiPresenter implements INetworkResult {
                 webService.statusCheck(emp_code)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .map(new Function<Object, Object>() {
-                            @Override
-                            public Object apply(Object blog) throws Exception {
-                                return blog;
-                            }
-                        })
                         .subscribeWith(new DisposableSingleObserver<Object>() {
                             @Override
                             public void onSuccess(Object object) {
-                                iResultViewListener.showResult(object, requestCode);
+                                try {
+                                    if (object != null) {
+                                        String responseString = object.toString();
+                                        if (responseString.trim().startsWith("{")) {
+                                            CheckStatusResponse response = new Gson().fromJson(responseString, CheckStatusResponse.class);
+                                            iResultViewListener.showResult(response, requestCode);
+                                        } else {
+                                            ELog.e(TAG, "Non-JSON response for checkStaus: " + responseString);
+                                            iResultViewListener.showResult(null, requestCode);
+                                        }
+                                    } else {
+                                        iResultViewListener.showResult(null, requestCode);
+                                    }
+                                } catch (Exception e) {
+                                    ELog.e(TAG, "Error parsing checkStaus response", e);
+                                    iResultViewListener.showResult(null, requestCode);
+                                }
                             }
 
                             @Override
@@ -1745,16 +2522,26 @@ public class ApiPresenter implements INetworkResult {
                 webService.actInactive(emp_id, status)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .map(new Function<Object, Object>() {
-                            @Override
-                            public Object apply(Object blog) throws Exception {
-                                return blog;
-                            }
-                        })
                         .subscribeWith(new DisposableSingleObserver<Object>() {
                             @Override
                             public void onSuccess(Object object) {
-                                iResultViewListener.showResult(object, requestCode);
+                                try {
+                                    if (object != null) {
+                                        String responseString = object.toString();
+                                        if (responseString.trim().startsWith("{")) {
+                                            EmployeeActive_InctiveResponse response = new Gson().fromJson(responseString, EmployeeActive_InctiveResponse.class);
+                                            iResultViewListener.showResult(response, requestCode);
+                                        } else {
+                                            ELog.e(TAG, "Non-JSON response for empActiveInacytive: " + responseString);
+                                            iResultViewListener.showResult(null, requestCode);
+                                        }
+                                    } else {
+                                        iResultViewListener.showResult(null, requestCode);
+                                    }
+                                } catch (Exception e) {
+                                    ELog.e(TAG, "Error parsing empActiveInacytive response", e);
+                                    iResultViewListener.showResult(null, requestCode);
+                                }
                             }
 
                             @Override
@@ -2071,6 +2858,100 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
+    public void listPlacedVehicle(CompositeDisposable disposable, int requestCode, String region_name, String division_name,
+                           String branch_code,String login_type) {
+        Log.e(TAG, "addFaild_Vehicle : " + " region_name-" + region_name + " division_name-" + division_name + ""
+                + " branch_code-" + branch_code + " login_type-" + login_type);
+        disposable.add(
+                webService.listVehicle(region_name, division_name, branch_code,login_type)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+    public void listVehicleitem(CompositeDisposable disposable, int requestCode,String branch_code ,String current_date) {
+        Log.e(TAG, "Branch_Vehicle : "  + " branch_code-" + branch_code + current_date + " current_date-" );
+        disposable.add(
+                webService.itemVehicle(branch_code,current_date)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
+
+
+
+
+    public void addVehicle(CompositeDisposable disposable, int requestCode, String region_name, String division_name,
+                         String branch_code, String branch_name, String emp_code, String emp_name,
+                         String vehicle_type, String date,  String noOfVehicle,  String etDestination,
+                           String month,String year) {
+        Log.e(TAG, "addFaild_Vehicle : " + " region_name-" + region_name + " division_name-" + division_name + ""
+                + " branch_code-" + branch_code + " branch_name-" + branch_name + " emp_code-" + emp_code
+                + " emp_name-" + emp_name + " vehicle_type-" + vehicle_type + " date-" + date
+                + noOfVehicle + " etDestination-" + etDestination
+                + " month-" + month+ " year-" + year);
+        disposable.add(
+                webService.addVehicle(region_name, division_name, branch_code, branch_name,
+                                emp_code, emp_name, vehicle_type, date,noOfVehicle, etDestination,month,year)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+
     public void addFaild(CompositeDisposable disposable, int requestCode, String region_id, String division_id,
                          String branch_code, String branch_name, String emp_code, String emp_name,
                          String vehicle_type, String date, String remark, String faild_by, String vehicleCost, String customerRate) {
@@ -2111,16 +2992,29 @@ public class ApiPresenter implements INetworkResult {
                 webService.senMessage(emp_code, emp_name, empBranch, message)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .map(new Function<Object, Object>() {
-                            @Override
-                            public Object apply(Object blog) throws Exception {
-                                return blog;
-                            }
-                        })
                         .subscribeWith(new DisposableSingleObserver<Object>() {
                             @Override
                             public void onSuccess(Object object) {
-                                iResultViewListener.showResult(object, requestCode);
+                                try {
+                                    if (object != null) {
+                                        String responseString = object.toString().trim();
+                                        if (responseString.startsWith("{")) {
+                                            AddMessageResponse response = new Gson().fromJson(responseString, AddMessageResponse.class);
+                                            iResultViewListener.showResult(response, requestCode);
+                                        } else {
+                                            Log.d(TAG, "addMessage non-JSON response: " + responseString);
+                                            AddMessageResponse manual = new AddMessageResponse();
+                                            manual.setResponseCode("200");
+                                            manual.setMessage("Message Sent");
+                                            iResultViewListener.showResult(manual, requestCode);
+                                        }
+                                    } else {
+                                        iResultViewListener.showResult(null, requestCode);
+                                    }
+                                } catch (Exception e) {
+                                    Log.e(TAG, "Error parsing addMessage response", e);
+                                    iResultViewListener.showResult(null, requestCode);
+                                }
                             }
 
                             @Override
@@ -2158,6 +3052,9 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
+
+
+
     public void insAmtAllList(CompositeDisposable disposable, int requestCode,
                               String company_code) {
         Log.e(TAG, " " + " company_code-" + company_code);
@@ -2185,5 +3082,79 @@ public class ApiPresenter implements INetworkResult {
         );
     }
 
+    public void requestDeviceUnlock(CompositeDisposable disposable, int requestCode, String empCode, String deviceKey) {
+        disposable.add(
+                webService.requestDeviceUnlock(empCode, deviceKey)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+    public void listDeviceUnlockRequests(CompositeDisposable disposable, int requestCode, String regionId) {
+        disposable.add(
+                webService.listDeviceUnlockRequests(regionId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
+
+    public void approveDeviceUnlock(CompositeDisposable disposable, int requestCode, String requestId, String empCode) {
+        disposable.add(
+                webService.approveDeviceUnlock(requestId, empCode)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(new Function<Object, Object>() {
+                            @Override
+                            public Object apply(Object blog) throws Exception {
+                                return blog;
+                            }
+                        })
+                        .subscribeWith(new DisposableSingleObserver<Object>() {
+                            @Override
+                            public void onSuccess(Object object) {
+                                iResultViewListener.showResult(object, requestCode);
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                returnErrorMessage(throwable, requestCode);
+                            }
+                        })
+        );
+    }
 
 }

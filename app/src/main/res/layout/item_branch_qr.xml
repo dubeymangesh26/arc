@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="6dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_branch_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="PUNE MAIN BRANCH (PUN)" />
+
+        <TextView
+            android:id="@+id/tv_lat_long"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="#333333"
+            android:textSize="13sp"
+            tools:text="📍 Lat: 18.520430 | Lng: 73.856710" />
+
+        <TextView
+            android:id="@+id/tv_radius"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#667781"
+            android:textSize="12sp"
+            tools:text="🎯 Geofence Radius: 150 meters" />
+
+        <TextView
+            android:id="@+id/tv_qr_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="#0066CC"
+            android:textSize="11sp"
+            tools:text="🔑 Payload: ARC_OFFICE_QR_PUN" />
+
+        <Button
+            android:id="@+id/btn_delete_qr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#FF3B30"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="🗑 Delete / Reset QR Code" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

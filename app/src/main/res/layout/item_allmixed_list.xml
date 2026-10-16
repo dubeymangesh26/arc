@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:weightSum="1"
             android:orientation="horizontal"
             android:padding="@dimen/_5sdp">
 
@@ -32,11 +33,10 @@
 
             <TextView
                 android:id="@+id/branchCode"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:textColor="@color/bluedark"
@@ -49,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:textSize="@dimen/_10ssp"
                 android:layout_gravity="center"
                 android:textColor="@color/bluedark"
                 android:textStyle="bold"/>

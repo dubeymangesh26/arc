@@ -72,4 +72,6 @@
     <string name="Rs">\u20B9</string>
     <string name="otpmsg">Enter OTP That Send At Your Email ID. If not receive, Please check in Spam</string>
     <string name="acnotverify">Still Your Account Not Verify, Please Verify</string>
+    <string name="full_screen_image">Full Screen Image</string>
+    <string name="close">Close</string>
 </resources>

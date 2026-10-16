@@ -46,6 +46,12 @@ public class ForgotPassword extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_forgot_password);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
@@ -58,9 +64,11 @@ public class ForgotPassword extends BaseActivity {
         newpassword = findViewById(R.id.newpassword);
         messageText = findViewById(R.id.messageText);
         btnGetOtp = findViewById(R.id.btnGetOtp);
-        email=getIntent().getExtras().getString("email");
-        emaiId.setText(email);
-        getOTP(emaiId.getText().toString());
+        if (getIntent().getExtras() != null) {
+            email = getIntent().getExtras().getString("email");
+            emaiId.setText(email);
+            getOTP(emaiId.getText().toString());
+        }
 
         reset.setOnClickListener(new View.OnClickListener() {
             @Override

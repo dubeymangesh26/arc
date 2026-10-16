@@ -26,8 +26,6 @@ import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class MessListActivity extends BaseActivity {
 
     RecyclerView list;
@@ -40,13 +38,19 @@ public class MessListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_mess_list);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list=findViewById(R.id.list);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);
-        div_Name = Objects.requireNonNull(getIntent().getExtras()).getString("div_name");
+        if (getIntent().getExtras() != null) {
+            div_Name = getIntent().getExtras().getString("div_name");
+        }
 
         messList();
 
@@ -106,8 +110,7 @@ public class MessListActivity extends BaseActivity {
                 }
             } else {
                 Infrastructure.dismissProgressDialog();
-                ELog.e(TAG, "Exception in checkLoginResponse" + messListResponse.getResponseCode());
-                Toast.makeText(this, messListResponse.getMessage(), Toast.LENGTH_LONG).show();
+                ELog.e(TAG, "Exception in checkLoginResponse: response is null");
 
             }
         } catch (Exception e) {

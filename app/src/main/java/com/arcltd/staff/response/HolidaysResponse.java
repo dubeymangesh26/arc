@@ -46,6 +46,8 @@ public class HolidaysResponse {
         private String festval;
         @SerializedName("fst_date")
         private String fstDate;
+        @SerializedName("fst_day")
+        private String fst_day;
         @SerializedName("updated_date")
         private String updatedDate;
         @SerializedName("created_date")
@@ -81,6 +83,13 @@ public class HolidaysResponse {
 
         public void setFstDate(String fstDate) {
             this.fstDate = fstDate;
+        }
+        public String getFst_day() {
+            return fst_day;
+        }
+
+        public void setFst_day(String fst_day) {
+            this.fst_day = fst_day;
         }
 
         public String getUpdatedDate() {

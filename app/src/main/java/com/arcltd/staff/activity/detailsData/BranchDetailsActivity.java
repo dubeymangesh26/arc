@@ -7,6 +7,7 @@ import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +37,6 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.Objects;
 
 public class BranchDetailsActivity extends AppCompatActivity {
     TextView tvRegion,tvDivision,tvBranchName,tvBraMangNo,tvPhNo,tvBranchMobil,tvEmailID,tvBranchAddress,tvBranchCode;
@@ -49,14 +50,22 @@ public class BranchDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_branch_details);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, BranchLocalListResponse.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("data");
+            }
+            if (data != null) {
+                dataBean = new Gson().fromJson(data, BranchLocalListResponse.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
@@ -91,25 +100,21 @@ public class BranchDetailsActivity extends AppCompatActivity {
                     +"Branch Mob.:- "+dataBean.getSc_branch_mobileno()+"\n"
                     +"Address:- "+dataBean.getSc_branch_address();
 
-            tvBraMangNo.setOnClickListener(new View.OnClickListener() {
+            View.OnClickListener dialClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", tvBraMangNo.getText().toString(), null));
-                    startActivity(intent);
-
+                    TextView tv = (TextView) v;
+                    String phone = tv.getText().toString().trim();
+                    if (!TextUtils.isEmpty(phone)) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                        startActivity(intent);
+                    }
                 }
-            });
+            };
 
-            tvPhNo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", tvPhNo.getText().toString(), null));
-                    startActivity(intent);
-
-                }
-            });
+            tvBraMangNo.setOnClickListener(dialClickListener);
+            tvPhNo.setOnClickListener(dialClickListener);
+            tvBranchMobil.setOnClickListener(dialClickListener);
 
             tvBranchMobil.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -139,7 +144,7 @@ public class BranchDetailsActivity extends AppCompatActivity {
                         startActivity(Intent.createChooser(emailIntent, "Send mail..."));
                         finish();
                         Log.i("Finished sending email...", "");
-                    } catch (android.content.ActivityNotFoundException ex) {
+                    } catch (ActivityNotFoundException ex) {
                         Toast.makeText(BranchDetailsActivity.this,
                                 "There is no email client installed.", Toast.LENGTH_SHORT).show();
                     }

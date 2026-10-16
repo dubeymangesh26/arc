@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
@@ -26,8 +28,6 @@ import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class AddBranchExpencessActivity extends BaseActivity {
     EditText etTeeAmt, etElectricity;
     CheckBox cbEdit,cbEditEle;
@@ -39,19 +39,23 @@ public class AddBranchExpencessActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_branch_expencess);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etTeeAmt=findViewById(R.id.etTeeAmt);
         etElectricity=findViewById(R.id.etElectricity);
         cbEdit=findViewById(R.id.cbEdit);
-        cbEditEle=findViewById(R.id.cbEditEle);
-        branch_code = Objects.requireNonNull(getIntent().getExtras()).getString("branch_code");
-        if (!Objects.requireNonNull(getIntent().getExtras()).getString("branch_code").equals("")){
-            branch_code = Objects.requireNonNull(getIntent().getExtras()).getString("branch_code");
-        }else {
+        cbEditEle = findViewById(R.id.cbEditEle);
+        if (getIntent().getExtras() != null) {
+            branch_code = getIntent().getExtras().getString("branch_code");
+        }
+        if (branch_code == null || branch_code.equals("")) {
             branch_code = RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.BRANCH_CODE);
-
         }
 
         etTeeAmt.setEnabled(false);
@@ -131,8 +135,7 @@ public class AddBranchExpencessActivity extends BaseActivity {
 
             } else {
                 Infrastructure.dismissProgressDialog();
-                ELog.e(TAG, "Exception in addTeeElectricityResponse" + addTeeElectricityResponse.getResponseCode());
-                Toast.makeText(this, addTeeElectricityResponse.getMessage(), Toast.LENGTH_LONG).show();
+                ELog.e(TAG, "Exception in addTeeElectricityResponse: response is null");
 
             }
         } catch (Exception e) {

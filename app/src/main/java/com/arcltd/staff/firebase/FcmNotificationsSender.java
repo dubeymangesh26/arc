@@ -23,6 +23,8 @@ public class FcmNotificationsSender  {
     String userFcmToken;
     String title;
     String body;
+    String clickAction;
+    String senderCode;
     Context mContext;
     Activity mActivity;
 
@@ -36,8 +38,25 @@ public class FcmNotificationsSender  {
         this.body = body;
         this.mContext = mContext;
         this.mActivity = mActivity;
+    }
 
+    public FcmNotificationsSender(String userFcmToken, String title, String body, String clickAction, Context mContext, Activity mActivity) {
+        this.userFcmToken = userFcmToken;
+        this.title = title;
+        this.body = body;
+        this.clickAction = clickAction;
+        this.mContext = mContext;
+        this.mActivity = mActivity;
+    }
 
+    public FcmNotificationsSender(String userFcmToken, String title, String body, String clickAction, String senderCode, Context mContext, Activity mActivity) {
+        this.userFcmToken = userFcmToken;
+        this.title = title;
+        this.body = body;
+        this.clickAction = clickAction;
+        this.senderCode = senderCode;
+        this.mContext = mContext;
+        this.mActivity = mActivity;
     }
 
     public void SendNotifications() {
@@ -49,14 +68,22 @@ public class FcmNotificationsSender  {
             JSONObject notiObject = new JSONObject();
             notiObject.put("title", title);
             notiObject.put("body", body);
-            notiObject.put("icon", "icon"); // enter icon that exists in drawable only
-
-
+            notiObject.put("icon", "icon");
 
             mainObj.put("notification", notiObject);
 
+            JSONObject dataObject = new JSONObject();
+            dataObject.put("title", title);
+            dataObject.put("message", body);
+            if (clickAction != null) {
+                dataObject.put("click_action", clickAction);
+            }
+            if (senderCode != null) {
+                dataObject.put("sender_code", senderCode);
+            }
+            mainObj.put("data", dataObject);
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,WebConstants.fcmPostUrl, mainObj, new Response.Listener<JSONObject>() {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, WebConstants.fcmPostUrl, mainObj, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
 

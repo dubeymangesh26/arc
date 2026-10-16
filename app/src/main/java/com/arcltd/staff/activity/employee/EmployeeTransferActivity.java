@@ -33,7 +33,6 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class EmployeeTransferActivity extends BaseActivity {
 
@@ -60,7 +59,9 @@ public class EmployeeTransferActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_transfer);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etCurrentBranch =findViewById(R.id.etCurrentBranch);
@@ -72,9 +73,13 @@ public class EmployeeTransferActivity extends BaseActivity {
         acType =  findViewById(R.id.acType);
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, EmployeeListResponse.EmployeeList.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("data");
+            }
+            if (data != null && !data.isEmpty()) {
+                dataBean = new Gson().fromJson(data, EmployeeListResponse.EmployeeList.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
@@ -89,14 +94,15 @@ public class EmployeeTransferActivity extends BaseActivity {
         }*/
 
         try {
-
-            etEmpName.setText(dataBean.getEmp_name());
-            etEmpCode.setText(dataBean.getEmp_code());
-            etCurrentBranch.setText(dataBean.getBranch_name());
-            acType.setText(dataBean.getBranch_code());
-            division_id=dataBean.getDivision_id();
-            division_name=dataBean.getDivision_name();
-            current_branch=dataBean.getBranch_code();
+            if (dataBean != null) {
+                etEmpName.setText(dataBean.getEmp_name());
+                etEmpCode.setText(dataBean.getEmp_code());
+                etCurrentBranch.setText(dataBean.getBranch_name());
+                acType.setText(dataBean.getBranch_code());
+                division_id = dataBean.getDivision_id();
+                division_name = dataBean.getDivision_name();
+                current_branch = dataBean.getBranch_code();
+            }
 
         } catch (Exception e) {
             Log.e("", "ListingDetail error: " + e);
@@ -240,12 +246,12 @@ public class EmployeeTransferActivity extends BaseActivity {
 
                     Infrastructure.dismissProgressDialog();
 
-                    if (branchListResponse.getBranchList().size() > 0) {
+                    if (!branchListResponse.getBranchList().isEmpty()) {
                         branch_codearray.clear();
                         branch_codearray.add("Select Branch");
                         for (int i = 0; i < branchListResponse.getBranchList().size(); i++) {
-                            branch_codearray.add(branchListResponse.getBranchList().get(i).getBranch_code());
-                            branch_code_ID.add(branchListResponse.getBranchList().get(i).getBranch_name());
+                            branch_codearray.add(branchListResponse.getBranchList().get(i).getBranchCode());
+                            branch_code_ID.add(branchListResponse.getBranchList().get(i).getBranchCode());
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, branch_codearray);
                         adapter.setDropDownViewResource(R.layout.spinner_textview);
@@ -317,7 +323,7 @@ public class EmployeeTransferActivity extends BaseActivity {
 
 
     private boolean validate() {
-        if (Objects.requireNonNull(getIntent().getExtras()).getString("data")==null) {
+        if (data == null) {
             if (spdivision.getSelectedItem().toString().trim().equals("Select Division")) {
                 Toast.makeText(getApplicationContext(), "Please Select Division!", Toast.LENGTH_SHORT).show();
                 return false;

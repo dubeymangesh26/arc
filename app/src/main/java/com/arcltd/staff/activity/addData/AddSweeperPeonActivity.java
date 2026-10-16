@@ -33,7 +33,6 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,8 +66,12 @@ public class AddSweeperPeonActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_add_sweeper_peon);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         etSweeperPeonCode =findViewById(R.id.etSweeperPeonCode);
@@ -81,30 +84,35 @@ public class AddSweeperPeonActivity extends BaseActivity {
         acType =  findViewById(R.id.acType);
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, SweeperPeonListResponse.SweeperPeonList.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("data");
+            }
+            if (data != null && !data.isEmpty()) {
+                dataBean = new Gson().fromJson(data, SweeperPeonListResponse.SweeperPeonList.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
         }
 
-        if (data.equals("")){
+        if (data == null || data.equals("")) {
             liAddData.setVisibility(View.VISIBLE);
             divisionList();
-        }else {
+        } else {
             liAddData.setVisibility(View.GONE);
 
         }
 
         try {
-
-            etSweeperPeonCode.setText(dataBean.getEmp_code());
-            etSweeperPeonName.setText(dataBean.getEmp_name());
-            etSalary.setText(dataBean.getEmp_salary());
-            acType.setText(dataBean.getBranch_code());
-            sp_id=dataBean.getSp_id();
-            type=dataBean.getSweeper_peon();
+            if (dataBean != null) {
+                etSweeperPeonCode.setText(dataBean.getEmp_code());
+                etSweeperPeonName.setText(dataBean.getEmp_name());
+                etSalary.setText(dataBean.getEmp_salary());
+                acType.setText(dataBean.getBranch_code());
+                sp_id = dataBean.getSp_id();
+                type = dataBean.getSweeper_peon();
+            }
 
         } catch (Exception e) {
             Log.e("", "ListingDetail error: " + e);
@@ -278,12 +286,12 @@ public class AddSweeperPeonActivity extends BaseActivity {
 
                     Infrastructure.dismissProgressDialog();
 
-                    if (branchListResponse.getBranchList().size() > 0) {
+                    if (!branchListResponse.getBranchList().isEmpty()) {
                         branch_codearray.clear();
                         branch_codearray.add("Select Branch");
                         for (int i = 0; i < branchListResponse.getBranchList().size(); i++) {
-                            branch_codearray.add(branchListResponse.getBranchList().get(i).getBranch_code());
-                            branch_code_ID.add(branchListResponse.getBranchList().get(i).getBranch_code());
+                            branch_codearray.add(branchListResponse.getBranchList().get(i).getBranchCode());
+                            branch_code_ID.add(branchListResponse.getBranchList().get(i).getBranchCode());
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, branch_codearray);
                         adapter.setDropDownViewResource(R.layout.spinner_textview);
@@ -354,7 +362,7 @@ public class AddSweeperPeonActivity extends BaseActivity {
 
 
     private boolean validate() {
-        if (Objects.requireNonNull(getIntent().getExtras()).getString("data")==null) {
+        if (getIntent().getExtras() != null && getIntent().getExtras().getString("data") == null) {
             if (spdivision.getSelectedItem().toString().trim().equals("Select Division")) {
                 Toast.makeText(getApplicationContext(), "Please Select Division!", Toast.LENGTH_SHORT).show();
                 return false;
@@ -362,13 +370,14 @@ public class AddSweeperPeonActivity extends BaseActivity {
                 Toast.makeText(getApplicationContext(), "Please Select Branch!", Toast.LENGTH_SHORT).show();
                 return false;
             }
-        }if (TextUtils.isEmpty(etSweeperPeonCode.getText().toString())) {
+        }
+        if (TextUtils.isEmpty(etSweeperPeonCode.getText() != null ? etSweeperPeonCode.getText().toString() : "")) {
             Toast.makeText(getApplicationContext(), "Enter Sweeper/Peon Code. !", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (TextUtils.isEmpty(etSweeperPeonName.getText().toString())) {
+        } else if (TextUtils.isEmpty(etSweeperPeonName.getText() != null ? etSweeperPeonName.getText().toString() : "")) {
             Toast.makeText(getApplicationContext(), "Enter  Name!", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (TextUtils.isEmpty(etSalary.getText().toString())) {
+        } else if (TextUtils.isEmpty(etSalary.getText() != null ? etSalary.getText().toString() : "")) {
             Toast.makeText(getApplicationContext(), "Enter Salary!", Toast.LENGTH_SHORT).show();
             return false;
         }

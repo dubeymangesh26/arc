@@ -39,14 +39,20 @@ public class ArcWebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_arc_web_view);
 
         webView = findViewById(R.id.webView);
-        url = getIntent().getExtras().getString("url");
-        webView.setInitialScale(1);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.setScrollContainer(false);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(false);
-        new MyAsynTask().execute();
+        if (getIntent().getExtras() != null) {
+            url = getIntent().getExtras().getString("url");
+        }
+        if (url != null) {
+            webView.setInitialScale(1);
+            webView.getSettings().setUseWideViewPort(true);
+            webView.getSettings().setLoadWithOverviewMode(true);
+            webView.setScrollContainer(false);
+            webView.getSettings().setBuiltInZoomControls(true);
+            webView.getSettings().setDisplayZoomControls(false);
+            new MyAsynTask().execute();
+        } else {
+            finish();
+        }
 
     }
 

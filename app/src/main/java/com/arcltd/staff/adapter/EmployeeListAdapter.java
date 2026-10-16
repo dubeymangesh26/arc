@@ -1,6 +1,7 @@
 package com.arcltd.staff.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -16,6 +17,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arcltd.staff.R;
+import com.arcltd.staff.activity.chat.ChatActivity;
+import com.arcltd.staff.activity.chat.ChatUserListActivity;
 import com.arcltd.staff.activity.employee.EmployeeDetailsActivity;
 import com.arcltd.staff.response.EmployeeListResponse;
 import com.bumptech.glide.Glide;
@@ -60,20 +63,34 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
 
         holder.region.setText(list.get(position).getEmp_name());
         holder.branchCode.setText(list.get(position).getBranch_code());
-        Glide.with(context)
-                .load(list.get(position).getProfilepic()) // image url
-                .placeholder(R.drawable.arcround) // any placeholder to load at start
-                .error(R.drawable.arcround)  // any image in case of error
-                .override(200, 200) // resizing
-                .centerCrop()
-                .into(holder.profilepic);
+        
+        String profilePicUrl = list.get(position).getProfilepic();
+        if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
+            Glide.with(context)
+                    .load(profilePicUrl) // image url
+                    .placeholder(R.drawable.arcround) // any placeholder to load at start
+                    .error(R.drawable.arcround)  // any image in case of error
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(holder.profilepic);
+        } else {
+            holder.profilepic.setImageResource(R.drawable.arcround);
+        }
 
         holder.listRegion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String data = new Gson().toJson(list.get(position));
-                Log.e("TAG", "MessList: "+data );
-                context.startActivity(new Intent(context, EmployeeDetailsActivity.class).putExtra("data", data));
+                Log.e("TAG", "MessList: " + data);
+                if (context instanceof ChatUserListActivity || (context instanceof Activity && ((Activity) context).getIntent().getStringExtra("target") != null &&
+                        ((Activity) context).getIntent().getStringExtra("target").equals("CHAT"))) {
+                    context.startActivity(new Intent(context, ChatActivity.class)
+                            .putExtra("userName", list.get(position).getEmp_name())
+                            .putExtra("emp_code", list.get(position).getEmp_code())
+                            .putExtra("fcmToken", list.get(position).getToken()));
+                } else {
+                    context.startActivity(new Intent(context, EmployeeDetailsActivity.class).putExtra("data", data));
+                }
 
             }
         });

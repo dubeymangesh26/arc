@@ -45,7 +45,8 @@ public class WeightMCListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_weight_mclist);
-
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
@@ -100,7 +101,9 @@ public class WeightMCListActivity extends BaseActivity {
             if (Infrastructure.isInternetPresent()) {
                 searchProgressBar.setVisibility(View.VISIBLE);
                 apiPresenter.weightMc(disposable, Constants.ApiRequestCode.WEIGHTMACHINE_LIST,
-                        branch_code, atSearch.getText().toString());
+                        branch_code, RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.LOGIN_TYPE),
+                        RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.DIVISION_NAME),
+                        atSearch.getText().toString());
 
             } else {
                 new ErrorHandlerCode(this, NO_INTERNET, getString(R.string.no_internet_connection_message));

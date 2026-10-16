@@ -7,7 +7,6 @@
     android:background="@color/blue_light"
     android:weightSum="1"
     android:orientation="vertical"
-    android:layout_marginBottom="?actionBarSize"
     tools:context=".activity.ui.DashboardFragment">
 
     <LinearLayout
@@ -114,6 +113,7 @@
                 <RelativeLayout
                     android:id="@+id/cvStructure"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/_10sdp">
 
@@ -162,6 +162,60 @@
                         android:elevation="13dp"
                         android:src="@drawable/structure" />
                 </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/cvLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/_10sdp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_30sdp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginBottom="5dp"
+                        android:minHeight="@dimen/_70sdp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="8dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/_30sdp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Web Services"
+                                android:textColor="@color/primaryTextColor"
+                                android:textSize="@dimen/_12ssp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/_5sdp"
+                                android:text="Marketing Rep.,Opration Rep. etc"
+                                android:textSize="@dimen/_10ssp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:elevation="13dp"
+                        android:src="@drawable/link_24" />
+                </RelativeLayout>
+
 
 
                 <!--HR Manager-->

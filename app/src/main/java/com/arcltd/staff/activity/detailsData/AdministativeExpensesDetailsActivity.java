@@ -25,8 +25,6 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class AdministativeExpensesDetailsActivity extends BaseActivity {
 
     TextView tvTelephone,tvPostageCourier,tvPrintStatinary,tvPetrolTwoWheeler,tvTwoWhMantatention,tvCarPetrol,
@@ -43,7 +41,9 @@ public class AdministativeExpensesDetailsActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_administative_expenses_details);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
 
@@ -77,15 +77,16 @@ public class AdministativeExpensesDetailsActivity extends BaseActivity {
         tvRateTaxes=findViewById(R.id.tvRateTaxes);
         tvBankCommission=findViewById(R.id.tvBankCommission);
         tvEmpChildrenAssit=findViewById(R.id.tvEmpChildrenAssit);
-        tvTotalBranchExpenses=findViewById(R.id.tvTotalBranchExpenses);
+        tvTotalBranchExpenses = findViewById(R.id.tvTotalBranchExpenses);
 
-        if (Objects.requireNonNull(getIntent().getExtras()).getString("branch_code")!=null){
-            branch_code = Objects.requireNonNull(getIntent().getExtras()).getString("branch_code");
-            getResponse();
-        }else {
-            branch_code =RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.BRANCH_CODE);
-            getResponse();
+        if (getIntent().getExtras() != null) {
+            branch_code = getIntent().getExtras().getString("branch_code");
         }
+
+        if (branch_code == null) {
+            branch_code = RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.BRANCH_CODE);
+        }
+        getResponse();
 
 
 

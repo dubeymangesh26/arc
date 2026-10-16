@@ -6,9 +6,11 @@ import java.util.List;
 
 public class BranchListResponse {
 
+    @SerializedName("branchList")
     private List<BranchList> branchList;
     @SerializedName("ResponseCode")
     private String responseCode;
+    @SerializedName("message")
     private String message;
 
     public List<BranchList> getBranchList() {
@@ -36,140 +38,155 @@ public class BranchListResponse {
     }
 
     public static class BranchList {
-        private String branch_id;
-        private String branch_name;
-        private String branch_code;
-        private String region_id;
-        private String region_name;
-        private String division_id;
-        private String division_name;
-        private String ac_branch;
-        private String branch_address;
-        private String branch_mngr_mob;
-        private String std_code;
-        private String phone_number;
-        private String branch_mobileno;
-        private String email_id;
-        private String updated_date;
+        @SerializedName("branch_id")
+        private String branchId;
+        @SerializedName("branch_name")
+        private String branchName;
+        @SerializedName("branch_code")
+        private String branchCode;
+        @SerializedName("region_id")
+        private String regionId;
+        @SerializedName("region_name")
+        private String regionName;
+        @SerializedName("division_id")
+        private String divisionId;
+        @SerializedName("division_name")
+        private String divisionName;
+        @SerializedName("ac_branch")
+        private String acBranch;
+        @SerializedName("branch_address")
+        private String branchAddress;
+        @SerializedName("branch_mngr_mob")
+        private String branchMngrMob;
+        @SerializedName("std_code")
+        private String stdCode;
+        @SerializedName("phone_number")
+        private String phoneNumber;
+        @SerializedName("branch_mobileno")
+        private String branchMobileno;
+        @SerializedName("email_id")
+        private String emailId;
+        @SerializedName("updated_date")
+        private String updatedDate;
 
-        public String getBranch_id() {
-            return branch_id;
+        public String getBranchId() {
+            return branchId;
         }
 
-        public void setBranch_id(String branch_id) {
-            this.branch_id = branch_id;
+        public void setBranchId(String branchId) {
+            this.branchId = branchId;
         }
 
-        public String getBranch_name() {
-            return branch_name;
+        public String getBranchName() {
+            return branchName;
         }
 
-        public void setBranch_name(String branch_name) {
-            this.branch_name = branch_name;
+        public void setBranchName(String branchName) {
+            this.branchName = branchName;
         }
 
-        public String getBranch_code() {
-            return branch_code;
+        public String getBranchCode() {
+            return branchCode;
         }
 
-        public void setBranch_code(String branch_code) {
-            this.branch_code = branch_code;
+        public void setBranchCode(String branchCode) {
+            this.branchCode = branchCode;
         }
 
-        public String getRegion_id() {
-            return region_id;
+        public String getRegionId() {
+            return regionId;
         }
 
-        public void setRegion_id(String region_id) {
-            this.region_id = region_id;
+        public void setRegionId(String regionId) {
+            this.regionId = regionId;
         }
 
-        public String getRegion_name() {
-            return region_name;
+        public String getRegionName() {
+            return regionName;
         }
 
-        public void setRegion_name(String region_name) {
-            this.region_name = region_name;
+        public void setRegionName(String regionName) {
+            this.regionName = regionName;
         }
 
-        public String getDivision_id() {
-            return division_id;
+        public String getDivisionId() {
+            return divisionId;
         }
 
-        public void setDivision_id(String division_id) {
-            this.division_id = division_id;
+        public void setDivisionId(String divisionId) {
+            this.divisionId = divisionId;
         }
 
-        public String getDivision_name() {
-            return division_name;
+        public String getDivisionName() {
+            return divisionName;
         }
 
-        public void setDivision_name(String division_name) {
-            this.division_name = division_name;
+        public void setDivisionName(String divisionName) {
+            this.divisionName = divisionName;
         }
 
-        public String getAc_branch() {
-            return ac_branch;
+        public String getAcBranch() {
+            return acBranch;
         }
 
-        public void setAc_branch(String ac_branch) {
-            this.ac_branch = ac_branch;
+        public void setAcBranch(String acBranch) {
+            this.acBranch = acBranch;
         }
 
-        public String getBranch_address() {
-            return branch_address;
+        public String getBranchAddress() {
+            return branchAddress;
         }
 
-        public void setBranch_address(String branch_address) {
-            this.branch_address = branch_address;
+        public void setBranchAddress(String branchAddress) {
+            this.branchAddress = branchAddress;
         }
 
-        public String getBranch_mngr_mob() {
-            return branch_mngr_mob;
+        public String getBranchMngrMob() {
+            return branchMngrMob;
         }
 
-        public void setBranch_mngr_mob(String branch_mngr_mob) {
-            this.branch_mngr_mob = branch_mngr_mob;
+        public void setBranchMngrMob(String branchMngrMob) {
+            this.branchMngrMob = branchMngrMob;
         }
 
-        public String getStd_code() {
-            return std_code;
+        public String getStdCode() {
+            return stdCode;
         }
 
-        public void setStd_code(String std_code) {
-            this.std_code = std_code;
+        public void setStdCode(String stdCode) {
+            this.stdCode = stdCode;
         }
 
-        public String getPhone_number() {
-            return phone_number;
+        public String getPhoneNumber() {
+            return phoneNumber;
         }
 
-        public void setPhone_number(String phone_number) {
-            this.phone_number = phone_number;
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
         }
 
-        public String getBranch_mobileno() {
-            return branch_mobileno;
+        public String getBranchMobileno() {
+            return branchMobileno;
         }
 
-        public void setBranch_mobileno(String branch_mobileno) {
-            this.branch_mobileno = branch_mobileno;
+        public void setBranchMobileno(String branchMobileno) {
+            this.branchMobileno = branchMobileno;
         }
 
-        public String getEmail_id() {
-            return email_id;
+        public String getEmailId() {
+            return emailId;
         }
 
-        public void setEmail_id(String email_id) {
-            this.email_id = email_id;
+        public void setEmailId(String emailId) {
+            this.emailId = emailId;
         }
 
-        public String getUpdated_date() {
-            return updated_date;
+        public String getUpdatedDate() {
+            return updatedDate;
         }
 
-        public void setUpdated_date(String updated_date) {
-            this.updated_date = updated_date;
+        public void setUpdatedDate(String updatedDate) {
+            this.updatedDate = updatedDate;
         }
     }
 }

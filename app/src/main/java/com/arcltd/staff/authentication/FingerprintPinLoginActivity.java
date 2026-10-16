@@ -2,6 +2,7 @@ package com.arcltd.staff.authentication;
 
 import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG;
 import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK;
+import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
 
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
@@ -31,6 +32,8 @@ public class FingerprintPinLoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_fingerprint_pin_login);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         btn_fppin  = findViewById(R.id.btn_fppin);
 
@@ -61,14 +64,14 @@ public class FingerprintPinLoginActivity extends BaseActivity {
 
 
         BiometricPrompt.PromptInfo.Builder promptInfo = buildBiometricPromptInfo();
-        promptInfo.setDeviceCredentialAllowed(true);
+        promptInfo.setAllowedAuthenticators(BIOMETRIC_STRONG | DEVICE_CREDENTIAL);
         biometricPrompt.authenticate(promptInfo.build());
 
         btn_fppin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 BiometricPrompt.PromptInfo.Builder promptInfo = buildBiometricPromptInfo();
-                promptInfo.setDeviceCredentialAllowed(true);
+                promptInfo.setAllowedAuthenticators(BIOMETRIC_STRONG | DEVICE_CREDENTIAL);
                 biometricPrompt.authenticate(promptInfo.build());
             }
         });

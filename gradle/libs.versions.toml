@@ -1,0 +1,129 @@
+[versions]
+activityKtx = "1.13.0"
+agp = "9.4.1"
+androidPdfViewer = "3.2.0-beta.3"
+annotation = "1.10.0"
+appcompat = "1.8.0"
+biometric = "1.1.0"
+cardview = "1.0.0"
+circleimageview = "3.1.0"
+comGoogleFirebase = "23.3.4"
+constraintlayout = "2.2.2"
+coreKtx = "1.19.0"
+dexter = "6.2.3"
+espressoCore = "3.7.0"
+firebaseBom = "34.19.0"
+glide = "5.0.9"
+googleFirebase = "23.3.4"
+googleGmsGoogleServices = "4.5.0"
+gradleToolchainsFoojayResolverConvention = "1.0.0"
+gridlayout = "1.1.0"
+gson = "2.14.0"
+jsoup = "1.23.2"
+junit = "1.3.0"
+junitVersion = "4.13.2"
+kotlin = "2.4.20"
+kotlinBom = "2.4.20"
+legacy = "1.0.0"
+library = "1.1.5"
+libraryVersion = "2.4.0"
+lifecycle = "2.11.0"
+lifecycleExtensions = "2.2.0"
+material = "1.14.0"
+materialRipple = "1.0.2"
+navigation = "2.10.1"
+okhttp = "5.5.0"
+pdfViewer = "2.0.7"
+pdfViewerFragment = "1.0.0-beta01"
+photoview = "2.3.0"
+play = "2.1.0"
+playServicesAuth = "22.0.0"
+playServicesBase = "18.10.1"
+recaptcha = "18.9.3"
+recyclerview = "1.4.0"
+retrofit2 = "3.0.0"
+retrofit2Rxjava2Adapter = "1.0.0"
+room = "2.8.5"
+rxandroid = "2.1.1"
+sdpAndroid = "1.1.1"
+sspAndroid = "1.1.1"
+swiperefreshlayout = "1.2.0"
+threetenabp = "1.4.9"
+volley = "1.2.1"
+workRuntime = "2.11.2"
+zxingCore = "3.5.3"
+zxingAndroid = "4.3.0"
+playServicesLocation = "21.3.0"
+
+[libraries]
+activity = { module = "androidx.activity:activity", version.ref = "activityKtx" }
+activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+adapter-rxjava2 = { group = "com.squareup.retrofit2", name = "adapter-rxjava2", version.ref = "retrofit2" }
+android-pdf-viewer = { group = "com.github.mhiew", name = "android-pdf-viewer", version.ref = "androidPdfViewer" }
+annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+app-update = { group = "com.google.android.play", name = "app-update", version.ref = "play" }
+app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "play" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
+cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+circleimageview = { group = "de.hdodenhof", name = "circleimageview", version.ref = "circleimageview" }
+compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2" }
+converter-scalars = { group = "com.squareup.retrofit2", name = "converter-scalars", version.ref = "retrofit2" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+dexter = { group = "com.karumi", name = "dexter", version.ref = "dexter" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+jsoup = { group = "org.jsoup", name = "jsoup", version.ref = "jsoup" }
+junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
+kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlinBom" }
+legacy-support-v13 = { group = "androidx.legacy", name = "legacy-support-v13", version.ref = "legacy" }
+legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacy" }
+library = { group = "com.daimajia.slider", name = "library", version.ref = "library" }
+lifecycle-extensions1 = { group = "androidx.lifecycle", name = "lifecycle-extensions", version.ref = "lifecycleExtensions" }
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+material-ripple = { group = "com.balysv", name = "material-ripple", version.ref = "materialRipple" }
+navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+nineoldandroids-library = { group = "com.nineoldandroids", name = "library", version.ref = "libraryVersion" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+pdf-viewer-fragment = { group = "androidx.pdf", name = "pdf-viewer-fragment", version.ref = "pdfViewerFragment" }
+pdf-viewer = { group = "com.github.afreakyelf", name = "Pdf-Viewer", version.ref = "pdfViewer" }
+photoview = { group = "com.github.chrisbanes", name = "PhotoView", version.ref = "photoview" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
+play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
+recaptcha = { group = "com.google.android.recaptcha", name = "recaptcha", version.ref = "recaptcha" }
+recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
+retrofit2-rxjava2-adapter = { group = "com.jakewharton.retrofit", name = "retrofit2-rxjava2-adapter", version.ref = "retrofit2Rxjava2Adapter" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-rxjava3 = { group = "androidx.room", name = "room-rxjava3", version.ref = "room" }
+rxandroid = { group = "io.reactivex.rxjava2", name = "rxandroid", version.ref = "rxandroid" }
+sdp-android = { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdpAndroid" }
+ssp-android = { group = "com.intuit.ssp", name = "ssp-android", version.ref = "sspAndroid" }
+swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
+threetenabp = { group = "com.jakewharton.threetenabp", name = "threetenabp", version.ref = "threetenabp" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+work-runtime = { group = "androidx.work", name = "work-runtime", version.ref = "workRuntime" }
+zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxingCore" }
+zxing-android = { group = "com.journeyapps", name = "zxing-android-embedded", version.ref = "zxingAndroid" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+com-google-firebase = { id = "com.google.firebase", version.ref = "comGoogleFirebase" }
+google-firebase = { id = "com.google.firebase", version.ref = "googleFirebase" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+foojay = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "gradleToolchainsFoojayResolverConvention" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

@@ -27,8 +27,6 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class TargetAchivementDetailsActivity extends BaseActivity {
     TextView tvTotalTarget,tvFtlTarget,tvPartTarget,tvParcelTarget;
     RecyclerView list;
@@ -41,7 +39,9 @@ public class TargetAchivementDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_target_achivement_details);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         list=findViewById(R.id.list);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);
         tvParcelTarget = findViewById(R.id.tvParcelTarget);
@@ -52,21 +52,27 @@ public class TargetAchivementDetailsActivity extends BaseActivity {
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         try {
-            data = Objects.requireNonNull(getIntent().getExtras()).getString("data");
-            dataBean = new Gson().fromJson(data, TargetResponseResponse.BookingTarget.class);
-            Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            if (getIntent().getExtras() != null) {
+                data = getIntent().getExtras().getString("data");
+            }
+            if (data != null) {
+                dataBean = new Gson().fromJson(data, TargetResponseResponse.BookingTarget.class);
+                Log.e("", "onCreate: " + new GsonBuilder().create().toJson(dataBean));
+            }
 
         } catch (Exception e) {
             Log.e("", "Data Listing error: " + e);
         }
 
         try {
-            branch_code=dataBean.getBranch_code();
-            setTitle(dataBean.getBranch_name());
-            tvParcelTarget.setText(dataBean.getParcel());
-            tvPartTarget.setText(dataBean.getPart());
-            tvFtlTarget.setText(dataBean.getFtl());
-            tvTotalTarget.setText(dataBean.getTotal());
+            if (dataBean != null) {
+                branch_code = dataBean.getBranch_code();
+                setTitle(dataBean.getBranch_name());
+                tvParcelTarget.setText(dataBean.getParcel());
+                tvPartTarget.setText(dataBean.getPart());
+                tvFtlTarget.setText(dataBean.getFtl());
+                tvTotalTarget.setText(dataBean.getTotal());
+            }
         } catch (Exception e) {
             Log.e("", "Data setData error: " + e);
         }

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -35,8 +36,6 @@ import com.arcltd.staff.utility.Infrastructure;
 import com.arcltd.staff.web_view.WebEmpUploadActivity;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class EmployeeTodayBirthListActivity extends BaseActivity {
     RecyclerView list;
     SwipeRefreshLayout swiptoRefresh;
@@ -53,9 +52,13 @@ public class EmployeeTodayBirthListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_employee_list);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         list=findViewById(R.id.list);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);
         searchProgressBar=findViewById(R.id.searchProgressBar);
@@ -64,8 +67,10 @@ public class EmployeeTodayBirthListActivity extends BaseActivity {
         liserch=findViewById(R.id.liserch);
         liserch.setVisibility(View.GONE);
 
-        delete=getIntent().getExtras().getString("D");
-        branch_code = Objects.requireNonNull(getIntent().getExtras()).getString("branch_code");
+        if (getIntent().getExtras() != null) {
+            delete = getIntent().getExtras().getString("D");
+            branch_code = getIntent().getExtras().getString("branch_code");
+        }
 
         if (delete!=null) {
             liDeleteUpdate.setVisibility(View.GONE);
@@ -94,7 +99,10 @@ public class EmployeeTodayBirthListActivity extends BaseActivity {
                 searchProgressBar.setVisibility(View.VISIBLE);
                 apiPresenter.listBirth_employee(disposable, Constants.ApiRequestCode.DIVISION_LIST,
                         RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.REGION_ID),
-                        atSearch.getText().toString());
+                        atSearch.getText().toString(),
+                        RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.BRANCH_CODE),
+                        RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.DIVISION_ID),
+                        RetrofitClient.getStringUserPreference(getApplicationContext(), Constants.LOGIN_TYPE));
 
             } else {
                 new ErrorHandlerCode(this, NO_INTERNET, getString(R.string.no_internet_connection_message));

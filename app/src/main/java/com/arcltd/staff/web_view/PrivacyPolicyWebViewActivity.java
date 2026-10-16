@@ -75,21 +75,17 @@ public class PrivacyPolicyWebViewActivity extends AppCompatActivity implements V
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.webviewBack:
-                isWebViewCanGoBack();
-                break;
-            case R.id.webviewForward:
-                if (webView.canGoForward())
-                    webView.goForward();
-                break;
-            case R.id.webviewReload:
-                String url = webView.getUrl();
-                LoadWebViewUrl(url);
-                break;
-            case R.id.webviewClose:
-                finish();
-                break;
+        int id = view.getId();
+        if (id == R.id.webviewBack) {
+            isWebViewCanGoBack();
+        } else if (id == R.id.webviewForward) {
+            if (webView.canGoForward())
+                webView.goForward();
+        } else if (id == R.id.webviewReload) {
+            String url = webView.getUrl();
+            LoadWebViewUrl(url);
+        } else if (id == R.id.webviewClose) {
+            finish();
         }
     }
 

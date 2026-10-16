@@ -9,7 +9,7 @@ import com.arcltd.staff.networkhandler.WebConstants;
 import com.arcltd.staff.utility.ELog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,11 +18,15 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-
+import java.io.IOException;
 
 public class RetrofitClient {
     private static final String USER_PREFERENCE = "UserPreferences";
@@ -37,6 +41,7 @@ public class RetrofitClient {
         initOkHttp(context,myCache);
         try {
             Gson gson = new GsonBuilder()
+                    .registerTypeAdapterFactory(new SafeGsonTypeAdapterFactory())
                     .setLenient()
                     .create();
             retrofit = new Retrofit.Builder()
@@ -56,7 +61,24 @@ public class RetrofitClient {
         OkHttpClient.Builder httpClient = new OkHttpClient().newBuilder().cache(myCache)
                 .connectTimeout(7, TimeUnit.SECONDS)
                 .readTimeout(2, TimeUnit.MINUTES)
-                .writeTimeout(10, TimeUnit.MINUTES);
+                .writeTimeout(10, TimeUnit.MINUTES)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Response response = chain.proceed(chain.request());
+                        ResponseBody body = response.body();
+                        if (body != null) {
+                            String bodyString = body.string();
+                            if (bodyString == null || bodyString.trim().isEmpty()) {
+                                bodyString = "{\"responsecode\":\"404\",\"message\":\"Empty Response from Server\"}";
+                            }
+                            MediaType contentType = body.contentType();
+                            ResponseBody newBody = ResponseBody.create(contentType, bodyString);
+                            return response.newBuilder().body(newBody).build();
+                        }
+                        return response;
+                    }
+                });
         okHttpClient = httpClient.build();
     }
 

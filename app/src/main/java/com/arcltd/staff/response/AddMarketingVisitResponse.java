@@ -1,0 +1,28 @@
+package com.arcltd.staff.response;
+
+import com.google.gson.annotations.SerializedName;
+
+public class AddMarketingVisitResponse {
+
+    @SerializedName("ResponseCode")
+    private String responseCode;
+
+    @SerializedName("message")
+    private String message;
+
+    public String getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(String responseCode) {
+        this.responseCode = responseCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}

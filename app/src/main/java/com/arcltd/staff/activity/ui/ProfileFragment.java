@@ -24,6 +24,15 @@ import com.arcltd.staff.activity.addData.AddConveyanceMobileActivity;
 import com.arcltd.staff.activity.addData.AddMessActivity;
 import com.arcltd.staff.activity.addData.AddSweeperPeonActivity;
 import com.arcltd.staff.activity.addData.AddUpdateEmployeeActivity;
+import com.arcltd.staff.activity.addData.LeaveApplication;
+import com.arcltd.staff.activity.employee.EmployeeListActivity;
+import com.arcltd.staff.activity.chat.ChatUserListActivity;
+import com.arcltd.staff.activity.attendance.AttendanceReportActivity;
+import com.arcltd.staff.activity.attendance.GenerateBranchQrActivity;
+import com.arcltd.staff.activity.attendance.ManageBranchQrActivity;
+import com.arcltd.staff.activity.attendance.ScanQrAttendanceActivity;
+import com.arcltd.staff.activity.chat.ChatActivity;
+import com.arcltd.staff.activity.chat.ChatUserListActivity;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
 import com.arcltd.staff.activity.crashReport.HandleAppCrashActivity;
 import com.arcltd.staff.activity.employee.EmpMessageListActivity;
@@ -63,8 +72,8 @@ public class ProfileFragment extends BaseFragment {
     TextView logout, name, mobile_no;
     UserSessionManager session;
     LinearLayout personalinfobtn,  liAddMess, regionManager,listHolidays,
-            addConveyanceMobile, addSweeperPeon, profile, passwardUpdate,liAdd_Emp,
-            listSendMessage,liNotification,appPermission,sendMsgWhatsapp;
+            addConveyanceMobile, addSweeperPeon, profile, passwardUpdate,liAdd_Emp, deviceUnlockRequests,
+            listSendMessage,liNotification,appPermission,sendMsgWhatsapp,liChat,leaveApplication;
     String fullName, LastName, custId, email, mobile;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +114,19 @@ public class ProfileFragment extends BaseFragment {
 
 
 
+        String profilePicUrl = RetrofitClient.getStringUserPreference(getActivity(), Constants.PROFILE_PICTURE);
+        if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(profilePicUrl) // image url
+                    .placeholder(R.drawable.person_24) // any placeholder to load at start
+                    .error(R.drawable.avatar_10)  // any image in case of error
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(profilePicture);
+        } else {
+            profilePicture.setImageResource(R.drawable.person_24);
+        }
+
         return view;
     }
 
@@ -120,6 +142,7 @@ public class ProfileFragment extends BaseFragment {
         addSweeperPeon = view.findViewById(R.id.addSweeperPeon);
         profile = view.findViewById(R.id.profile);
         passwardUpdate = view.findViewById(R.id.passwardUpdate);
+        deviceUnlockRequests = view.findViewById(R.id.deviceUnlockRequests);
         liAdd_Emp = view.findViewById(R.id.liAdd_Emp);
         listSendMessage = view.findViewById(R.id.listSendMessage);
         liNotification = view.findViewById(R.id.liNotification);
@@ -127,18 +150,59 @@ public class ProfileFragment extends BaseFragment {
         appPermission = view.findViewById(R.id.appPermission);
         sendMsgWhatsapp = view.findViewById(R.id.sendMsgWhatsapp);
         listHolidays = view.findViewById(R.id.listHolidays);
+        liChat = view.findViewById(R.id.liChat);
+        leaveApplication = view.findViewById(R.id.leaveApplication);
         view.findViewById(R.id.comStatus).setSelected(true);
 
-        Glide.with(this)
-                .load(RetrofitClient.getStringUserPreference(getActivity(),Constants.PROFILE_PICTURE)) // image url
-                .placeholder(R.drawable.person_24) // any placeholder to load at start
-                .error(R.drawable.avatar_10)  // any image in case of error
-                .override(200, 200) // resizing
-                .centerCrop()
-                .into(profilePicture);
+        if (liChat != null) {
+            String myEmpCodePref = RetrofitClient.getStringUserPreference(getActivity(), Constants.EMP_CODE);
+            if ("A8513".equalsIgnoreCase(myEmpCodePref)) {
+                liChat.setVisibility(View.VISIBLE);
+                liChat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity(), ChatUserListActivity.class));
+                    }
+                });
+            } else {
+                liChat.setVisibility(View.GONE);
+            }
+        }
+
+        View liScanAttendance = view.findViewById(R.id.liScanAttendance);
+        View liBranchQr = view.findViewById(R.id.liBranchQr);
+        View liManageBranchQr = view.findViewById(R.id.liManageBranchQr);
+        View liAttendanceReport = view.findViewById(R.id.liAttendanceReport);
+
+        if (liScanAttendance != null) {
+            liScanAttendance.setOnClickListener(v -> startActivity(new Intent(getActivity(), ScanQrAttendanceActivity.class)));
+        }
+        if (liBranchQr != null) {
+            liBranchQr.setVisibility(View.VISIBLE);
+            liBranchQr.setOnClickListener(v -> startActivity(new Intent(getActivity(), GenerateBranchQrActivity.class)));
+        }
+        if (liManageBranchQr != null) {
+            String loginType = RetrofitClient.getStringUserPreference(getActivity(), Constants.LOGIN_TYPE);
+            if ("RG".equalsIgnoreCase(loginType) || "DGM".equalsIgnoreCase(loginType) || "BM".equalsIgnoreCase(loginType)) {
+                liManageBranchQr.setVisibility(View.VISIBLE);
+                liManageBranchQr.setOnClickListener(v -> startActivity(new Intent(getActivity(), ManageBranchQrActivity.class)));
+            } else {
+                liManageBranchQr.setVisibility(View.GONE);
+            }
+        }
+        if (liAttendanceReport != null) {
+            liAttendanceReport.setOnClickListener(v -> startActivity(new Intent(getActivity(), AttendanceReportActivity.class)));
+        }
 
 
-        liNotification.setOnClickListener(new View.OnClickListener() {
+        leaveApplication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), LeaveApplication.class)
+                        .putExtra("D", "D"));
+
+            }
+        });liNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), EmpMessageListActivity.class)
@@ -165,6 +229,7 @@ public class ProfileFragment extends BaseFragment {
             }
         });
 
+
         appPermission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,10 +250,15 @@ public class ProfileFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), AddUpdateEmployeeActivity.class));
-
             }
         });
 
+        deviceUnlockRequests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), com.arcltd.staff.authentication.DeviceUnlockListActivity.class));
+            }
+        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,6 +324,8 @@ public class ProfileFragment extends BaseFragment {
 
             }
         });
+
+
 
         addSweeperPeon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -344,13 +416,18 @@ public class ProfileFragment extends BaseFragment {
     public void onResume() {
         userPermissionList();
 
-        Glide.with(this)
-                .load(RetrofitClient.getStringUserPreference(getActivity(),Constants.PROFILE_PICTURE)) // image url
-                .placeholder(R.drawable.person_24) // any placeholder to load at start
-                .error(R.drawable.avatar_10)  // any image in case of error
-                .override(200, 200) // resizing
-                .centerCrop()
-                .into(profilePicture);
+        String profilePicUrl = RetrofitClient.getStringUserPreference(getActivity(), Constants.PROFILE_PICTURE);
+        if (profilePicUrl != null && !profilePicUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(profilePicUrl) // image url
+                    .placeholder(R.drawable.person_24) // any placeholder to load at start
+                    .error(R.drawable.avatar_10)  // any image in case of error
+                    .override(200, 200) // resizing
+                    .centerCrop()
+                    .into(profilePicture);
+        } else {
+            profilePicture.setImageResource(R.drawable.person_24);
+        }
         super.onResume();
     }
 

@@ -25,7 +25,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ResetPassword extends BaseActivity {
     TextView signup;
@@ -38,8 +37,12 @@ public class ResetPassword extends BaseActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_reset_password);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
 
@@ -137,9 +140,9 @@ public class ResetPassword extends BaseActivity {
 
 
     private boolean validate() {
-        String pass = Objects.requireNonNull(nPassword.getText()).toString();
-        String cpass = Objects.requireNonNull(cPassword.getText()).toString();
-        if (Objects.requireNonNull(oPassword.getText()).toString().length() == 0) {
+        String pass = nPassword.getText() != null ? nPassword.getText().toString() : "";
+        String cpass = cPassword.getText() != null ? cPassword.getText().toString() : "";
+        if (oPassword.getText() == null || oPassword.getText().toString().length() == 0) {
             Toast.makeText(getApplicationContext(), "Pleas Enter Old Password!", Toast.LENGTH_SHORT).show();
             return false;
         } else if (nPassword.getText().toString().length() != 0) {

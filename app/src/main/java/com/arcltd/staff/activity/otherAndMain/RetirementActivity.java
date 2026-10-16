@@ -54,17 +54,25 @@ public class RetirementActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_retirement);
 
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         list=findViewById(R.id.list);
         swiptoRefresh=findViewById(R.id.swiptoRefresh);
         searchProgressBar=findViewById(R.id.searchProgressBar);
         atSearch=findViewById(R.id.atSearch);
         liDeleteUpdate=findViewById(R.id.liDeleteUpdate);
 
-        delete=getIntent().getExtras().getString("D");
-        branch_code = Objects.requireNonNull(getIntent().getExtras()).getString("branch_code");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            delete = bundle.getString("D");
+            branch_code = bundle.getString("branch_code");
+        }
 
         if (delete!=null) {
             liDeleteUpdate.setVisibility(View.GONE);
@@ -142,8 +150,8 @@ public class RetirementActivity extends BaseActivity {
 
             } else {
                 Infrastructure.dismissProgressDialog();
-                ELog.e(TAG, "Exception in deleteEmployeeResponse" + deleteEmployeeResponse.getResponseCode());
-                Toast.makeText(this, deleteEmployeeResponse.getMessage(), Toast.LENGTH_LONG).show();
+                ELog.e(TAG, "Exception in deleteEmployeeResponse: response is null");
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
 
             }
         } catch (Exception e) {
@@ -173,8 +181,8 @@ public class RetirementActivity extends BaseActivity {
                 }
             } else {
                 searchProgressBar.setVisibility(View.GONE);
-                ELog.e(TAG, "Exception in checkLoginResponse" + employeeListResponse.getResponseCode());
-                Toast.makeText(this, employeeListResponse.getMessage(), Toast.LENGTH_LONG).show();
+                ELog.e(TAG, "Exception in checkLoginResponse: response is null");
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
 
             }
         } catch (Exception e) {

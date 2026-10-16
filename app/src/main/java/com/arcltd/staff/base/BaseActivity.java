@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.networkhandler.errors.ErrorStatus;
@@ -20,18 +21,21 @@ import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 
+import android.view.Window;
+import android.view.WindowManager;
+
 public class BaseActivity extends AppCompatActivity implements IResultView {
     private static final String TAG = BaseActivity.class.getSimpleName();
-    private static WebService apiService;
     public CompositeDisposable disposable;
     public ApiPresenter apiPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         try {
             Infrastructure.setBaseActivity(this);
-            apiService = RetrofitClient.getClient(BaseActivity.this).create(WebService.class);
+            WebService apiService = RetrofitClient.getClient(BaseActivity.this).create(WebService.class);
             disposable = new CompositeDisposable();
             apiPresenter = new ApiPresenter(this, apiService, this);
         } catch (Exception e) {

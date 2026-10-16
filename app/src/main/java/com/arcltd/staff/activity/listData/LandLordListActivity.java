@@ -48,7 +48,12 @@ public class LandLordListActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_land_lord_list);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
 
@@ -57,10 +62,9 @@ public class LandLordListActivity extends BaseActivity {
         searchProgressBar=findViewById(R.id.searchProgressBar);
         atSearch=findViewById(R.id.atSearch);
 
-        try {
-            branch_code = Objects.requireNonNull(getIntent().getExtras()).getString("branch_code");
-        }catch (Exception e){
-            Log.e(TAG, "onCreate: ",e );
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            branch_code = extras.getString("branch_code");
         }
 
         landlorGodownList();

@@ -47,7 +47,7 @@ public class EmpMessageListActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_emp_message_list);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list = findViewById(R.id.list);

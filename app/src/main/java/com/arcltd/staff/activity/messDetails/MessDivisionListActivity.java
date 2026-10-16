@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.widget.Toolbar;
 
 import com.arcltd.staff.R;
 import com.arcltd.staff.activity.crashReport.CrashReportActivity;
@@ -27,8 +28,6 @@ import com.arcltd.staff.utility.ELog;
 import com.arcltd.staff.utility.Infrastructure;
 import com.google.gson.GsonBuilder;
 
-import java.util.Objects;
-
 public class MessDivisionListActivity extends BaseActivity {
 
     RecyclerView list;
@@ -42,7 +41,11 @@ public class MessDivisionListActivity extends BaseActivity {
         overridePendingTransition(R.anim.fadein,R.anim.fadeout);
         setContentView(R.layout.activity_division_list);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         HandleAppCrashActivity.deploy(this, CrashReportActivity.class);
 
         list=findViewById(R.id.list);
@@ -107,8 +110,7 @@ public class MessDivisionListActivity extends BaseActivity {
                     }
                 } else {
                     Infrastructure.dismissProgressDialog();
-                    ELog.e(TAG, "Exception in checkLoginResponse" + divisionListResponse.getResponseCode());
-                    Toast.makeText(this, divisionListResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    ELog.e(TAG, "Exception in checkLoginResponse: response is null");
 
                 }
             } catch (Exception e) {

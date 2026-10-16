@@ -2,6 +2,7 @@ package com.arcltd.staff.activity.ui;
 
 import static com.arcltd.staff.networkhandler.errors.ErrorStatus.NO_INTERNET;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.arcltd.staff.activity.listData.ArcStructurePDFListActivity;
 import com.arcltd.staff.activity.listData.BookingListActivity;
 import com.arcltd.staff.activity.listData.InsCompanyListActivity;
 import com.arcltd.staff.activity.listData.LandLordListActivity;
+import com.arcltd.staff.activity.listData.LinkListActivity;
 import com.arcltd.staff.activity.listData.MoterCycleListActivity;
 import com.arcltd.staff.activity.otherAndMain.RetirementActivity;
 import com.arcltd.staff.activity.listData.WeightMCListActivity;
@@ -51,8 +53,8 @@ public class DashboardFragment extends BaseFragment {
     TextView tvNoOfEmp;
     LinearLayout regionManager;
     RelativeLayout cvTarget, litrasaction, liAdministrati,
-            listConveyance, listWeightMachine,
-            listBike, listEmployee, listlandlord, listInsidental, listRetireEmp,cvStructure,listEmployeeDOB;
+            listConveyance, listWeightMachine, listBike, listEmployee, listlandlord, listInsidental,
+            listRetireEmp,cvStructure,listEmployeeDOB,cvLink;
     private List<The_Slide_Items_Model_Class> listItems;
     private ViewPager page;
     private TabLayout tabLayout;
@@ -68,6 +70,7 @@ public class DashboardFragment extends BaseFragment {
         return view;
     }
 
+    @SuppressLint("WrongViewCast")
     private void getview(View view) {
         cvTarget = view.findViewById(R.id.cvTarget);
         litrasaction = view.findViewById(R.id.litrasaction);
@@ -85,6 +88,7 @@ public class DashboardFragment extends BaseFragment {
         listEmployeeDOB = view.findViewById(R.id.listEmployeeDOB);
         page = view.findViewById(R.id.my_pager);
         tabLayout = view.findViewById(R.id.my_tablayout);
+        cvLink = view.findViewById(R.id.cvLink);
 
         branchCode=RetrofitClient.getStringUserPreference(requireActivity(),Constants.BRANCH_CODE);
         loginType=RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE);
@@ -108,6 +112,8 @@ public class DashboardFragment extends BaseFragment {
 
         if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("RG")){
             listBike.setVisibility(View.VISIBLE);
+        }else if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("DM")){
+            listBike.setVisibility(View.VISIBLE);
         }else if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("BM")){
             listBike.setVisibility(View.VISIBLE);
         }else {
@@ -115,6 +121,8 @@ public class DashboardFragment extends BaseFragment {
         }
 
         if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("RG")){
+            listWeightMachine.setVisibility(View.VISIBLE);
+        }else if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("DM")){
             listWeightMachine.setVisibility(View.VISIBLE);
         }else if (RetrofitClient.getStringUserPreference(requireActivity(),Constants.LOGIN_TYPE).equals("BM")){
             listWeightMachine.setVisibility(View.GONE);
@@ -193,6 +201,14 @@ public class DashboardFragment extends BaseFragment {
               //  Toast.makeText(getActivity(), "Work in Progress", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(getActivity(), BookingListActivity.class)
                         .putExtra("D", "D"));
+
+            }
+        });
+        cvLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //  Toast.makeText(getActivity(), "Work in Progress", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getActivity(), LinkListActivity.class));
 
             }
         });
